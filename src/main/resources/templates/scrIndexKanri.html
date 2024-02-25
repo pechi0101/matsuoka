@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head style="height: 100%;">
+<meta charset="UTF-8">
+<title>ログイン</title>
+<!--リセットＣＳＳ-->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/destyle.css@4.0.0/destyle.min.css">
+<!--Font Awesome(無償版)のアイコン-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<!-- jQueryがレスポンシブに対応するため必要になるコード...らしい-->
+<!-- 参考：https://job-support.ne.jp/blog/javascript/howto-jquery-->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- ▽や△のアイコンをCSSで使うためにリンクを貼る -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+<!--オリジナルＣＳＳ(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<link href="/matsuoka/css/style.css?ver='+ new Date().getTime() +'" rel="stylesheet" type="text/css">');
+//-->
+</script>
+<!--オリジナルJavaScript(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<script src="/matsuoka/js/scrIndexKanri.js?ver='+ new Date().getTime() +'"></script>');
+//-->
+</script>
+
+
+<!-- 
+	サーバでデプロイする場合、CSS,JavaScript,画像などはドキュメントルート（※）内に配置すること
+	※例
+	  ＣＳＳ    ：/var/www/html/css
+	  JavaScript：/var/www/html/js
+	  画像      ：/var/www/html/images
+ -->
+
+
+ 
+</head>
+<body>
+
+<header class="ymd-header">
+   管理作業一覧
+</header>
+<div class="ymd-navigation">
+	
+</div>
+
+<center>
+<div class="ymd-base-container">
+	<br>
+	<div class="ymd-container" style="width: 100%;">
+	作業内容を選択してください。
+	</div>
+	<br>
+	<br>
+	<!-- action(呼出しプログラムはボタン押下時にJavaScriptでセットし直す) -->
+	<form name="sendForm"  th:action="@{/matsuoka/TransitionSelectWorkStatusDate}" th:object="${formIndexKanri}" th:method="post" style="width: 100%;">
+		<!-- ログイン社員ID情報 -->
+		<input type="hidden" id="loginEmployeeId"    style="width: 100%;" th:field="*{loginEmployeeId}" />
+		<input type="hidden" id="loginEmployeeName"  style="width: 100%;" th:field="*{loginEmployeeName}" />
+		
+		<!-- ボタン（ボタン押下時の飛び出しプログラム名を隠し項目に持つ）   -->
+		<br>
+		<div class="ymd-button">
+			<input type="hidden" name="callPgmName" value="TransitionSelectWorkStatusDate" />
+			<a name="send">作業状況閲覧</a>
+		</div>
+		<br>
+		<div class="ymd-button">
+			<input type="hidden" name="callPgmName" value="TransitionSelectAnalisisKinds" />
+			<a name="send">作業結果分析</a>
+		</div>
+		<br>
+	</form>
+	
+	
+</div>
+</center>
+
+
+</body>
+</html>

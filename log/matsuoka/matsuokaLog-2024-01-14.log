@@ -1,0 +1,8 @@
+2024-01-14 17:37:02,291 INFO [RMI TCP Connection(2718)-127.0.0.1] o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin [SpringApplicationAdminMXBeanRegistrar.java : 159] Application shutdown requested.
+2024-01-14 17:37:02,339 INFO [RMI TCP Connection(2718)-127.0.0.1] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-14 17:37:02,340 INFO [RMI TCP Connection(2718)-127.0.0.1] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-14 17:37:02,369 INFO [RMI TCP Connection(2718)-127.0.0.1] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-14 17:37:02,376 INFO [RMI TCP Connection(2718)-127.0.0.1] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-14 17:37:02,379 INFO [RMI TCP Connection(2718)-127.0.0.1] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-14 17:37:02,386 INFO [RMI TCP Connection(2718)-127.0.0.1] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-14 17:37:02,386 INFO [RMI TCP Connection(2718)-127.0.0.1] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]

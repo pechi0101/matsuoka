@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head style="height: 100%;">
+<meta charset="UTF-8">
+<title>ログイン</title>
+<!--リセットＣＳＳ-->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/destyle.css@4.0.0/destyle.min.css">
+<!--Font Awesome(無償版)のアイコン-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<!-- jQueryがレスポンシブに対応するため必要になるコード...らしい-->
+<!-- 参考：https://job-support.ne.jp/blog/javascript/howto-jquery-->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- ▽や△のアイコンをCSSで使うためにリンクを貼る -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+
+</head>
+<body>
+
+<header class="ymd-header">
+   カメラ選択
+</header>
+<div class="ymd-navigation">
+	<a th:href="@{/matsuoka/indexQR}">&lt;&lt; 最初に戻る</a>
+</div>
+
+<center>
+<div class="ymd-base-container">
+	<br>
+	<div class="ymd-container" style="width: 100%;">
+	ＱＲコード読み取りで使用するカメラを選択してください。
+	<br><br>
+	※下記カメラが最適であると思われます。<br>
+	Android  ：camera2 0, facing back<br>
+	iPhone   ：背面超広角カメラ／背面広角カメラ<br>
+	</div>
+	<br>
+	<br>
+	<form name="sendForm"  th:action="@{/matsuoka/TransitionReadQRStart}" th:object="${formSelectQRReadDevice}" th:method="post" style="width: 100%;">
+		
+		<div id="device-List" style="width: 100%;">
+			
+			<input type="hidden" id="loginEmployeeId"     style="width: 100%;" th:field="*{loginEmployeeId}" />
+			<input type="hidden" id="loginEmployeeName"   style="width: 100%;" th:field="*{loginEmployeeName}" />
+			<input type="hidden" id="selectedDeviceLabel" style="width: 100%;" th:field="*{selectedDeviceLabel}" />
+			
+			
+			<!-- ココは初期時は空っぽ。JavaScriptでカメラデバイス選択のボタンを入れていく -->
+		</div>
+	</form>
+</div>
+
+<br>
+<br>
+
+
+
+</center>
+
+<!--オリジナルＣＳＳ(常に最新を読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<link href="/matsuoka/css/style.css?ver='+ new Date().getTime() +'" rel="stylesheet" type="text/css">');
+//-->
+</script>
+<!--オリジナルJavaScript(常に最新を読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<script src="/matsuoka/js/scrSelectQRReadDevice.js?ver='+ new Date().getTime() +'"></script>');
+//-->
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,190 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    background-color: #000;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: sans-serif;
+}
+
+
+/*------------------------------------------------*/
+/* 背景用のvideoタグ用（モザイクをかける） */
+.reader2 {
+    width: 100vw;
+    /*height: 100%;*/
+    position: relative; /*現在の表示位置から相対的に要素の位置を動かす設定*/
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;/*子要素を上部で揃える指定*/
+    overflow: hidden;/*filter: blur で画像にモザイクをかけると淵までぼやけてしまう。ぼやけて外にはみ出た部分を非表示にする*/
+}
+
+.reader-video2 {
+    background-color: #000;
+    width: 100%;
+    /*height: 100%;*/
+    filter:blur(10px); /*背景となる映像なのでモザイクをかける*/
+    /*object-fit は、画像や動画がどんな大きさでも表示領域にうまくフィットさせてくれる、便利な CSS プロパティ*/
+    object-fit: fill;
+    
+}
+
+
+/*------------------------------------------------*/
+/* 撮影するvideoタグ用 */
+.reader {
+    width: 80vw;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;/*子要素を上部で揃える指定*/
+    position:absolute; /*画面の左上からの絶対位置指定で位置を動かす設定*/
+    top:120px; /*左上からの位置*/
+    left:10vw; /*左上からの位置*/
+}
+
+.reader-video {
+    background-color: #000;
+    width: 80vw;
+    height: 400px;
+    
+    /*object-fit は、画像や動画がどんな大きさでも表示領域にうまくフィットさせてくれる、便利な CSS プロパティ*/
+    /*object-fit: fill;*/
+    object-fit: cover;
+    
+}
+
+/*------------------------------------------------*/
+
+.reticle {
+	/*position: fixed;を当てた要素は、ページが開くのと同時に表示され、スクロール時も指定した位置にとどまって表示される。*/
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 180px;
+    left: 0;
+    width: 100vw;
+    /*height: 100%;*/
+    z-index: 1;
+}
+
+.reticle-box {
+	/*  QRコードリーダの上にかかってる白い枠線 */
+    width: 70vw;
+    height: 70vw;
+    border: 10px solid rgb(255, 255, 255);
+    /* 少し大きくしたり小さくしたりするアニメーションを付ける */
+    animation: 0.8s linear 0s infinite alternate move_reticle;
+}
+
+@-webkit-keyframes move_reticle {
+    from {
+        width: 70vw;
+        height: 70vw;
+    }
+    to {
+        width: 75vw;
+        height: 75vw;
+    }
+}
+@keyframes move_reticle {
+    from {
+        width: 70vw;
+        height: 70vw;
+    }
+    to {
+        width: 75vw;
+        height: 75vw;
+    }
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 10;
+}
+
+.modal-overlay.is-show {
+    display: flex;
+}
+
+.modal {
+    width: 80%;
+    background: #fff;
+    border-radius: 10px;
+}
+
+.modal-cnt {
+    padding: 30px 15px;
+}
+
+.modal-title {
+    display: block;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.modal-result {
+    resize: none;
+    word-break: break-all;
+    border: none;
+    width: 100%;
+    height: auto;
+    font-size: 16px;
+}
+
+.modal-btn {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    display: block;
+    background: none;
+    border: none;
+    border-top: 1px solid #ddd;
+    width: 100%;
+    color: #333;
+    padding: 20px;
+    text-align: center;
+    font-size: 25px;
+    text-decoration: none;
+}
+
+.unsupported {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    background: #000;
+    color: #fff;
+    z-index: 999;
+}
+
+.unsupported.is-show {
+    display: flex;
+}
+
+.unsupported-title {
+    font-weight: bold;
+    font-size: 2em;
+}

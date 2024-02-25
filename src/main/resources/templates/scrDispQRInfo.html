@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head style="height: 100%;">
+<meta charset="UTF-8">
+<title>ログイン</title>
+<!--リセットＣＳＳ-->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/destyle.css@4.0.0/destyle.min.css">
+<!--Font Awesome(無償版)のアイコン-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<!-- jQueryがレスポンシブに対応するため必要になるコード...らしい-->
+<!-- 参考：https://job-support.ne.jp/blog/javascript/howto-jquery-->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- ▽や△のアイコンをCSSで使うためにリンクを貼る -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+<!--オリジナルＣＳＳ(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<link href="/matsuoka/css/style.css?ver='+ new Date().getTime() +'" rel="stylesheet" type="text/css">');
+//-->
+</script>
+
+<!--オリジナルJavaScript(常に最新を読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<script src="/matsuoka/js/scrDispQRInfo.js?ver='+ new Date().getTime() +'"></script>');
+//-->
+</script>
+
+
+<!-- 
+	サーバでデプロイする場合、CSS,JavaScript,画像などはドキュメントルート（※）内に配置すること
+	※例
+	  ＣＳＳ    ：/var/www/html/css
+	  JavaScript：/var/www/html/js
+	  画像      ：/var/www/html/images
+ -->
+
+
+ 
+</head>
+<body>
+
+<header class="ymd-header">
+   ＱＲコード読取結果
+</header>
+<div class="ymd-navigation">
+	<a th:href="@{/matsuoka/indexQR}">&lt;&lt; 最初に戻る</a>
+</div>
+
+<center>
+<div class="ymd-base-container">
+	<br>
+	<form name="sendForm"  th:action="@{/matsuoka/RegistQRInfo}" th:object="${formDispQRInfo}" th:method="post" style="width: 100%;">
+		
+		<!-- ユーザ表示エリア -->
+		<input type="hidden" id="loginEmployeeId"     th:field="*{loginEmployeeId}" />
+		<input type="hidden" id="loginEmployeeName"   th:field="*{loginEmployeeName}" />
+		<input type="hidden" id="selectedDeviceLabel" th:field="*{selectedDeviceLabel}" />
+		<div class="ymd-login-username" style="width: 100%;">
+			作業者名：<p th:text="*{loginEmployeeName}"></p>
+		</div>
+		
+		
+		<!-- ＱＲコード読込情報＋作業最新情報 -->
+		<br>
+		<div class="ymd-container" style="width: 100%;">
+			下記内容のＱＲコードが読込まれました。
+		</div>
+		
+		<!-- 非表示項目  -->
+		<input type="hidden" id="workId"          style="width: 100%;" th:field="*{workId}" />
+		<input type="hidden" id="houseId"         style="width: 100%;" th:field="*{houseId}" />
+		<input type="hidden" id="colNo"           style="width: 100%;" th:field="*{colNo}" />
+		<input type="hidden" id="startEmployeeid" style="width: 100%;" th:field="*{startEmployeeid}" />
+		<input type="hidden" id="startDatetime"   style="width: 100%;" th:field="*{startDatetime}" />
+		
+		<!-- 表示項目  -->
+		<div class="ymd-container" style="width: 100%;">
+			<div class="ymd-label"     style="width: 30%;"><span>ハウス</span></div>
+			<div class="ymd-container" style="width: 70%;"><span th:text="*{houseName}"/></div>
+		</div>
+		<div class="ymd-container" style="width: 100%;">
+			<div class="ymd-label"     style="width: 30%;"><span>列</span></div>
+			<div class="ymd-container" style="width: 70%;"><span th:text="*{colNo}"/></div>
+		</div>
+		<div class="ymd-container" style="width: 100%;">
+			<!-- 作業内容は背景を赤くする（誤った作業内容のＱＲコードを登録してしまわないようにするため強調する目的） -->
+			<div class="ymd-label"     style="width: 30%;"><span>作業内容</span></div>
+			<div class="ymd-container" style="width: 70%; background-color: rgb(254, 180, 180);"><span th:text="*{workName}" style="font-size: 25px;"/></div>
+		</div>
+		<div class="ymd-container" style="width: 100%;">
+			<div class="ymd-label"     style="width: 30%;"><span>作業状態</span></div>
+			<div class="ymd-container" style="width: 70%;"><span th:text="*{workStatusString}"/></div>
+		</div>
+		<div class="ymd-container" style="width: 100%;">
+			<!-- LocalDateTime型の値をフォーマットを整えて表示する -->
+			<div class="ymd-label"     style="width: 30%;"><span>開始日時</span></div>
+			<div class="ymd-container" style="width: 70%;"><span th:text="*{#temporals.format(startDatetime, 'yyyy/MM/dd HH:mm:ss')}" /></div>
+		</div>
+		<div class="ymd-container" style="width: 100%;">
+			<div class="ymd-label"     style="width: 30%;"><span>備考</span></div>
+			<div class="ymd-input-text"style="width: 70%;"><input type="text" style="width: 100%;" th:field="*{biko}" /></div>
+		</div>
+		<br>
+		
+		<div class="ymd-container" style="width: 100%;">
+			下いずれかのボタンを押してください。もう一度ＱＲコードを読み直す場合は一番下の「取消てもう一度」ボタンを押してください。
+		</div>
+		
+		<div class="ymd-container"  style="width: 100%;">
+			※前回の作業中断を無視して新たに作業を開始したい場合は「作業開始」ボタンを押してください。
+		</div>
+		
+		<br>
+		<!-- 押下ボタン情報（非表示項目） -->
+		<input type="hidden" id="pushedButtunKbn"     style="width: 100%;" th:field="*{pushedButtunKbn}" />
+		<input type="hidden" id="pushedButtunPercent" style="width: 100%;" th:field="*{pushedButtunPercent}" />
+		
+		<!-- ボタン表示 -->
+		<div name="buttonDispArea" th:each="list,stat : *{buttonDispInfoList}" style="width: 100%;">
+			
+			<!-- 非表示項目 -->
+			<input type="hidden" name="buttonKbn"        th:field="*{buttonDispInfoList[__${stat.index}__].buttonKbn}" />
+			<input type="hidden" name="percent"          th:field="*{buttonDispInfoList[__${stat.index}__].percent}" />
+			<input type="hidden" name="buttonEnabledFlg" th:field="*{buttonDispInfoList[__${stat.index}__].buttonEnabledFlg}" />
+			<!-- ボタン(buttonEnabledFlg == trueの場合のみ表示される)   -->
+			<th:block th:if="*{buttonDispInfoList[__${stat.index}__].buttonEnabledFlg == true}" >
+			<div class="ymd-button" style="width: 100%;">
+				<a name="send"><span th:text="*{buttonDispInfoList[__${stat.index}__].buttonString}" /></a>
+			</div>
+			<br>
+			</th:block>
+		</div>
+	</form>
+</div>
+</center>
+
+
+</body>
+</html>

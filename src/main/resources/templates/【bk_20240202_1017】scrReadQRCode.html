@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<!-- ▼キャッシュを使わないためのmetaタグ  -->
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<!-- ▲キャッシュを使わないためのmetaタグ  -->
+<title>Simple QR Reader Test</title>
+
+
+<!--オリジナルＣＳＳ(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<link href="/matsuoka/css/scrReadQRCode.css?ver='+ new Date().getTime() +'" rel="stylesheet" type="text/css">');
+//-->
+</script>
+
+<link
+	rel="apple-touch-icon"
+	sizes="180x180"
+	th:href="@{/images/icons/apple-touch-icon.png}"
+/>
+<link rel="manifest" th:href="@{/matsuoka/manifest/scrQRRead-manifest.json}" />
+<link rel="manifest" href="manifest.webmanifest" />
+<!--
+	【メモ】
+	 PWACompatは、manifest.jsonの対応していないブラウザをサポートすることができるGoogle製のライブラリです。 
+	 このライブラリを使用すれば、iOSのためにメタタグを羅列したり、スプラッシュスックリーン用の画像を準備する作業から開放されます。
+-->
+<script
+	async
+	src="https://cdn.jsdelivr.net/npm/pwacompat@2.0.9/pwacompat.min.js"
+	integrity="sha384-VcI6S+HIsE80FVM1jgbd6WDFhzKYA0PecD/LcIyMQpT4fMJdijBh0I7Iblaacawc"
+	crossorigin="anonymous"
+></script>
+<script>
+	//windows.navigatorにsw.jsの機能を登録する
+	//【メモ】Service Workerとは
+	//https://qiita.com/y_fujieda/items/f9e765ac9d89ba241154
+	if ('serviceWorker' in navigator) {
+		navigator.serviceWorker.register('/matsuoka/js/sw.js')
+	}
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+<!--オリジナルＣＳＳ(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<link href="/matsuoka/css/style.css?ver='+ new Date().getTime() +'" rel="stylesheet" type="text/css">');
+//-->
+</script>
+	
+</head>
+<body>
+	
+	<header class="ymd-header">
+		ＱＲコード読み取り
+	</header>
+	<div class="ymd-navigation">
+		<a th:href="@{/matsuoka/indexQR}">&lt;&lt; 最初に戻る</a>
+	</div>
+	<center>
+	
+	
+	<!-- QRコード撮影用のビデオを表示するエリア -->
+	<div class="reader">
+		<!-- 
+			iOSのSafariで利用する場合、playsinline属性を指定することも合わせて検討してください。
+			playsinline属性が指定されていない場合、ストリームはフルスクリーンで再生されます。
+		 -->
+		 <video
+			id="js-video"
+			class="reader-video"
+			autoplay
+			playsinline
+		></video>
+	</div>
+	
+	<!-- QRコードリーダの上にかかってる白い枠線 -->
+	<div class="reticle">
+		<div class="reticle-box"></div>
+	</div>
+	</center>
+	<!-- カメラで撮った画像を一旦ココのキャンバスに入れて、その後jsQRを使用してQR解析を行う -->
+	<div style="display: none">
+		<canvas id="js-canvas"></canvas>
+	</div>
+	
+	
+	
+	<!--  -->
+	<form name="registQRForm" th:action="@{/matsuoka/TransitionDispQRInfo}" th:object="${formReadQRCode}" th:method="post" style="width: 100%;">
+	
+		<div class="ymd-container" style="width: 100%;">
+			<input type="hidden" name="loginEmployeeId"     id="loginEmployeeId"     th:value="*{loginEmployeeId}" />
+			<input type="hidden" name="loginEmployeeName"   id="loginEmployeeName"   th:value="*{loginEmployeeName}" />
+			<input type="hidden" name="selectedDeviceLabel" id="selectedDeviceLabel" th:value="*{selectedDeviceLabel}" />
+			<input type="hidden" name="qrcode"              id="qrcode"              th:value="*{qrcode}" />
+		</div>
+	</form>
+	
+	
+	<div id="js-unsupported" class="unsupported">
+		<p class="unsupported-title">Sorry!</p>
+		<p>Unsupported browser</p>
+	</div>
+	
+	<!--オリジナルJavaScript(極力キャッシュから読込む)-->
+	<script th:src="@{/matsuoka/js/jsQR.js}"></script>
+	
+	<!--オリジナルJavaScript(常に最新を読込むよう工夫)-->
+	<script type="text/JavaScript">
+	<!--
+	   document.write('<script src="/matsuoka/js/scrReadQRCode.js?ver='+ new Date().getTime() +'"></script>');
+	//-->
+	</script>
+	
+	
+</body>
+</html>

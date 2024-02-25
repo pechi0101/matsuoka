@@ -1,0 +1,61 @@
+<configuration>
+<!-- 
+【参考サイト】
+https://yacchi-engineer.com/?p=45
+ -->
+
+
+  <!-- 標準出力用設定 -->
+  <appender name="BAR-STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>
+        %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n
+      </pattern>
+    </encoder>
+  </appender>
+
+  <!-- ファイル出力用設定 -->
+  <appender name="FOO-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- 日毎にログファイルを切り替える -->
+      <!-- ※ローカル出力場所：D:\pleiades\workspace\MatsuokaWeb\log -->
+      <!-- ※サーバの出力場所：/var/www/html/log/matsuoka -->
+      <fileNamePattern>./log/matsuoka/matsuokaLog-%d{yyyy-MM-dd}.log</fileNamePattern>
+      <!-- 保持しておくログアーカイブファイルの最大数 -->
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%date %level [%thread] %logger{10} [%file : %line] %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- ルートロガー -->
+  <!-- DEBUG, INFO, WARN, ERROR の内”INFO以上”のレベルのログを出力 ※つまりDEBUGは出力しない -->
+  <root level="INFO">
+    <!-- 全てのロガーのメッセージを定義した BAR-STDOUT、FOO-FILE アペンダーに出力 -->
+    <!-- 
+    標準出力とファイル出力の両方を定義した場合、以下のようになる。
+    ①コマンドによりSpringBootアプリを起動した場合：標準出力にログ出力される、　ファイルにはログ出力されない
+    ②サービスとしてSpringBootアプリを起動した場合：標準出力にログ出力されない、ファイルにはログ出力される
+    
+    ※備考
+    ①java -jar /var/www/html/MatsuokaWeb-0.0.1-SNAPSHOT.jar でアプリを起動した場合を示す
+    ②service MatsuokaWeb-0.0.1-SNAPSHOT start               でアプリを起動した場合を示す
+     -->
+    <appender-ref ref="BAR-STDOUT"/>
+    <appender-ref ref="FOO-FILE"/>
+  </root>
+  
+  <!-- INFO, WARN, ERROR レベルのログを出力 -->
+  <logger name="myapp" level="INFO"/>
+
+  <!-- WARN, ERROR レベルのログを出力 -->
+  <logger name="myapp.hello.Hello" level="WARN"/>
+
+  <!-- ERROR レベルのログを出力 -->
+  <logger name="myapp.world.World" level="ERROR">
+    <!-- 定義した FOO-FILE アペンダーに出力 -->
+    <appender-ref ref="FOO-FILE"/>
+  </logger>
+
+</configuration>

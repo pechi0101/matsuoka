@@ -1,0 +1,690 @@
+2024-01-12 20:14:45,225 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 20:14:45,225 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 20:14:45,328 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 20:14:45,329 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:14:45,331 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:14:45,332 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 20:14:45,332 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 20:14:45,339 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 20:14:45,340 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 114 ms
+2024-01-12 20:14:45,408 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 20:14:45,412 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:14:45,415 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:14:45,417 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 20:14:45,419 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.209 seconds (process running for 635.473)
+2024-01-12 20:14:45,420 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 20:18:15,768 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 20:18:15,794 INFO [Thread-15] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:18:15,794 INFO [Thread-15] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:18:15,801 INFO [Thread-15] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 20:18:15,802 INFO [Thread-15] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:18:15,803 INFO [Thread-15] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:18:15,805 INFO [Thread-15] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:18:15,805 INFO [Thread-15] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:18:15,846 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 20:18:15,846 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 20:18:15,942 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 20:18:15,942 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:18:15,942 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:18:15,943 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 20:18:15,943 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 20:18:15,953 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 20:18:15,953 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 106 ms
+2024-01-12 20:18:16,010 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 20:18:16,014 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:18:16,016 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:18:16,019 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 20:18:16,021 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.187 seconds (process running for 846.076)
+2024-01-12 20:18:16,022 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 20:18:33,801 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 20:18:33,830 INFO [Thread-19] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:18:33,830 INFO [Thread-19] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:18:33,837 INFO [Thread-19] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 20:18:33,838 INFO [Thread-19] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:18:33,839 INFO [Thread-19] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:18:33,842 INFO [Thread-19] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:18:33,842 INFO [Thread-19] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:18:33,884 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 20:18:33,885 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 20:18:33,976 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 20:18:33,977 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:18:33,977 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:18:33,977 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 20:18:33,977 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 20:18:33,987 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 20:18:33,987 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 101 ms
+2024-01-12 20:18:34,052 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 20:18:34,056 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:18:34,058 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:18:34,060 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 20:18:34,062 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.189 seconds (process running for 864.117)
+2024-01-12 20:18:34,063 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 20:35:30,941 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 20:35:30,950 INFO [Thread-23] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:35:30,950 INFO [Thread-23] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:35:30,955 INFO [Thread-23] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 20:35:30,957 INFO [Thread-23] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:35:30,958 INFO [Thread-23] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:35:30,960 INFO [Thread-23] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:35:30,960 INFO [Thread-23] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:35:31,000 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 20:35:31,001 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 20:35:31,104 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 20:35:31,105 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:35:31,105 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:35:31,106 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 20:35:31,106 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 20:35:31,113 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 20:35:31,113 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 111 ms
+2024-01-12 20:35:31,177 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 20:35:31,182 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:35:31,184 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:35:31,187 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 20:35:31,191 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.203 seconds (process running for 1881.244)
+2024-01-12 20:35:31,191 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:01:32,715 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:01:32,745 INFO [Thread-27] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:01:32,745 INFO [Thread-27] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:01:32,751 INFO [Thread-27] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:01:32,753 INFO [Thread-27] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:01:32,754 INFO [Thread-27] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:01:32,755 INFO [Thread-27] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:01:32,756 INFO [Thread-27] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:01:32,799 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:01:32,800 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:01:32,905 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:01:32,905 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:01:32,905 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:01:32,906 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:01:32,906 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:01:32,912 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:01:32,912 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 111 ms
+2024-01-12 21:01:32,976 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:01:32,980 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:01:32,982 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:01:32,985 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:01:32,987 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.201 seconds (process running for 3443.042)
+2024-01-12 21:01:32,989 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:04:15,112 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:04:15,139 INFO [Thread-31] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:15,140 INFO [Thread-31] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:15,170 INFO [Thread-31] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:04:15,172 INFO [Thread-31] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:15,174 INFO [Thread-31] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:15,187 INFO [Thread-31] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:15,187 INFO [Thread-31] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:15,228 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:04:15,228 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:04:15,325 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:04:15,325 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:15,325 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:15,325 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:04:15,326 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:04:15,334 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:04:15,334 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 105 ms
+2024-01-12 21:04:15,398 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:04:15,407 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:15,409 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:15,411 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:04:15,414 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.199 seconds (process running for 3605.468)
+2024-01-12 21:04:15,415 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:04:21,946 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:04:21,973 INFO [Thread-35] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:21,973 INFO [Thread-35] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:21,980 INFO [Thread-35] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:04:21,982 INFO [Thread-35] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:21,983 INFO [Thread-35] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:21,984 INFO [Thread-35] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:21,985 INFO [Thread-35] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:22,038 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:04:22,038 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:04:22,126 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:04:22,127 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:22,127 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:22,127 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:04:22,128 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:04:22,135 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:04:22,135 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 96 ms
+2024-01-12 21:04:22,190 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:04:22,195 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:22,197 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:22,200 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:04:22,202 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.179 seconds (process running for 3612.257)
+2024-01-12 21:04:22,203 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:04:25,659 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:04:25,687 INFO [Thread-39] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:25,687 INFO [Thread-39] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:25,694 INFO [Thread-39] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:04:25,695 INFO [Thread-39] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:25,697 INFO [Thread-39] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:25,698 INFO [Thread-39] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:25,698 INFO [Thread-39] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:25,737 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:04:25,737 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:04:25,822 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:04:25,822 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:25,822 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:25,823 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:04:25,823 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:04:25,830 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:04:25,830 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 92 ms
+2024-01-12 21:04:25,881 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:04:25,884 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:25,886 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:25,888 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:04:25,891 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.165 seconds (process running for 3615.945)
+2024-01-12 21:04:25,891 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:04:42,607 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:04:42,635 INFO [Thread-43] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:42,636 INFO [Thread-43] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:42,643 INFO [Thread-43] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:04:42,645 INFO [Thread-43] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:42,646 INFO [Thread-43] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:42,648 INFO [Thread-43] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:42,649 INFO [Thread-43] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:42,697 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:04:42,698 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:04:42,788 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:04:42,789 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:42,789 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:42,789 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:04:42,789 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:04:42,798 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:04:42,798 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 99 ms
+2024-01-12 21:04:42,849 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:04:42,853 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:42,855 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:42,857 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:04:42,860 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.175 seconds (process running for 3632.914)
+2024-01-12 21:04:42,861 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:04:49,426 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:04:49,452 INFO [Thread-47] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:49,452 INFO [Thread-47] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:49,460 INFO [Thread-47] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:04:49,462 INFO [Thread-47] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:49,463 INFO [Thread-47] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:49,465 INFO [Thread-47] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:49,465 INFO [Thread-47] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:49,499 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:04:49,500 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:04:49,587 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:04:49,588 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:49,588 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:49,588 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:04:49,588 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:04:49,597 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:04:49,597 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 96 ms
+2024-01-12 21:04:49,648 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:04:49,652 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:04:49,654 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:04:49,656 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:04:49,658 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.169 seconds (process running for 3639.713)
+2024-01-12 21:04:49,659 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:05:15,605 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:05:15,631 INFO [Thread-51] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:15,631 INFO [Thread-51] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:15,663 INFO [Thread-51] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:05:15,665 INFO [Thread-51] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:15,666 INFO [Thread-51] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:15,679 INFO [Thread-51] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:15,679 INFO [Thread-51] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:15,717 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:05:15,717 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:05:15,800 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:05:15,800 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:15,801 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:15,801 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:05:15,801 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:05:15,808 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:05:15,808 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 89 ms
+2024-01-12 21:05:15,863 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:05:15,868 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:15,870 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:15,872 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:05:15,875 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.169 seconds (process running for 3665.929)
+2024-01-12 21:05:15,876 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:05:21,414 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:05:21,425 INFO [Thread-55] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:21,425 INFO [Thread-55] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:21,442 INFO [Thread-55] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:05:21,443 INFO [Thread-55] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:21,445 INFO [Thread-55] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:21,458 INFO [Thread-55] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:21,458 INFO [Thread-55] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:21,496 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:05:21,497 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:05:21,577 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:05:21,578 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:21,578 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:21,578 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:05:21,578 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:05:21,585 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:05:21,585 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 87 ms
+2024-01-12 21:05:21,635 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:05:21,638 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:21,640 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:21,642 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:05:21,645 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.158 seconds (process running for 3671.699)
+2024-01-12 21:05:21,646 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:05:34,293 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:05:34,300 INFO [Thread-59] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:34,301 INFO [Thread-59] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:34,323 INFO [Thread-59] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:05:34,324 INFO [Thread-59] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:34,325 INFO [Thread-59] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:34,339 INFO [Thread-59] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:34,339 INFO [Thread-59] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:34,384 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:05:34,384 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:05:34,481 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:05:34,481 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:34,482 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:34,482 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:05:34,482 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:05:34,489 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:05:34,490 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 105 ms
+2024-01-12 21:05:34,542 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:05:34,547 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:34,551 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:34,552 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:05:34,555 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.185 seconds (process running for 3684.609)
+2024-01-12 21:05:34,556 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:05:40,094 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:05:40,122 INFO [Thread-63] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:40,123 INFO [Thread-63] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:40,132 INFO [Thread-63] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:05:40,133 INFO [Thread-63] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:40,134 INFO [Thread-63] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:40,137 INFO [Thread-63] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:40,137 INFO [Thread-63] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:40,176 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:05:40,176 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:05:40,258 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:05:40,259 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:40,259 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:40,259 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:05:40,259 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:05:40,266 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:05:40,266 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 88 ms
+2024-01-12 21:05:40,312 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:05:40,315 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:40,317 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:40,319 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:05:40,321 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.156 seconds (process running for 3690.376)
+2024-01-12 21:05:40,322 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:05:57,078 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:05:57,109 INFO [Thread-67] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:57,109 INFO [Thread-67] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:57,114 INFO [Thread-67] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:05:57,115 INFO [Thread-67] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:57,116 INFO [Thread-67] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:57,118 INFO [Thread-67] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:57,118 INFO [Thread-67] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:57,158 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:05:57,158 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:05:57,240 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:05:57,241 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:57,241 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:57,241 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:05:57,242 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:05:57,248 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:05:57,248 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 89 ms
+2024-01-12 21:05:57,298 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:05:57,301 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:05:57,303 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:05:57,305 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:05:57,308 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.159 seconds (process running for 3707.362)
+2024-01-12 21:05:57,308 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:08:30,114 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:08:30,143 INFO [Thread-71] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:08:30,143 INFO [Thread-71] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:08:30,152 INFO [Thread-71] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:08:30,154 INFO [Thread-71] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:08:30,155 INFO [Thread-71] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:08:30,158 INFO [Thread-71] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:08:30,158 INFO [Thread-71] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:08:30,197 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:08:30,197 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:08:30,289 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:08:30,290 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:08:30,290 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:08:30,290 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:08:30,290 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:08:30,296 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:08:30,297 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 99 ms
+2024-01-12 21:08:30,353 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:08:30,363 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:08:30,365 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:08:30,366 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:08:30,369 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.184 seconds (process running for 3860.423)
+2024-01-12 21:08:30,370 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:09:18,833 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:09:18,861 INFO [Thread-75] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:18,861 INFO [Thread-75] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:18,893 INFO [Thread-75] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:09:18,895 INFO [Thread-75] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:18,895 INFO [Thread-75] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:18,910 INFO [Thread-75] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:18,910 INFO [Thread-75] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:18,949 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:09:18,949 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:09:19,029 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:09:19,029 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:19,030 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:19,030 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:09:19,030 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:09:19,037 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:09:19,037 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 87 ms
+2024-01-12 21:09:19,088 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:09:19,092 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:19,094 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:19,096 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:09:19,099 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.158 seconds (process running for 3909.153)
+2024-01-12 21:09:19,100 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:09:38,929 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:09:38,959 INFO [Thread-79] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:38,960 INFO [Thread-79] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:38,970 INFO [Thread-79] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:09:38,971 INFO [Thread-79] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:38,971 INFO [Thread-79] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:38,975 INFO [Thread-79] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:38,975 INFO [Thread-79] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:39,012 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:09:39,012 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:09:39,091 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:09:39,092 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:39,092 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:39,092 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:09:39,092 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:09:39,099 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:09:39,099 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 86 ms
+2024-01-12 21:09:39,147 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:09:39,151 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:39,153 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:39,155 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:09:39,157 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.154 seconds (process running for 3929.211)
+2024-01-12 21:09:39,158 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:09:47,733 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:09:47,761 INFO [Thread-83] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:47,761 INFO [Thread-83] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:47,769 INFO [Thread-83] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:09:47,770 INFO [Thread-83] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:47,771 INFO [Thread-83] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:47,772 INFO [Thread-83] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:47,772 INFO [Thread-83] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:47,806 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:09:47,807 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:09:47,895 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:09:47,895 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:47,895 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:47,896 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:09:47,896 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:09:47,904 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:09:47,904 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 96 ms
+2024-01-12 21:09:47,977 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:09:47,981 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:47,983 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:47,985 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:09:47,988 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.192 seconds (process running for 3938.042)
+2024-01-12 21:09:47,988 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:09:54,519 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:09:54,528 INFO [Thread-87] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:54,528 INFO [Thread-87] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:54,547 INFO [Thread-87] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:09:54,548 INFO [Thread-87] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:54,549 INFO [Thread-87] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:54,563 INFO [Thread-87] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:54,563 INFO [Thread-87] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:54,606 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:09:54,606 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:09:54,683 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:09:54,683 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:54,684 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:54,684 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:09:54,684 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:09:54,692 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:09:54,692 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 85 ms
+2024-01-12 21:09:54,743 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:09:54,746 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:09:54,749 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:09:54,750 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:09:54,753 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.156 seconds (process running for 3944.807)
+2024-01-12 21:09:54,753 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:10:14,561 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:10:14,590 INFO [Thread-91] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:10:14,590 INFO [Thread-91] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:10:14,621 INFO [Thread-91] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:10:14,623 INFO [Thread-91] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:10:14,624 INFO [Thread-91] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:10:14,636 INFO [Thread-91] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:10:14,638 INFO [Thread-91] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:10:14,675 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:10:14,675 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:10:14,758 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:10:14,758 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:10:14,759 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:10:14,759 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:10:14,759 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:10:14,766 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:10:14,766 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 90 ms
+2024-01-12 21:10:14,811 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:10:14,815 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:10:14,818 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:10:14,819 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:10:14,822 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.156 seconds (process running for 3964.876)
+2024-01-12 21:10:14,822 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 21:10:55,141 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 21:10:55,169 INFO [Thread-95] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:10:55,169 INFO [Thread-95] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:10:55,177 INFO [Thread-95] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 21:10:55,178 INFO [Thread-95] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:10:55,179 INFO [Thread-95] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:10:55,180 INFO [Thread-95] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:10:55,180 INFO [Thread-95] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:10:55,220 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 21:10:55,220 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 21:10:55,297 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 21:10:55,297 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:10:55,297 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:10:55,297 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 21:10:55,297 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 21:10:55,305 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 21:10:55,305 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 84 ms
+2024-01-12 21:10:55,352 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 21:10:55,356 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 21:10:55,358 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 21:10:55,360 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 21:10:55,363 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.152 seconds (process running for 4005.417)
+2024-01-12 21:10:55,364 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 22:00:39,971 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 22:00:39,999 INFO [Thread-99] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:00:39,999 INFO [Thread-99] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:00:40,015 INFO [Thread-99] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 22:00:40,017 INFO [Thread-99] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:00:40,017 INFO [Thread-99] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:00:40,031 INFO [Thread-99] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:00:40,031 INFO [Thread-99] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:00:40,087 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 22:00:40,087 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 22:00:40,193 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 22:00:40,193 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:00:40,193 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:00:40,194 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 22:00:40,194 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 22:00:40,200 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 22:00:40,200 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 112 ms
+2024-01-12 22:00:40,265 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 22:00:40,269 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:00:40,272 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:00:40,274 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 22:00:40,277 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.211 seconds (process running for 6990.331)
+2024-01-12 22:00:40,277 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 22:01:05,226 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 22:01:05,235 INFO [Thread-103] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:01:05,236 INFO [Thread-103] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:01:05,254 INFO [Thread-103] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 22:01:05,255 INFO [Thread-103] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:01:05,256 INFO [Thread-103] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:01:05,271 INFO [Thread-103] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:01:05,271 INFO [Thread-103] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:01:05,309 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 22:01:05,309 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 22:01:05,388 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 22:01:05,389 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:01:05,389 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:01:05,389 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 22:01:05,389 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 22:01:05,395 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 22:01:05,395 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 85 ms
+2024-01-12 22:01:05,442 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 22:01:05,446 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:01:05,448 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:01:05,450 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 22:01:05,452 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.153 seconds (process running for 7015.507)
+2024-01-12 22:01:05,453 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 22:02:26,691 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 22:02:26,720 INFO [Thread-107] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:02:26,720 INFO [Thread-107] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:02:26,727 INFO [Thread-107] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 22:02:26,728 INFO [Thread-107] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:02:26,729 INFO [Thread-107] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:02:26,730 INFO [Thread-107] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:02:26,730 INFO [Thread-107] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:02:26,769 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 22:02:26,769 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 22:02:26,851 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 22:02:26,852 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:02:26,852 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:02:26,852 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 22:02:26,853 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 22:02:26,859 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 22:02:26,859 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 89 ms
+2024-01-12 22:02:26,908 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 22:02:26,912 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:02:26,914 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:02:26,916 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 22:02:26,919 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.158 seconds (process running for 7096.973)
+2024-01-12 22:02:26,919 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 22:03:00,131 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 22:03:00,160 INFO [Thread-111] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:03:00,160 INFO [Thread-111] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:03:00,191 INFO [Thread-111] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 22:03:00,192 INFO [Thread-111] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:03:00,194 INFO [Thread-111] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:03:00,207 INFO [Thread-111] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:03:00,207 INFO [Thread-111] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:03:00,244 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 22:03:00,244 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 22:03:00,334 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 22:03:00,334 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:03:00,334 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:03:00,334 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 22:03:00,335 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 22:03:00,344 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 22:03:00,345 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 99 ms
+2024-01-12 22:03:00,398 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 22:03:00,402 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:03:00,404 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:03:00,406 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 22:03:00,409 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.172 seconds (process running for 7130.463)
+2024-01-12 22:03:00,409 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 22:03:06,951 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 22:03:06,980 INFO [Thread-115] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:03:06,981 INFO [Thread-115] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:03:07,011 INFO [Thread-115] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 22:03:07,013 INFO [Thread-115] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:03:07,014 INFO [Thread-115] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:03:07,028 INFO [Thread-115] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:03:07,028 INFO [Thread-115] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:03:07,065 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 22:03:07,067 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 22:03:07,146 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 22:03:07,146 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:03:07,147 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:03:07,147 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 22:03:07,147 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 22:03:07,155 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 22:03:07,155 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 87 ms
+2024-01-12 22:03:07,204 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 22:03:07,208 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:03:07,210 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:03:07,212 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 22:03:07,215 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.158 seconds (process running for 7137.269)
+2024-01-12 22:03:07,216 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 22:03:46,459 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 22:03:46,489 INFO [Thread-119] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:03:46,489 INFO [Thread-119] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:03:46,497 INFO [Thread-119] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 22:03:46,499 INFO [Thread-119] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:03:46,500 INFO [Thread-119] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:03:46,502 INFO [Thread-119] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:03:46,502 INFO [Thread-119] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:03:46,535 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 22:03:46,536 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 22:03:46,630 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 22:03:46,630 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:03:46,630 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:03:46,631 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 22:03:46,631 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 22:03:46,638 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 22:03:46,638 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 101 ms
+2024-01-12 22:03:46,686 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 22:03:46,688 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:03:46,691 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:03:46,693 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 22:03:46,696 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.169 seconds (process running for 7176.75)
+2024-01-12 22:03:46,696 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 22:04:27,003 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 22:04:27,009 INFO [Thread-123] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:04:27,009 INFO [Thread-123] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:04:27,032 INFO [Thread-123] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 22:04:27,033 INFO [Thread-123] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:04:27,034 INFO [Thread-123] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:04:27,049 INFO [Thread-123] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:04:27,049 INFO [Thread-123] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:04:27,085 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 22:04:27,086 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 22:04:27,174 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 22:04:27,175 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:04:27,177 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:04:27,177 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 22:04:27,177 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 22:04:27,185 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 22:04:27,185 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 98 ms
+2024-01-12 22:04:27,251 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 22:04:27,255 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:04:27,258 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:04:27,260 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 22:04:27,263 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.186 seconds (process running for 7217.318)
+2024-01-12 22:04:27,264 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 22:04:39,932 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 22:04:39,958 INFO [Thread-127] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:04:39,958 INFO [Thread-127] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:04:39,966 INFO [Thread-127] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 22:04:39,967 INFO [Thread-127] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:04:39,968 INFO [Thread-127] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:04:39,969 INFO [Thread-127] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:04:39,969 INFO [Thread-127] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:04:40,010 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 51] Starting MatsuokaWebApplication using Java 17.0.6 with PID 21700 (D:\pleiades\workspace\MatsuokaWeb\bin\main started by pechi in D:\pleiades\workspace\MatsuokaWeb)
+2024-01-12 22:04:40,010 INFO [restartedMain] c.e.MatsuokaWebApplication [SpringApplication.java : 630] No active profile set, falling back to 1 default profile: "default"
+2024-01-12 22:04:40,087 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 108] Tomcat initialized with port(s): 8083 (http) 9093 (http)
+2024-01-12 22:04:40,087 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:04:40,088 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Initializing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:04:40,088 INFO [restartedMain] o.a.c.c.StandardService [DirectJDKLog.java : 173] Starting service [Tomcat]
+2024-01-12 22:04:40,088 INFO [restartedMain] o.a.c.c.StandardEngine [DirectJDKLog.java : 173] Starting Servlet engine: [Apache Tomcat/10.1.5]
+2024-01-12 22:04:40,096 INFO [restartedMain] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring embedded WebApplicationContext
+2024-01-12 22:04:40,096 INFO [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java : 291] Root WebApplicationContext: initialization completed in 85 ms
+2024-01-12 22:04:40,143 INFO [restartedMain] o.s.b.d.a.OptionalLiveReloadServer [OptionalLiveReloadServer.java : 59] LiveReload server is running on port 35729
+2024-01-12 22:04:40,148 INFO [restartedMain] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:04:40,150 INFO [restartedMain] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Starting ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:04:40,151 INFO [restartedMain] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java : 220] Tomcat started on port(s): 8083 (http) 9093 (http) with context path ''
+2024-01-12 22:04:40,153 INFO [restartedMain] c.e.MatsuokaWebApplication [StartupInfoLogger.java : 57] Started MatsuokaWebApplication in 0.153 seconds (process running for 7230.207)
+2024-01-12 22:04:40,154 INFO [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [ConditionEvaluationDeltaLoggingListener.java : 63] Condition evaluation unchanged
+2024-01-12 22:08:34,106 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 22:08:34,113 INFO [Thread-131] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:08:34,114 INFO [Thread-131] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:08:34,122 INFO [Thread-131] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 22:08:34,124 INFO [Thread-131] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:08:34,125 INFO [Thread-131] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 22:08:34,127 INFO [Thread-131] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 22:08:34,127 INFO [Thread-131] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]

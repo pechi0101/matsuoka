@@ -1,0 +1,14 @@
+2024-01-12 20:07:30,364 INFO [http-nio-8083-exec-1] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-01-12 20:07:30,365 INFO [http-nio-8083-exec-1] o.s.w.s.DispatcherServlet [FrameworkServlet.java : 532] Initializing Servlet 'dispatcherServlet'
+2024-01-12 20:07:30,366 INFO [http-nio-8083-exec-1] o.s.w.s.DispatcherServlet [FrameworkServlet.java : 554] Completed initialization in 1 ms
+2024-01-12 20:07:30,389 INFO [http-nio-8083-exec-1] c.e.C.MatsuokaWebController [MatsuokaWebController.java : 66] ログ出力してみるよ～【log.info】
+2024-01-12 20:07:30,389 INFO [http-nio-8083-exec-1] c.e.C.MatsuokaWebController [MatsuokaWebController.java : 67] ログ出力してみるよ～【logger.info】!!
+2024-01-12 20:14:45,158 INFO [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [LocalDevToolsAutoConfiguration.java : 211] Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-01-12 20:14:45,168 INFO [Thread-11] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:14:45,168 INFO [Thread-11] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Pausing ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:14:45,174 INFO [Thread-11] o.a.c.c.StandardService [DirectJDKLog.java : 173] Stopping service [Tomcat]
+2024-01-12 20:14:45,175 INFO [Thread-11] o.a.c.c.C.[.[.[/] [DirectJDKLog.java : 173] Destroying Spring FrameworkServlet 'dispatcherServlet'
+2024-01-12 20:14:45,176 INFO [Thread-11] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:14:45,177 INFO [Thread-11] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Stopping ProtocolHandler ["ajp-nio-0.0.0.0-9093"]
+2024-01-12 20:14:45,181 INFO [Thread-11] o.a.c.h.Http11NioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["http-nio-8083"]
+2024-01-12 20:14:45,181 INFO [Thread-11] o.a.c.a.AjpNioProtocol [DirectJDKLog.java : 173] Destroying ProtocolHandler ["ajp-nio-0.0.0.0-9093"]

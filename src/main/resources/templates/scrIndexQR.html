@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head style="height: 100%;">
+<meta charset="UTF-8">
+<title>ログイン</title>
+<!--リセットＣＳＳ-->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/destyle.css@4.0.0/destyle.min.css">
+<!--Font Awesome(無償版)のアイコン-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<!-- jQueryがレスポンシブに対応するため必要になるコード...らしい-->
+<!-- 参考：https://job-support.ne.jp/blog/javascript/howto-jquery-->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- ▽や△のアイコンをCSSで使うためにリンクを貼る -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+<!--オリジナルＣＳＳ(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<link href="/matsuoka/css/style.css?ver='+ new Date().getTime() +'" rel="stylesheet" type="text/css">');
+//-->
+</script>
+<!--オリジナルJavaScript(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<script src="/matsuoka/js/scrIndexQR.js?ver='+ new Date().getTime() +'"></script>');
+//-->
+</script>
+
+
+<!-- 
+	サーバでデプロイする場合、CSS,JavaScript,画像などはドキュメントルート（※）内に配置すること
+	※例
+	  ＣＳＳ    ：/var/www/html/css
+	  JavaScript：/var/www/html/js
+	  画像      ：/var/www/html/images
+ -->
+
+
+ 
+</head>
+<body>
+
+<header class="ymd-header">
+   作業者一覧
+</header>
+<div class="ymd-navigation">
+	
+</div>
+
+<center>
+<div class="ymd-base-container">
+	<br>
+	<div class="ymd-container" style="width: 100%;">
+	作業者(あなた)の名前を選択してください。
+	</div>
+	<br>
+	<br>
+	<form name="sendForm"  th:action="@{/matsuoka/scrSelectQRReadDevice}" th:object="${formIndexQR}" th:method="post" style="width: 100%;">
+		
+		<!-- ログイン社員ID（ボタンを押した社員の社員ID） -->
+		<input type="hidden" id="loginEmployeeId"   style="width: 100%;" th:field="*{loginEmployeeId}" />
+		<input type="hidden" id="loginEmployeeName" style="width: 100%;" th:field="*{loginEmployeeName}" />
+		
+		<div name="employeeData" th:each="list,stat : *{employeeList}" style="width: 100%;">
+			
+			<!-- 隠し項目 -->
+			<input type="hidden" name="employeeId"   th:field="*{employeeList[__${stat.index}__].employeeId}" />
+			<input type="hidden" name="employeeName" th:field="*{employeeList[__${stat.index}__].employeeName}" />
+			<!-- ボタン   -->
+			<div class="ymd-button" style="width: 100%;">
+				<a name="send"><span th:text="*{employeeList[__${stat.index}__].employeeName}" /></a>
+			</div>
+			<br>
+		</div>
+	</form>
+</div>
+</center>
+
+
+</body>
+</html>

@@ -1,0 +1,515 @@
+@charset "utf-8";
+
+
+/*
+【メモ】
+要素セレクタ    ：HTMLタグで指定                   $("p").css("color","red");         
+クラスセレクタ  ：class属性(重複あり)で指定        $(".pKisu").css("color","red");
+IDセレクタ      ：id   属性(重複なし)で指定        $("#h1").css("color","red");
+グループセレクタ：複数のセレクタを組み合わせて指定 $(".pGusu, #h2").css("color","red");
+子孫セレクタ    ：階層的に要素を指定               $("#div1 p").css("color","red"); ※div1要素配下のすべてのp要素が選択
+属性セレクタ    ：※下記                           $("h1[id!='h2']").css("color","red"); ※h1要素でid属性が「h2ではない」要素が選択
+名前セレクタ    ：※下記                           $("input[name='detail']").css("color","red"); ※input要素でname属性が「detail」要素が選択
+
+「[属性 = 値]」のように、「[]」の中に属性と値を指定することで、細かな選択が可能です。
+*/
+
+html {
+    /*文字色*/
+    color: rgb(255, 255, 255);
+    /*文字サイズ*/
+    font-size:max(1vw,16px);
+}
+
+
+
+.ymd-header{
+	/*コンテナ内は横に並べる*/
+	display:flex;
+	
+    height: 55px; 
+    text-align: center;
+	
+	/*要素外側の空白*/
+	margin-top: 0 auto;
+	margin-bottom: 0 auto;
+	margin-left: 0 auto;
+	margin-right: 0 auto;
+	
+    /*要素内側の余白*/
+    padding-top:0px;
+    padding-bottom: 0px;
+    padding-left:3px;
+    padding-right: 0px;
+	
+	/*文字を上下中央寄せ＋左寄せ*/
+	line-height:50px; /*上下中央寄せ*/
+	text-align:left;  /*左寄せ*/
+    
+    /*文字色*/
+    color: rgb(255, 255, 255);
+    /*文字サイズ*/
+    font-size: 20px;
+    
+    background-color:rgb(0, 128, 128);;
+}
+
+.ymd-navigation{
+    height: 30px; 
+    text-align: center;
+	
+	/*要素外側の空白*/
+	margin-top:  0 auto;
+	margin-bottom:  0 auto;
+	margin-left: 0 auto;
+	margin-right: 0 auto;
+	
+    /*要素内側の余白*/
+    padding-top:0px;
+    padding-bottom: 0px;
+    padding-left:3px;
+    padding-right: 3px;
+	
+	/*文字を上下中央寄せ＋右寄せ*/
+	line-height:30px; /*上下中央寄せ*/
+	text-align:right;  /*右寄せ*/
+    
+    /*文字色*/
+    /*color: rgb(255, 255, 255);*/
+    /*文字サイズ*/
+    font-size:18px;
+    
+    background-color: rgb(219, 219, 219);
+}
+
+
+
+.ymd-base-container {
+	/*コンテナ内は縦に並べる*/
+	display:block;
+	
+	/*高さ*/
+	/*min-height: 100vh;*/
+	
+	/*横幅*/
+	width: 90%;
+	/*max-width: 800px;*/
+	
+	/*要素外側の空白*/
+	margin-top: 0 auto;
+	margin-bottom: 0 auto;
+	margin-left: 0 auto;
+	margin-right: 0 auto;
+	
+    /*文字色*/
+    color: rgb(0, 0, 0);
+    /*文字サイズ*/
+    font-size:max(1vw,16px);
+    
+	/*背景色*/
+	background-color:white;
+	
+	/*テスト用に枠線表示*/
+	/*
+	border: 1px;
+	border-style: solid;
+	border-color: gray;
+	*/
+}
+
+
+.ymd-login-username {
+	/*コンテナ内は横に並べる*/
+	display:flex;
+	
+	/*高さは子要素に合わせる*/
+	height: 26px;
+	
+	/*横幅*/
+	/*width: 100%;*/
+	/*max-width: 90%;*/
+	
+	/*要素外側の空白*/
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 0px;
+	margin-right: 0px;
+	
+    /*要素内側の余白*/
+    padding-top:0px;
+    padding-bottom: 0px;
+    padding-left:0px;
+    padding-right: 0px;
+	
+	/*文字を上下中央寄せ＋左寄せ*/
+	line-height:auto; /*上下中央寄せ*/
+	text-align:left;  /*左寄せ*/
+	
+	
+	/*文字色*/
+	/*color: rgb(0, 0, 0);-*/
+	/*文字サイズ*/
+	font-size: 15pt;
+	
+	/*背景色*/
+	background-color:rgb(219, 219, 219);
+	
+	/*テスト用に枠線表示*/
+	/*
+	border: 1px;
+	border-style: solid;
+	border-color: gray;
+	*/
+}
+
+
+
+
+.ymd-container {
+	/*コンテナ内は横に並べる*/
+	display:flex;
+	
+	/*高さは子要素に合わせる*/
+	height: auto;
+	
+	/*横幅*/
+	/*width: 100%;*/
+	/*max-width: 90%;*/
+	
+	/*要素外側の空白*/
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 0px;
+	margin-right: 0px;
+	
+    /*要素内側の余白*/
+    padding-top:0px;
+    padding-bottom: 0px;
+    padding-left:0px;
+    padding-right: 0px;
+	
+	/*文字を上下中央寄せ＋左寄せ*/
+	line-height:auto; /*上下中央寄せ*/
+	text-align:left;  /*左寄せ*/
+	
+	
+    /*文字色*/
+    /*color: rgb(0, 0, 0);-*/
+    /*文字サイズ*/
+    /*font-size: 20pt;*/
+	
+	/*背景色*/
+	background-color:white;
+	
+	/*テスト用に枠線表示*/
+	/*
+	border: 1px;
+	border-style: solid;
+	border-color: gray;
+	*/
+}
+
+
+/*詳細情報表示用コンテナ（文字が小さくて立幅が低い）*/
+.ymd-detail-container {
+	/*コンテナ内は横に並べる*/
+	display:flex;
+	
+	/*高さは子要素に合わせる*/
+	height: 20px;
+	
+	/*横幅*/
+	/*width: 100%;*/
+	/*max-width: 90%;*/
+	
+	/*要素外側の空白*/
+	margin-top: 1px;
+	margin-bottom: 1px;
+	margin-left: 0px;
+	margin-right: 0px;
+	
+    /*要素内側の余白*/
+    padding-top:0px;
+    padding-bottom: 0px;
+    padding-left:0px;
+    padding-right: 0px;
+	
+	/*文字を上下中央寄せ＋左寄せ*/
+	line-height:auto; /*上下中央寄せ*/
+	text-align:left;  /*左寄せ*/
+	
+	
+    /*文字色*/
+    /*color: rgb(0, 0, 0);-*/
+    /*文字サイズ*/
+    font-size: 9pt;
+	
+	/*背景色*/
+	background-color:white;
+	
+	/*テスト用に枠線表示*/
+	/*
+	border: 1px;
+	border-style: solid;
+	border-color: rgb(219, 219, 219);
+	*/
+}
+
+
+
+.ymd-label {
+	/*高さ*/
+	height: auto;
+	
+	/*横幅*/
+	/*width: 100%;*/
+	
+	/*要素外側の空白*/
+	margin-top: 0 auto;
+	margin-bottom: 0 auto;
+	margin-left: 0 auto;
+	margin-right: 3px;
+	
+    /*要素内側の余白*/
+    padding-top:5px;
+    padding-bottom: 0px;
+    padding-left:3px;
+    padding-right: 0px;
+	
+	/*文字を上下中央寄せ＋左寄せ*/
+	line-height:auto; /*上下中央寄せ*/
+	text-align:left;  /*左寄せ*/
+	
+	/*文字色*/
+    /*color: rgb(0, 0, 0);*/
+    /*文字サイズ*/
+    /*font-size: 20pt;*/
+    
+    /* 背景色 */
+	background-color:rgb(219, 219, 219);
+    
+	/*枠線*/
+	/*
+	border: 1px;
+	border-style: solid;
+	border-color: gray;
+	*/
+	
+}
+
+/*
+メッセージ出力エリア（文字が少し小さい）
+*/
+.ymd-msg-label {
+	/*高さ*/
+	height: auto;
+	
+	/*横幅*/
+	/*width: 100%;*/
+	
+	/*要素外側の空白*/
+	margin-top: 0 auto;
+	margin-bottom: 0 auto;
+	margin-left: 0 auto;
+	margin-right: 3px;
+	
+    /*要素内側の余白*/
+    padding-top:0px;
+    padding-bottom: 0px;
+    padding-left:3px;
+    padding-right: 0px;
+	
+	/*文字を上下中央寄せ＋左寄せ*/
+	line-height:auto; /*上下中央寄せ*/
+	text-align:left;  /*左寄せ*/
+	
+	/*文字色*/
+    /*color: rgb(255, 0, 0);*/
+    /*文字サイズ*/
+    font-size:max(1vw,11px);
+    
+    /* 背景色 */
+	background-color:rgb(255, 255, 255);
+    
+	/*テスト用に枠線表示*/
+	/*
+	border: 1px;
+	border-style: solid;
+	border-color: gray;
+	*/
+}
+
+.msg-ok {
+	/*文字色*/
+    color: rgb(122, 118, 118);
+    
+    /* 背景色 */
+	/*background-color:rgb(255, 255, 255);*/
+}
+
+
+.msg-ng {
+	/*文字色*/
+    color: rgb(255, 0, 0);
+    
+    /* 背景色 */
+	/*background-color:rgb(255, 255, 255);*/
+}
+
+
+.ymd-input-text {
+	/*高さ*/
+	height: auto;
+	
+	/*横幅*/
+	/*width: 100%;*/
+	
+	/*文字を上下中央寄せ＋左寄せ*/
+	line-height:auto; /*上下中央寄せ*/
+	text-align:left;  /*左寄せ*/
+	
+    /*文字色*/
+    /*color: rgb(0, 0, 0);*/
+    /*文字サイズ*/
+    /*font-size: 20pt;*/
+    
+	/*背景色*/
+	background-color:white;
+	
+	/*枠線*/
+	border: 1px;
+	border-style: solid;
+	border-color: gray;
+}
+
+
+
+/*ボタンの基本デザイン設定*/
+.ymd-button a {
+	
+    /*ボタン内は要素を横に並べる(ボタンの文字とアイコンを横並びにするために指定)*/
+    display: flex;
+    /*それぞれの要素に均等な余白をつける(今回はdisplay: flexで横並び指定されているため各要素の横に均等に余白を付ける)*/
+    /*...つまりボタンの文字と右矢印のアイコンの間に余白を付けることになる*/
+    justify-content: space-around;
+	
+    /*要素の境界の外側の角を丸める*/
+    border-radius: 50px;
+    /*元々表示されていた位置を基準に、相対位置を指定する(top、rightなどの指定は無しであるため元々表示されていた位置に表示する)*/
+    position: relative;
+    
+    /*上下中央にボタンの文字を表示する*/
+    align-items: center;
+    
+    /*ボタンの最大幅*/
+    max-width: 500px;
+    
+    /*要素外側の余白*/
+    margin-top: 0 auto;
+	margin-bottom: 0 auto;
+	margin-left: 0 auto;
+	margin-right: 0 auto;
+	
+    /*要素内側の余白*/
+    padding-top:15px;
+    padding-bottom: 13px;
+    padding-left:55px; 
+    padding-right: 55px;
+    
+    /*文字色*/
+    color: rgb(0, 0, 0);
+    /*文字サイズ*/
+    font-size: 20px;
+    /*フォントの太さ*/
+    font-weight: 500;
+    
+	/*背景色*/
+    background: #eee;
+    
+    /*マウスホバー時に0.1秒かけて状態を変化する*/
+    transition: 0.1s ease-in-out;
+    
+	/*枠線*/
+	border: 1px;
+	border-style: solid;
+	border-color: gray;
+	
+}
+/*疑似要素(after)で右矢印のアイコンを表示する*/
+.ymd-button a:after {
+	/*親要素(今回はボタンのこと)を基準に絶対配置を指定する(上下中央の50%、右端から20pxの位置を指定)*/
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    
+    border-radius: 1px;
+    /*マウスホバー解除時に0.1秒かけて状態を変化する*/
+    transition: 0.1s ease-in-out;
+    /*CSS用Unicodeで三角の右矢印(f0da)を指定　参考：https://web-manabu.com/fontawesome4-7-list/ */
+    content: "\f0da";
+    /*右矢印のアイコン*/
+    font-family: "Font Awesome 5 Free";
+    /*フォントの太さ*/
+    font-weight: 900;
+    transform: translateY(-50%);
+}
+/*マウスホバーで背景色と文字色が変化する*/
+.ymd-button a:hover {
+    background: #313131;
+    color: #FFF;
+}
+
+
+
+/*ボタン（使用不可時）の基本デザイン設定*/
+.ymd-button-disable a {
+	
+    /*ボタン内は要素を横に並べる(ボタンの文字とアイコンを横並びにするために指定)*/
+    display: flex;
+    /*それぞれの要素に均等な余白をつける(今回はdisplay: flexで横並び指定されているため各要素の横に均等に余白を付ける)*/
+    /*...つまりボタンの文字と右矢印のアイコンの間に余白を付けることになる*/
+    justify-content: space-around;
+	
+    /*要素の境界の外側の角を丸める*/
+    border-radius: 50px;
+    /*元々表示されていた位置を基準に、相対位置を指定する(top、rightなどの指定は無しであるため元々表示されていた位置に表示する)*/
+    position: relative;
+    
+    /*上下中央にボタンの文字を表示する*/
+    align-items: center;
+    
+    /*ボタンの最大幅*/
+    max-width: 500px;
+    
+    /*要素外側の余白*/
+    margin-top: 0 auto;
+	margin-bottom: 0 auto;
+	margin-left: 0 auto;
+	margin-right: 0 auto;
+	
+    /*要素内側の余白*/
+    padding-top:15px;
+    padding-bottom: 13px;
+    padding-left:55px; 
+    padding-right: 55px;
+    
+    /*文字色*/
+    color: rgb(133, 133, 133);
+    /*文字サイズ*/
+    font-size: 20px;
+    /*フォントの太さ*/
+    font-weight: 500;
+    
+	/*背景色*/
+    background: #eee;
+    
+    /*マウスホバー時に0.1秒かけて状態を変化する*/
+    /*transition: 0.1s ease-in-out;*/
+    
+	/*枠線*/
+	border: 1px;
+	border-style: solid;
+	border-color: gray;
+	
+}
+
