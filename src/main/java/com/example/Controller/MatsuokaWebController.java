@@ -1,6 +1,8 @@
 package com.example.Controller;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 //import org.slf4j.Logger;
@@ -559,28 +561,6 @@ public class MatsuokaWebController {
 		
 		
 		// ------------------------------------------------
-		// 作業進捗区切マスタを検索しこの作業がどの％で区切られてるかを検証し
-		// 次画面に表示する「作業開始」「作業中断」などのボタンの情報を取得
-		
-		DaoFormDispQRInfoButton daoButton = new DaoFormDispQRInfoButton(jdbcTemplate);
-		ArrayList<FormDispQRInfoButton> buttonDispInfoList = daoButton.getDispQRInfoButtonList(formDispQRInfo.getWorkId());
-		
-		if (buttonDispInfoList == null) {
-			log.error("【ERR】" + pgmId + " :未登録なハウス作業のＱＲコード読込まれました。作業ID=[" + formDispQRInfo.getWorkId() + "]");
-			formReadQRStart.setMessage("【エラー】未登録なハウス作業のＱＲコード読込まれました。別のＱＲコードの読み取りをお願いいたします。 ");
-			
-			mav.addObject("formReadQRStart", formReadQRStart);
-			log.info("【INF】" + pgmId + ":処理終了");
-			mav.setViewName("scrReadQRStart.html");
-			return mav;
-		}
-		
-		formDispQRInfo.setButtonDispInfoList(buttonDispInfoList);
-		
-		
-		
-		
-		// ------------------------------------------------
 		// 作業状況マスタを検索し、今のＱＲコード読取りが「作業開始」なのか
 		// それとも「作業終了(または中断)」であるのかを判定する
 		
@@ -608,6 +588,27 @@ public class MatsuokaWebController {
 		formDispQRInfo.setStartDatetime(houseWorkStatus.getStartDateTime());
 		formDispQRInfo.setBiko(houseWorkStatus.getBiko());
 		
+		
+		
+		
+		// ------------------------------------------------
+		// 作業進捗区切マスタを検索しこの作業がどの％で区切られてるかを検証し
+		// 次画面に表示する「作業開始」「作業中断」などのボタンの情報を取得
+		
+		DaoFormDispQRInfoButton daoButton = new DaoFormDispQRInfoButton(jdbcTemplate);
+		ArrayList<FormDispQRInfoButton> buttonDispInfoList = daoButton.getDispQRInfoButtonList(formDispQRInfo.getWorkId(),houseWorkStatus.getPercent());
+		
+		if (buttonDispInfoList == null) {
+			log.error("【ERR】" + pgmId + " :未登録なハウス作業のＱＲコード読込まれました。作業ID=[" + formDispQRInfo.getWorkId() + "]");
+			formReadQRStart.setMessage("【エラー】未登録なハウス作業のＱＲコード読込まれました。別のＱＲコードの読み取りをお願いいたします。 ");
+			
+			mav.addObject("formReadQRStart", formReadQRStart);
+			log.info("【INF】" + pgmId + ":処理終了");
+			mav.setViewName("scrReadQRStart.html");
+			return mav;
+		}
+		
+		formDispQRInfo.setButtonDispInfoList(buttonDispInfoList);
 		
 		
 		
@@ -700,7 +701,7 @@ public class MatsuokaWebController {
 		
 		String pgmId = classId + ".registQRInfo";
 		
-		log.info("【INF】" + pgmId + " :処理開始 押したボタンのボタン区分=[" + formDispQRInfo.getPushedButtunKbn() + "]、進捗率=[" + formDispQRInfo.getPushedButtunPercent() + "]、備考=[" + formDispQRInfo.getBiko() + "]、社員ID=[" + formDispQRInfo.getLoginEmployeeId() + "]");
+		log.info("【INF】" + pgmId + " :★処理開始 押したボタンのボタン区分=[" + formDispQRInfo.getPushedButtunKbn() + "]、進捗率=[" + formDispQRInfo.getPushedButtunPercent() + "]、備考=[" + formDispQRInfo.getBiko() + "]、社員ID=[" + formDispQRInfo.getLoginEmployeeId() + "]");
 		log.info("【INF】" + pgmId + " :選択デバイス名=[" + formDispQRInfo.getSelectedDeviceLabel() + "]");
 		log.info("【INF】" + pgmId + " :ハウスID=[" + formDispQRInfo.getHouseId() + "]、列№=[" + formDispQRInfo.getColNo() + "]、作業ID=[" + formDispQRInfo.getWorkId() + "]、開始日時=[" + formDispQRInfo.getStartDatetime() + "]");
 		
@@ -785,8 +786,17 @@ public class MatsuokaWebController {
 				houseWorkStatus.setEndDateTime(LocalDateTime.now());
 				
 				ret = daoHouseWorkStatus.updateEndStatusAllCol(houseWorkStatus, formDispQRInfo.getLoginEmployeeId(), "scrDispQRInfo");
+
+				// 作業開始日時
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+				String startDateTime = formatter.format(houseWorkStatus.getStartDateTime());
+				String endDateTime = formatter.format(houseWorkStatus.getEndDateTime());
+				// 作業時間をｎ時間ｍ分で表示
+				Duration duration = Duration.between(houseWorkStatus.getStartDateTime(), houseWorkStatus.getEndDateTime());
+				long hours = duration.toHours();
+				long minutes = duration.minusHours(hours).toMinutes();
 				
-				formReadQRStart.setMessage("作業完了(100%)で登録しました。");
+				formReadQRStart.setMessage("☆作業完了(100%)で登録しました。\n作業開始：" + startDateTime + "\n作業終了：" + endDateTime + "\n作業時間：" + hours + " 時間 " + minutes + " 分");
 				
 			}
 			
@@ -884,7 +894,16 @@ public class MatsuokaWebController {
 			
 			ret = daoHouseWorkStatus.updateEndStatus(houseWorkStatus, formDispQRInfo.getLoginEmployeeId(), "scrDispQRInfo");
 			
-			formReadQRStart.setMessage("作業完了(100%)で登録しました。");
+			// 作業開始日時
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+			String startDateTime = formatter.format(houseWorkStatus.getStartDateTime());
+			String endDateTime = formatter.format(houseWorkStatus.getEndDateTime());
+			// 作業時間をｎ時間ｍ分で表示
+			Duration duration = Duration.between(houseWorkStatus.getStartDateTime(), houseWorkStatus.getEndDateTime());
+			long hours = duration.toHours();
+			long minutes = duration.minusHours(hours).toMinutes();
+			
+			formReadQRStart.setMessage("☆作業完了(100%)で登録しました。\n作業開始：" + startDateTime + "\n作業終了：" + endDateTime + "\n作業時間：" + hours + " 時間 " + minutes + " 分");
 			
 		}
 		

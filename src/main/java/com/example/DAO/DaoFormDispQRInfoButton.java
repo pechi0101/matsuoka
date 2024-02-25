@@ -26,7 +26,7 @@ public class DaoFormDispQRInfoButton {
 	
 	
 	// 作業IDに対する情報を取得
-	public ArrayList<FormDispQRInfoButton> getDispQRInfoButtonList(String workId) {
+	public ArrayList<FormDispQRInfoButton> getDispQRInfoButtonList(String workId,int currentParcent) {
 		
 		String pgmId = classId + ".getDispQRInfoButtonList";
 		
@@ -63,12 +63,13 @@ public class DaoFormDispQRInfoButton {
 			sql  = sql + " from";
 			sql  = sql + "     TM_HOUSE_WORKSTATUS_SEP";
 			sql  = sql + " where";
-			sql  = sql + "     WORKID = ?";
+			sql  = sql + "     WORKID  = ?";
+			sql  = sql + " and PERCENT > ?";   //※現在の新緑率より大きいパーセントのみ画面表示する
 			sql  = sql + " order by";
 			sql  = sql + "     PERCENT";
 			
 			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
-			List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(sql,workId);
+			List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(sql,workId,currentParcent);
 			
 			
 			for (Map<String, Object> rs: rsList) {
