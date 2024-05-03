@@ -120,5 +120,63 @@ public class DaoFormDispQRInfoButton {
 	}
 	
 	
+	
+	
+	
+	
+	// 収穫ケース数合計機能用のボタンをセット
+	public ArrayList<FormDispQRInfoButton> getShukakuBoxSumButtonList() {
+		
+		String pgmId = classId + ".getShukakuBoxSumButtonList";
+		
+		try {
+			log.info("【INF】" + pgmId + ":処理開始");
+			
+			
+			// ------------------------------------------------
+			// ボタン表示内容をセットしていく
+			//
+			// 押下可能フラグはココでは固定で（true）にセット
+			
+			
+			ArrayList<FormDispQRInfoButton> buttonDispInfoList = new ArrayList<FormDispQRInfoButton>();
+			
+			
+			//------------------------------------------------
+			// １件目は登録ボタンをセット
+			FormDispQRInfoButton endButton = new FormDispQRInfoButton();
+			endButton.setButtonEnabledFlg(true);
+			endButton.setButtonKbn(ButtonKbn.REGIST);
+			endButton.setPercent(0);//未使用項目
+			//endButton.setButtonString("登録"); //【メモ】ボタン表示文字列の編集はFormDispQRInfoButtonクラスのgetterに記載
+			//リストに追加
+			buttonDispInfoList.add(endButton);
+			
+			
+			//------------------------------------------------
+			// 最後は取消ボタンをセット
+			FormDispQRInfoButton cancelButton = new FormDispQRInfoButton();
+			cancelButton.setButtonEnabledFlg(true);
+			cancelButton.setButtonKbn(ButtonKbn.CANCEL);
+			cancelButton.setPercent(0);
+			//cancelButton.setButtonString("取消してもう一度"); //【メモ】ボタン表示文字列の編集はFormDispQRInfoButtonクラスのgetterに記載
+			//リストに追加
+			buttonDispInfoList.add(cancelButton);
+			
+			
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			return buttonDispInfoList;
+			
+			
+		}catch(Exception e){
+
+			log.error("【ERR】" + pgmId + ":異常終了");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
+			return null;
+		}
+	}
 
 }

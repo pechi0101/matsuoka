@@ -42,6 +42,9 @@ public class FormDispQRInfoButton {
 			
 		} else if (buttonKbn.equals(ButtonKbn.CANCEL) == true) {
 			buttonString = "取消してもう一度";
+			
+		} else if (buttonKbn.equals(ButtonKbn.REGIST) == true) {
+			buttonString = "登録/更新";
 		}
 		
 		

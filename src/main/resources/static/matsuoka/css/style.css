@@ -513,3 +513,199 @@ html {
 	
 }
 
+
+/*------------------------------------------------*/
+/*ヘッダのアコーディオンメニュー*/
+
+.gnav {
+    display: flex;
+    height: 2rem;
+    margin-top: 0 auto;
+	margin-bottom: 0 auto;
+	margin-left: 0 auto;
+	margin-right: 0 auto;
+    width: 750px;
+}
+.gnav > li {/*親階層のみ幅を25%にする*/
+    width: 25%;
+}
+/*全てのリスト・リンク共通*/
+.gnav li {
+    list-style: none;
+    position: relative;
+}
+.gnav li a {
+    background: rgb(0, 64, 64);
+    border-right: 1px solid #eee;
+    color: #fff;
+    display: block;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    text-decoration: none;
+    width: 100%;
+}
+
+
+/*子階層以降共通*/
+.gnav li li {
+    height: 0;
+    overflow: hidden;
+    transition: .5s;
+}
+.gnav li li a {
+    border-top: 1px solid #eee;
+}
+.gnav li:hover > ul > li {
+    height: 2rem;
+    overflow: visible;
+}
+
+
+
+
+/*------------------------------------------------*/
+/*ブラウザ表示用の一覧表*/
+
+
+/*
+ブラウザ表示用の一覧表(ヘッダ部)
+*/
+.ymd-list-headre-container {
+    /*コンテナ内は横に並べる*/
+    display:flex;
+    
+    /*高さは子要素に合わせる*/
+    height: auto;
+    
+    /*横幅*/
+    /*width: 100%;*/
+    /*max-width: 90%;*/
+    
+    /*要素外側の空白*/
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin-left: 0px;
+    margin-right: 0px;
+    
+    /*要素内側の余白*/
+    padding-top:0px;
+    padding-bottom: 0px;
+    padding-left:0px;
+    padding-right: 0px;
+    
+    /*文字の位置*/
+    line-height:auto; /*上下中央寄せ*/
+    text-align:center;  /*中央寄せ*/
+    
+    /*背景色*/
+    background-color:white;
+    
+}
+
+
+/*
+ブラウザ表示用の一覧表(ヘッダのテキスト)
+*/
+.ymd-list-header-text {
+    /*高さ*/
+    height: auto;
+    
+    /*横幅*/
+    /*width: 100%;*/
+    
+    /*要素外側の空白*/
+    margin-top: 0 auto;
+    margin-bottom: 0 auto;
+    margin-left: 0 auto;
+    margin-right: 3px;
+    
+    /*要素内側の余白*/
+    padding-top:1px;
+    padding-bottom: 0px;
+    padding-left:1px;
+    padding-right: 0px;
+    
+    /*文字の位置*/
+    line-height:auto; /*上下中央寄せ*/
+    text-align:center;  /*中央寄せ*/
+    
+    /*文字の装飾*/
+    font-weight: bold;
+    
+    /* 背景色 */
+    background-color:rgb(219, 219, 219);
+    
+}
+
+
+
+/*
+ブラウザ表示用の一覧表(詳細部)
+*/
+.ymd-list-detail-container {
+    /*コンテナ内は横に並べる*/
+    display:flex;
+    
+    /*高さは子要素に合わせる*/
+    height: auto;
+    
+    /*横幅*/
+    /*width: 100%;*/
+    /*max-width: 90%;*/
+    
+    /*要素外側の空白*/
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin-left: 0px;
+    margin-right: 0px;
+    
+    /*要素内側の余白*/
+    padding-top:0px;
+    padding-bottom: 0px;
+    padding-left:0px;
+    padding-right: 0px;
+    
+    /*文字の位置*/
+    line-height:auto; /*上下中央寄せ*/
+    text-align:left;  /*左寄せ*/
+    
+    /*背景色*/
+    background-color:white;
+    
+}
+
+
+
+
+/*
+ブラウザ表示用の一覧表(データ表示領域)
+*/
+.ymd-list-detail-data {
+    /*高さ*/
+    height: auto;
+    
+    /*横幅*/
+    /*width: 100%;*/
+    
+    /*要素外側の空白*/
+    margin-top: 0 auto;
+    margin-bottom: 0 auto;
+    margin-left: 0 auto;
+    margin-right: 3px;
+    
+    /*要素内側の余白*/
+    padding-top:1px;
+    padding-bottom: 0px;
+    padding-left:1px;
+    padding-right: 0px;
+    
+    /*文字を上下中央寄せ＋左寄せ*/
+    line-height:auto; /*上下中央寄せ*/
+    text-align:left;  /*左寄せ*/
+    
+    /* 背景色 */
+    background-color:white;
+    
+}
+

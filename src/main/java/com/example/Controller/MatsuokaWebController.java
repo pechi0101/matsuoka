@@ -17,24 +17,30 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.DAO.DaoFormDispQRInfoButton;
-import com.example.DAO.DaoFormDispWorkStatus;
 import com.example.DAO.DaoFormIndexQR;
+import com.example.DAO.DaoFormKanriMainteEmployee;
 import com.example.DAO.DaoHouse;
 import com.example.DAO.DaoHouseWorkStatus;
+import com.example.DAO.DaoHouseWorkStatusShukaku;
+import com.example.DAO.DaoShukakuBoxSum;
 import com.example.DAO.DaoWork;
 import com.example.counst.ButtonKbn;
 import com.example.counst.SpecialWork;
 import com.example.entity.HouseWorkStatus;
+import com.example.entity.HouseWorkStatusShukaku;
+import com.example.entity.ShukakuBoxSum;
 import com.example.form.FormDispQRInfo;
 import com.example.form.FormDispQRInfoButton;
-import com.example.form.FormDispWorkStatus;
+import com.example.form.FormDispQRInfoShukaku;
+import com.example.form.FormDispQRInfoShukakuSum;
 import com.example.form.FormIndexKanri;
 import com.example.form.FormIndexQR;
+import com.example.form.FormKanriMainteEmployeeList;
 import com.example.form.FormReadQRCode;
 import com.example.form.FormReadQRStart;
+import com.example.form.FormReadQRStartShukaku;
+import com.example.form.FormReadQRStartShukakuSum;
 import com.example.form.FormSelectQRReadDevice;
-import com.example.form.FormSelectWorkStatusDate;
-import com.example.form.FormSelectWorkStatusDateButton;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,128 +60,6 @@ public class MatsuokaWebController {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	//管理者システムのindex画面の起動
-	@RequestMapping(value ="/matsuoka/indexKanri",method = RequestMethod.GET)
-	public ModelAndView indexKanri(ModelAndView mav) {
-		
-		String pgmId = classId + ".indexKanri";
-		
-		log.info("【INF】" + pgmId + ":処理開始");
-		
-		// ※ログインユーザはFormIndexKanriのコンストラクタで「管理者ユーザ固定」にしている
-		FormIndexKanri formIndexKanri = new FormIndexKanri();
-		
-		mav.addObject("formIndexKanri",formIndexKanri);
-		
-		log.info("【INF】" + pgmId + ":処理終了");
-		
-		
-		mav.setViewName("scrIndexKanri.html");
-		return mav;
-	}
-	
-	
-	// 表示作業期間選択画面への遷移
-	@RequestMapping(value ="/matsuoka/TransitionSelectWorkStatusDate",method = RequestMethod.POST)
-	public ModelAndView trunsition_SelectWorkStatusDate(@ModelAttribute FormIndexKanri formIndexKanri, ModelAndView mav) {
-
-		String pgmId = classId + ".trunsition_SelectWorkStatusDate";
-		
-		log.info("【INF】" + pgmId + ":処理開始 社員ID=[" + formIndexKanri.getLoginEmployeeId() + "]、社員名=[" + formIndexKanri.getLoginEmployeeName() + "]");
-		
-		
-		FormSelectWorkStatusDate formSelectWorkStatusDate = new FormSelectWorkStatusDate();
-		
-		formSelectWorkStatusDate.setLoginEmployeeId(formIndexKanri.getLoginEmployeeId());
-		formSelectWorkStatusDate.setLoginEmployeeName(formIndexKanri.getLoginEmployeeName());
-		
-		// 表示期間の初期化
-		formSelectWorkStatusDate.setSelectIntervalDate(0);
-		
-		// ボタンリストのセット
-		ArrayList<FormSelectWorkStatusDateButton> buttonList = new ArrayList<FormSelectWorkStatusDateButton>();
-
-		FormSelectWorkStatusDateButton btn000 = new FormSelectWorkStatusDateButton();
-		FormSelectWorkStatusDateButton btn001 = new FormSelectWorkStatusDateButton();
-		FormSelectWorkStatusDateButton btn002 = new FormSelectWorkStatusDateButton();
-		FormSelectWorkStatusDateButton btn003 = new FormSelectWorkStatusDateButton();
-		FormSelectWorkStatusDateButton btn007 = new FormSelectWorkStatusDateButton();
-		FormSelectWorkStatusDateButton btn014 = new FormSelectWorkStatusDateButton();
-		FormSelectWorkStatusDateButton btn030 = new FormSelectWorkStatusDateButton();
-
-		btn000.setButtonData(0);
-		btn001.setButtonData(1);
-		btn002.setButtonData(2);
-		btn003.setButtonData(3);
-		btn007.setButtonData(7);
-		btn014.setButtonData(14);
-		btn030.setButtonData(30);
-		
-		buttonList.add(btn000); // 当日分
-		buttonList.add(btn001); // 過去1日分
-		buttonList.add(btn002); // 過去2日分
-		buttonList.add(btn003); // 過去3日分
-		buttonList.add(btn007); // 過去１週間分
-		buttonList.add(btn014); // 過去２週間分
-		buttonList.add(btn030); // 過去１か月分
-		formSelectWorkStatusDate.setButtonList(buttonList);
-		
-		mav.addObject("formSelectWorkStatusDate", formSelectWorkStatusDate);
-		
-		
-		log.info("【INF】" + pgmId + ":処理終了");
-		mav.setViewName("scrSelectWorkStatusDate.html");
-		return mav;
-	}
-
-	
-	// 表示作業期間選択画面への遷移
-	@RequestMapping(value ="/matsuoka/TransitionDispWorkStatus",method = RequestMethod.POST)
-	public ModelAndView trunsition_DispWorkStatus(@ModelAttribute FormSelectWorkStatusDate formSelectWorkStatusDate, ModelAndView mav) {
-
-		String pgmId = classId + ".trunsition_DispWorkStatus";
-		
-		log.info("【INF】" + pgmId + ":処理開始 社員ID=[" + formSelectWorkStatusDate.getLoginEmployeeId() + "]、社員名=[" + formSelectWorkStatusDate.getLoginEmployeeName() + "]");
-		
-		
-		//------------------------------------------------
-		//表示データを検索
-		
-		DaoFormDispWorkStatus dao = new DaoFormDispWorkStatus(jdbcTemplate);
-		FormDispWorkStatus formDispWorkStatus = dao.getDispData(formSelectWorkStatusDate.getSelectIntervalDate());
-		
-
-		//------------------------------------------------
-		//ログインユーザ情報のセット
-		
-		formDispWorkStatus.setLoginEmployeeId(formSelectWorkStatusDate.getLoginEmployeeId());
-		formDispWorkStatus.setLoginEmployeeName(formSelectWorkStatusDate.getLoginEmployeeName());
-		
-		
-		mav.addObject("formDispWorkStatus", formDispWorkStatus);
-		
-		
-		log.info("【INF】" + pgmId + ":処理終了");
-		mav.setViewName("scrDispWorkStatus.html");
-		return mav;
-	}
-	
-
-	// 表示作業期間選択画面への遷移
-	@RequestMapping(value ="/matsuoka/Dummy",method = RequestMethod.POST)
-	public ModelAndView trunsition_Dummy(@ModelAttribute FormSelectWorkStatusDate formSelectWorkStatusDate, ModelAndView mav) {
-		
-		return mav;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -369,33 +253,82 @@ public class MatsuokaWebController {
 		
 		if (qrDataList[4].equals(SpecialWork.SHUKAKU) == true) {
 			
-			String strWorkId = qrDataList[4];
-			String strHouseId = qrDataList[1];
-			
 			
 			// ------------------------------------------------
 			// ＱＲコードにセットされている情報をセット
+			FormDispQRInfoShukaku formDispQRInfoShukaku = new FormDispQRInfoShukaku();
+
+			formDispQRInfoShukaku.setLoginEmployeeId(formReadQRCode.getLoginEmployeeId());
+			formDispQRInfoShukaku.setLoginEmployeeName(formReadQRCode.getLoginEmployeeName());
+			formDispQRInfoShukaku.setSelectedDeviceLabel(formReadQRCode.getSelectedDeviceLabel());
 			
-			formReadQRStart.setLoginEmployeeId(formReadQRCode.getLoginEmployeeId());
-			formReadQRStart.setLoginEmployeeName(formReadQRCode.getLoginEmployeeName());
-			formReadQRStart.setSelectedDeviceLabel(formReadQRCode.getSelectedDeviceLabel());
-			formReadQRStart.setMessage("");
+			formDispQRInfoShukaku.setWorkId(qrDataList[4]);
+			formDispQRInfoShukaku.setHouseId(qrDataList[1]);
+			formDispQRInfoShukaku.setColNo("XX"); //収穫である場合、列は無関係であるためXXとしておく
+			formDispQRInfoShukaku.setBiko("");
+			formDispQRInfoShukaku.setBoxCount(1);
+			
+			
+			
+			// ------------------------------------------------
+			// 作業IDに対する作業名を取得
+			
+			DaoWork daoWork = new DaoWork(jdbcTemplate);
+			String workName = daoWork.getNameFromId(formDispQRInfoShukaku.getWorkId());
+			
+			
+			
+			// 名称取得エラー
+			if (workName.trim().equals("") == true) {
+				log.error("【ERR】" + pgmId + " :未登録な作業のＱＲコードが読込まれました。QR=[" + formReadQRCode.getQrcode() + "]");
+				formReadQRStart.setMessage("【エラー】未登録な作業のＱＲコードが読込まれました。別のＱＲコードの読み取りをお願いいたします。 ");
+				
+				mav.addObject("formReadQRStart", formReadQRStart);
+				log.info("【INF】" + pgmId + ":処理終了");
+				mav.setViewName("scrReadQRStart.html");
+				return mav;
+			}
+			
+			formDispQRInfoShukaku.setWorkName(workName);
+			
+			
+			
+			// ------------------------------------------------
+			// ハウスIDに対するハウス名を取得
+			
+			DaoHouse daoHouse = new DaoHouse(jdbcTemplate);
+			String houseName = daoHouse.getNameFromId(formDispQRInfoShukaku.getHouseId());
+			
+			
+			if (houseName.trim().equals("") == true) {
+				log.error("【ERR】" + pgmId + " :未登録なハウスのＱＲコードが読込まれました。QR=[" + formReadQRCode.getQrcode() + "]");
+				formReadQRStart.setMessage("【エラー】未登録なハウスのＱＲコードが読込まれました。別のＱＲコードの読み取りをお願いいたします。 ");
+				
+				mav.addObject("formReadQRStart", formReadQRStart);
+				log.info("【INF】" + pgmId + ":処理終了");
+				mav.setViewName("scrReadQRStart.html");
+				return mav;
+			}
+			
+			formDispQRInfoShukaku.setHouseName(houseName);
+			
+			
+			
 			
 			// ------------------------------------------------
 			// 作業状況マスタを検索し、今のＱＲコード読取りが「作業開始」なのか
 			// それとも「作業終了(または中断)」であるのかを判定する
 			
 			
-			// ＱＲコードから取得した「作業ID、ハウスID、作業開始従業員ID」でハウス作業進捗テーブルを検索。
-			// ※収穫であるため
-			DaoHouseWorkStatus daoHouseWorkStatus = new DaoHouseWorkStatus(jdbcTemplate);
-			HouseWorkStatus houseWorkStatus =  daoHouseWorkStatus.getLatestWorkStatusForShukaku(strWorkId, strHouseId, formReadQRStart.getLoginEmployeeId());
-			
-			log.info("【DBG】" + pgmId + ":最新の作業状況=[" + houseWorkStatus.getWorkStatus() + "]");
+			// ＱＲコードから取得した「作業ID、ハウスID、列№」でハウス作業進捗テーブルを検索。
+			DaoHouseWorkStatusShukaku daoHouseWorkStatusShukaku = new DaoHouseWorkStatusShukaku(jdbcTemplate);
+			HouseWorkStatusShukaku houseWorkStatusShukaku =  daoHouseWorkStatusShukaku.getLatestWorkStatus(formDispQRInfoShukaku.getWorkId(), formDispQRInfoShukaku.getHouseId(), formDispQRInfoShukaku.getColNo());
+
+			log.info("【DBG】" + pgmId + ":最新の作業状況=[" + houseWorkStatusShukaku.getWorkStatus() + "]");
 			
 			// 取得・判定した作業状況が「エラー」である場合は異常終了
-			if (houseWorkStatus.getWorkStatus() == DaoHouseWorkStatus.STATUS_ERROR) {
-				log.error("【ERR】" + pgmId + " :作業状況の取得処理で異常が発生しました。作業ID=[" + strWorkId + "]");
+			if (houseWorkStatusShukaku.getWorkStatus() == DaoHouseWorkStatusShukaku.STATUS_ERROR) {
+				log.error("【ERR】" + pgmId + " :作業状況の取得処理で異常が発生しました。作業ID=[" + formDispQRInfoShukaku.getWorkId() + "]");
 				formReadQRStart.setMessage("【エラー】ＱＲコード読込処理で異常が発生しました（作業状況取得エラー）。もう一度ＱＲコードの読み取り行うかシステム担当者にご連絡ください。");
 				
 				mav.addObject("formReadQRStart", formReadQRStart);
@@ -404,82 +337,112 @@ public class MatsuokaWebController {
 				return mav;
 			}
 			
+			// 作業状況と進捗率（％）と開始日時、備考、収穫箱数を画面表示用にセット
+			formDispQRInfoShukaku.setWorkStatus(houseWorkStatusShukaku.getWorkStatus());
+			formDispQRInfoShukaku.setPercent(houseWorkStatusShukaku.getPercent());
+			formDispQRInfoShukaku.setStartDatetime(houseWorkStatusShukaku.getStartDateTime());
+			formDispQRInfoShukaku.setBiko(houseWorkStatusShukaku.getBiko());
+			formDispQRInfoShukaku.setBoxCount(houseWorkStatusShukaku.getBoxCount());
 			
-			// ------------------------------------------------
-			// 最新のデータが「作業未実施」「作業完了」状態である場合、「作業開始」データの登録
-			if (houseWorkStatus.getWorkStatus() == DaoHouseWorkStatus.STATUS_NOT
-			||  houseWorkStatus.getWorkStatus() == DaoHouseWorkStatus.STATUS_DONE) {
-				
-				HouseWorkStatus registHouseWorkStatus = new HouseWorkStatus();
-				boolean ret = false;
-				
-				registHouseWorkStatus.setWorkId(strWorkId);
-				registHouseWorkStatus.setHouseId(strHouseId);
-				registHouseWorkStatus.setColNo("XX");
-				registHouseWorkStatus.setPercent(0);
-				registHouseWorkStatus.setBiko("");
-				
-				registHouseWorkStatus.setStartEmployeeId(formReadQRCode.getLoginEmployeeId());
-				registHouseWorkStatus.setStartDateTime(LocalDateTime.now());
-				//registHouseWorkStatus.setEndEmployeeId();  // ”作業開始”なので終了社員IDはセット不要
-				//registHouseWorkStatus.setEndDateTime();    // ”作業開始”なので終了日時  はセット不要
-				
-				ret = daoHouseWorkStatus.registStartStatus(registHouseWorkStatus, formReadQRCode.getLoginEmployeeId(), "scrReadQRCode");
-				
-				// 取得・判定した作業状況が「エラー」である場合は異常終了
-				if (ret == false) {
-					log.error("【ERR】" + pgmId + " :作業状況の登録処理で異常が発生しました。");
-					formReadQRStart.setMessage("【エラー】ＱＲコード読込処理で異常が発生しました（作業状況登録エラー）。もう一度ＱＲコードの読み取り行うかシステム担当者にご連絡ください。");
-					
-					mav.addObject("formReadQRStart", formReadQRStart);
-					log.info("【INF】" + pgmId + ":処理終了");
-					mav.setViewName("scrReadQRStart.html");
-					return mav;
-				}
-				
-				formReadQRStart.setMessage("【 収穫作業 】作業開始で登録しました。");
-			}
+			
 			
 			
 			// ------------------------------------------------
-			// 最新のデータが「作業中」状態である場合、「作業完了」にデータ更新
-			if (houseWorkStatus.getWorkStatus() == DaoHouseWorkStatus.STATUS_WORKING) {
+			// 作業進捗区切マスタを検索しこの作業がどの％で区切られてるかを検証し
+			// 次画面に表示する「作業開始」「作業中断」などのボタンの情報を取得
+			
+			DaoFormDispQRInfoButton daoButton = new DaoFormDispQRInfoButton(jdbcTemplate);
+			ArrayList<FormDispQRInfoButton> buttonDispInfoList = daoButton.getDispQRInfoButtonList(formDispQRInfoShukaku.getWorkId(),houseWorkStatusShukaku.getPercent());
+			
+			if (buttonDispInfoList == null) {
+				log.error("【ERR】" + pgmId + " :未登録なハウス作業のＱＲコード読込まれました。作業ID=[" + formDispQRInfoShukaku.getWorkId() + "]");
+				formReadQRStart.setMessage("【エラー】未登録なハウス作業のＱＲコード読込まれました。別のＱＲコードの読み取りをお願いいたします。 ");
 				
-				HouseWorkStatus updateHouseWorkStatus = new HouseWorkStatus();
-				boolean ret = false;
+				mav.addObject("formReadQRStart", formReadQRStart);
+				log.info("【INF】" + pgmId + ":処理終了");
+				mav.setViewName("scrReadQRStart.html");
+				return mav;
+			}
+			
+			formDispQRInfoShukaku.setButtonDispInfoList(buttonDispInfoList);
+			
+			
+			
+			// ------------------------------------------------
+			// 最新のデータが「作業未実施状態」か「作業完了状態」である場合、画面に表示する作業開始日時、進捗（％）、備考、収穫箱数を初期化
+
+			if (formDispQRInfoShukaku.getWorkStatus() == DaoHouseWorkStatusShukaku.STATUS_NOT
+			||  formDispQRInfoShukaku.getWorkStatus() == DaoHouseWorkStatusShukaku.STATUS_DONE) {
 				
-				updateHouseWorkStatus.setWorkId(houseWorkStatus.getWorkId());
-				updateHouseWorkStatus.setHouseId(houseWorkStatus.getHouseId());
-				updateHouseWorkStatus.setColNo("XX");
-				updateHouseWorkStatus.setPercent(100);
-				updateHouseWorkStatus.setBiko("");
-				
-				updateHouseWorkStatus.setStartEmployeeId(houseWorkStatus.getStartEmployeeId());
-				updateHouseWorkStatus.setStartDateTime(houseWorkStatus.getStartDateTime());
-				updateHouseWorkStatus.setEndEmployeeId(formReadQRCode.getLoginEmployeeId());
-				updateHouseWorkStatus.setEndDateTime(LocalDateTime.now());
-				
-				ret = daoHouseWorkStatus.updateEndStatus(updateHouseWorkStatus, formReadQRCode.getLoginEmployeeId(), "scrReadQRCode");
-				
-				// 取得・判定した作業状況が「エラー」である場合は異常終了
-				if (ret == false) {
-					log.error("【ERR】" + pgmId + " :作業状況の更新処理で異常が発生しました。");
-					formReadQRStart.setMessage("【エラー】ＱＲコード読込処理で異常が発生しました（作業状況更新エラー）。もう一度ＱＲコードの読み取り行うかシステム担当者にご連絡ください。");
-					
-					mav.addObject("formReadQRStart", formReadQRStart);
-					log.info("【INF】" + pgmId + ":処理終了");
-					mav.setViewName("scrReadQRStart.html");
-					return mav;
-				}
-				
-				
-				formReadQRStart.setMessage("【 収穫作業 】作業完了(100%)で登録しました。");
+				formDispQRInfoShukaku.setStartDatetime(null);
+				formDispQRInfoShukaku.setStartEmployeeid("");
+				formDispQRInfoShukaku.setPercent(0);
+				formDispQRInfoShukaku.setBiko("");
+				formDispQRInfoShukaku.setBoxCount(0);
 			}
 			
 			
-			mav.addObject("formReadQRStart", formReadQRStart);
-			log.info("【INF】" + pgmId + ":処理終了");
-			mav.setViewName("scrReadQRStart.html");
+			
+			
+			// ------------------------------------------------
+			// 最新のデータが「作業未実施状態」か「作業完了状態」である場合は「作業開始」「取消」ボタンのみ有効にする
+			
+			if (formDispQRInfoShukaku.getWorkStatus() == DaoHouseWorkStatusShukaku.STATUS_NOT
+			||  formDispQRInfoShukaku.getWorkStatus() == DaoHouseWorkStatusShukaku.STATUS_DONE) {
+				
+				for (int index = 0 ; index < formDispQRInfoShukaku.getButtonDispInfoList().size(); index ++) {
+					
+					log.info("【DBG】" + pgmId + ":□index=[" + index + "]ボタン区分=[" + formDispQRInfoShukaku.getButtonDispInfoList().get(index).getButtonKbn() + "]");
+					if (
+					   formDispQRInfoShukaku.getButtonDispInfoList().get(index).getButtonKbn().equals(ButtonKbn.START) == true   //作業開始ボタン
+					|| formDispQRInfoShukaku.getButtonDispInfoList().get(index).getButtonKbn().equals(ButtonKbn.CANCEL) == true  //取消ボタン
+					) {
+						
+						formDispQRInfoShukaku.getButtonDispInfoList().get(index).setButtonEnabledFlg(true);
+						
+					} else {
+						formDispQRInfoShukaku.getButtonDispInfoList().get(index).setButtonEnabledFlg(false);
+						
+					}
+					
+				}
+				
+			}
+			
+			
+			
+			// ------------------------------------------------
+			// 最新のデータが「作業中状態」である場合は「作業完了」「取消」ボタンのみ有効にする
+			//
+			
+			if (formDispQRInfoShukaku.getWorkStatus() == DaoHouseWorkStatusShukaku.STATUS_WORKING) {
+				
+				for (int index = 0 ; index < formDispQRInfoShukaku.getButtonDispInfoList().size(); index ++) {
+					
+					log.info("【DBG】" + pgmId + ":■index=[" + index + "]ボタン区分=[" + formDispQRInfoShukaku.getButtonDispInfoList().get(index).getButtonKbn() + "]");
+					if (
+					   formDispQRInfoShukaku.getButtonDispInfoList().get(index).getButtonKbn().equals(ButtonKbn.END) == true     //作業完了ボタン
+					|| formDispQRInfoShukaku.getButtonDispInfoList().get(index).getButtonKbn().equals(ButtonKbn.CANCEL) == true //取消ボタン
+					) {
+						
+						formDispQRInfoShukaku.getButtonDispInfoList().get(index).setButtonEnabledFlg(true);
+						
+					} else {
+						formDispQRInfoShukaku.getButtonDispInfoList().get(index).setButtonEnabledFlg(false);
+						
+					}
+				}
+			}
+			
+			
+			
+			// ------------------------------------------------
+			
+			mav.addObject("formDispQRInfoShukaku", formDispQRInfoShukaku);
+			
+			
+			log.info("【INF】" + pgmId + ":処理終了!!!");
+			mav.setViewName("scrDispQRInfoShukaku.html");
 			// ★★★★★★★★★★★★★★★★★★★★★★★★★
 			//
 			//          収穫である場合はココで処理終了
@@ -488,6 +451,113 @@ public class MatsuokaWebController {
 			return mav;
 			
 		}
+		
+		
+		
+		
+		
+		
+		// _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+		// 
+		// 作業が「収穫(合計入力)」作業である場合
+		// 
+		// _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+		
+		
+		if (qrDataList[4].equals(SpecialWork.SHUKAKU_SUM) == true) {
+			
+			
+			// ------------------------------------------------
+			// ＱＲコードにセットされている情報をセット
+			FormDispQRInfoShukakuSum formDispQRInfoShukakuSum = new FormDispQRInfoShukakuSum();
+			
+			formDispQRInfoShukakuSum.setLoginEmployeeId(formReadQRCode.getLoginEmployeeId());
+			formDispQRInfoShukakuSum.setLoginEmployeeName(formReadQRCode.getLoginEmployeeName());
+			formDispQRInfoShukakuSum.setSelectedDeviceLabel(formReadQRCode.getSelectedDeviceLabel());
+			
+			formDispQRInfoShukakuSum.setHouseId(qrDataList[1]);
+			formDispQRInfoShukakuSum.setShukakuDate(LocalDateTime.now());
+			formDispQRInfoShukakuSum.setRegistEmployeeid(formReadQRCode.getLoginEmployeeId());
+			formDispQRInfoShukakuSum.setRegistDatetime(LocalDateTime.now());
+			formDispQRInfoShukakuSum.setBiko("");
+			formDispQRInfoShukakuSum.setBoxSum(0);
+			
+			
+			// ------------------------------------------------
+			// ハウスIDに対するハウス名を取得
+			
+			DaoHouse daoHouse = new DaoHouse(jdbcTemplate);
+			String houseName = daoHouse.getNameFromId(formDispQRInfoShukakuSum.getHouseId());
+			
+			
+			if (houseName.trim().equals("") == true) {
+				log.error("【ERR】" + pgmId + " :未登録なハウスのＱＲコードが読込まれました。QR=[" + formReadQRCode.getQrcode() + "]");
+				formReadQRStart.setMessage("【エラー】未登録なハウスのＱＲコードが読込まれました。別のＱＲコードの読み取りをお願いいたします。 ");
+				
+				mav.addObject("formReadQRStart", formReadQRStart);
+				log.info("【INF】" + pgmId + ":処理終了");
+				mav.setViewName("scrReadQRStart.html");
+				return mav;
+			}
+			
+			formDispQRInfoShukakuSum.setHouseName(houseName);
+			
+			
+			
+			
+			// ------------------------------------------------
+			// 収穫ケース数合計マスタを検索し、現在登録されているケース数合計を取得
+			
+			
+			// ＱＲコードから取得した「作業ID、ハウスID、列№」でハウス作業進捗テーブルを検索。
+			DaoShukakuBoxSum daoShukakuBoxSum = new DaoShukakuBoxSum(jdbcTemplate);
+			ShukakuBoxSum ShukakuBoxSum =  daoShukakuBoxSum.getData(formDispQRInfoShukakuSum.getHouseId(),formDispQRInfoShukakuSum.getShukakuDate());
+			
+			
+			// 備考と収穫ケース数を画面表示用にセット
+			formDispQRInfoShukakuSum.setRegistEmployeeid(ShukakuBoxSum.getRegistEmployeeid()); // ココが空白の場合は登録データなしと判断
+			formDispQRInfoShukakuSum.setBiko(ShukakuBoxSum.getBiko());
+			formDispQRInfoShukakuSum.setBoxSum(ShukakuBoxSum.getBoxSum());
+			
+			
+			
+			
+			// ------------------------------------------------
+			// 次画面に表示する「登録」「取消してもう一度」のボタンの情報を取得
+			
+			DaoFormDispQRInfoButton daoButton = new DaoFormDispQRInfoButton(jdbcTemplate);
+			ArrayList<FormDispQRInfoButton> buttonDispInfoList = daoButton.getShukakuBoxSumButtonList();
+			
+			if (buttonDispInfoList == null) {
+				log.error("【ERR】" + pgmId + " :ボタン情報のセットでエラーが発生しました。");
+				formReadQRStart.setMessage("【エラー】ボタン情報のセットでエラーが発生しました。システム管理者にご連絡ください。");
+				
+				mav.addObject("formReadQRStart", formReadQRStart);
+				log.info("【INF】" + pgmId + ":処理終了");
+				mav.setViewName("scrReadQRStart.html");
+				return mav;
+			}
+			
+			formDispQRInfoShukakuSum.setButtonDispInfoList(buttonDispInfoList);
+			
+			// ------------------------------------------------
+			
+			mav.addObject("formDispQRInfoShukakuSum", formDispQRInfoShukakuSum);
+			
+			
+			log.info("【INF】" + pgmId + ":処理終了!!!");
+			mav.setViewName("scrDispQRInfoShukakuSum.html");
+			// ★★★★★★★★★★★★★★★★★★★★★★★★★
+			//
+			//          収穫(合計入力)である場合はココで処理終了
+			//
+			// ★★★★★★★★★★★★★★★★★★★★★★★★★
+			return mav;
+			
+		}
+		
+		
+		
 		
 		
 		
@@ -714,7 +784,7 @@ public class MatsuokaWebController {
 		
 		
 		
-		// キャンセルである場合は登録処理を行わない
+		// キャンセル(取消してもう一度)である場合は登録処理を行わない
 		if (formDispQRInfo.getPushedButtunKbn().equals(ButtonKbn.CANCEL)) {
 			
 			formReadQRStart.setMessage("ＱＲコードの読み取りが取消されました。");
@@ -946,4 +1016,373 @@ public class MatsuokaWebController {
 		mav.setViewName("scrReadQRStart.html");
 		return mav;
 	}
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value ="/matsuoka/RegistQRInfoShukaku",method = RequestMethod.POST)
+	public ModelAndView registQRInfoShukaku(@ModelAttribute FormDispQRInfoShukaku formDispQRInfoShukaku, ModelAndView mav) {
+		
+		String pgmId = classId + ".registQRInfoShukaku";
+		
+		log.info("【INF】" + pgmId + " :★処理開始 押したボタンのボタン区分=[" + formDispQRInfoShukaku.getPushedButtunKbn() + "]、進捗率=[" + formDispQRInfoShukaku.getPushedButtunPercent() + "]、備考=[" + formDispQRInfoShukaku.getBiko() + "]、社員ID=[" + formDispQRInfoShukaku.getLoginEmployeeId() + "]");
+		log.info("【INF】" + pgmId + " :選択デバイス名=[" + formDispQRInfoShukaku.getSelectedDeviceLabel() + "]");
+		log.info("【INF】" + pgmId + " :ハウスID=[" + formDispQRInfoShukaku.getHouseId() + "]、列№=[" + formDispQRInfoShukaku.getColNo() + "]、作業ID=[" + formDispQRInfoShukaku.getWorkId() + "]、開始日時=[" + formDispQRInfoShukaku.getStartDatetime() + "]");
+		
+		FormReadQRStartShukaku formReadQRStartShukaku = new FormReadQRStartShukaku();
+		
+		// ログイン社員ID、社員名をセット
+		formReadQRStartShukaku.setLoginEmployeeId(formDispQRInfoShukaku.getLoginEmployeeId());
+		formReadQRStartShukaku.setLoginEmployeeName(formDispQRInfoShukaku.getLoginEmployeeName());
+		formReadQRStartShukaku.setSelectedDeviceLabel(formDispQRInfoShukaku.getSelectedDeviceLabel());
+		
+		
+		
+		// キャンセル(取消してもう一度)である場合は登録処理を行わない
+		if (formDispQRInfoShukaku.getPushedButtunKbn().equals(ButtonKbn.CANCEL)) {
+			
+			formReadQRStartShukaku.setMessage("ＱＲコードの読み取りが取消されました。");
+			
+			mav.addObject("formReadQRStartShukaku", formReadQRStartShukaku);
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			mav.setViewName("scrReadQRStartShukaku.html");
+			return mav;
+			
+			
+		}
+		
+		
+		DaoHouseWorkStatusShukaku daoHouseWorkStatusShukaku = new DaoHouseWorkStatusShukaku(jdbcTemplate);
+		HouseWorkStatusShukaku houseWorkStatusShukaku = new HouseWorkStatusShukaku();
+		boolean ret = false;
+		
+		
+		
+		
+		// _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+		// 
+		// QRコードの列の作業進捗として登録・更新する
+		// 
+		// _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+		
+		
+		
+		
+		houseWorkStatusShukaku.setWorkId(formDispQRInfoShukaku.getWorkId());
+		houseWorkStatusShukaku.setHouseId(formDispQRInfoShukaku.getHouseId());
+		houseWorkStatusShukaku.setColNo(formDispQRInfoShukaku.getColNo());
+		houseWorkStatusShukaku.setPercent(formDispQRInfoShukaku.getPushedButtunPercent());
+		houseWorkStatusShukaku.setBiko(formDispQRInfoShukaku.getBiko());
+		houseWorkStatusShukaku.setBoxCount(formDispQRInfoShukaku.getBoxCount());
+		
+		
+		
+		// ------------------------------------------------
+		// 作業状況のデータを登録・更新し遷移先に表示するメッセージの設定
+		
+		
+		// 作業開始
+		if (formDispQRInfoShukaku.getPushedButtunKbn().equals(ButtonKbn.START)) {
+			
+			houseWorkStatusShukaku.setStartEmployeeId(formDispQRInfoShukaku.getLoginEmployeeId());
+			houseWorkStatusShukaku.setStartDateTime(LocalDateTime.now());
+			//houseWorkStatusShukaku.setEndEmployeeId();  // ”作業開始”なので終了社員IDはセット不要
+			//houseWorkStatusShukaku.setEndDateTime();    // ”作業開始”なので終了日時  はセット不要
+			
+			ret = daoHouseWorkStatusShukaku.registStartStatus(houseWorkStatusShukaku, formDispQRInfoShukaku.getLoginEmployeeId(), "scrDispQRInfo");
+			
+			formReadQRStartShukaku.setMessage("作業開始で登録しました。");
+			
+		}
+		
+		
+		// 作業完了
+		if (formDispQRInfoShukaku.getPushedButtunKbn().equals(ButtonKbn.END)) {
+			
+			houseWorkStatusShukaku.setStartEmployeeId(formDispQRInfoShukaku.getStartEmployeeid());
+			houseWorkStatusShukaku.setStartDateTime(formDispQRInfoShukaku.getStartDatetime());
+			houseWorkStatusShukaku.setEndEmployeeId(formDispQRInfoShukaku.getLoginEmployeeId());
+			houseWorkStatusShukaku.setEndDateTime(LocalDateTime.now());
+			
+			ret = daoHouseWorkStatusShukaku.updateEndStatus(houseWorkStatusShukaku, formDispQRInfoShukaku.getLoginEmployeeId(), "scrDispQRInfo");
+			
+			// 作業開始日時
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+			String startDateTime = formatter.format(houseWorkStatusShukaku.getStartDateTime());
+			String endDateTime = formatter.format(houseWorkStatusShukaku.getEndDateTime());
+			// 作業時間をｎ時間ｍ分で表示
+			Duration duration = Duration.between(houseWorkStatusShukaku.getStartDateTime(), houseWorkStatusShukaku.getEndDateTime());
+			long hours = duration.toHours();
+			long minutes = duration.minusHours(hours).toMinutes();
+			
+			formReadQRStartShukaku.setMessage("☆作業完了(100%)で登録しました。\n作業開始：" + startDateTime + "\n作業終了：" + endDateTime + "\n作業時間：" + hours + " 時間 " + minutes + " 分");
+			
+		}
+		
+		
+		
+		// 登録・更新処理結果判定
+		if (ret == false) {
+			
+			log.error("【ERR】" + pgmId + " :作業状況の登録・更新処理で異常が発生しました。");
+			formReadQRStartShukaku.setMessage("【エラー】登録処理で異常が発生しました（作業状況登録・更新エラー）。もう一度ＱＲコードの読み取り行うかシステム担当者にご連絡ください。");
+			
+			mav.addObject("formReadQRStartShukaku", formReadQRStartShukaku);
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			mav.setViewName("scrReadQRStartShukaku.html");
+			return mav;
+			
+			
+		}
+		
+		
+		mav.addObject("formReadQRStartShukaku", formReadQRStartShukaku);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrReadQRStartShukaku.html");
+		return mav;
+	}
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value ="/matsuoka/RegistQRInfoShukakuSum",method = RequestMethod.POST)
+	public ModelAndView registQRInfoShukakuSum(@ModelAttribute FormDispQRInfoShukakuSum formDispQRInfoShukakuSum, ModelAndView mav) {
+		
+		String pgmId = classId + ".registQRInfoShukakuSum";
+		
+		log.info("【INF】" + pgmId + " :★処理開始 押したボタンのボタン区分=[" + formDispQRInfoShukakuSum.getPushedButtunKbn() + "]");
+		log.info("【INF】" + pgmId + " :収穫日=[" + formDispQRInfoShukakuSum.getShukakuDate() + "]、ケース数=[" + formDispQRInfoShukakuSum.getBoxSum() + "]");
+		log.info("【INF】" + pgmId + " :備考=[" + formDispQRInfoShukakuSum.getBiko() + "]、社員ID=[" + formDispQRInfoShukakuSum.getLoginEmployeeId() + "]");
+		log.info("【INF】" + pgmId + " :選択デバイス名=[" + formDispQRInfoShukakuSum.getSelectedDeviceLabel() + "]");
+		log.info("【INF】" + pgmId + " :ハウスID=[" + formDispQRInfoShukakuSum.getHouseId() + "]");
+		log.info("【INF】" + pgmId + " :登録社員ID=[" + formDispQRInfoShukakuSum.getRegistEmployeeid() + "]、登録日時=[" + formDispQRInfoShukakuSum.getRegistDatetime() + "]");
+		
+		
+		FormReadQRStartShukakuSum formReadQRStartShukakuSum = new FormReadQRStartShukakuSum();
+		
+		// ログイン社員ID、社員名をセット
+		formReadQRStartShukakuSum.setLoginEmployeeId(formDispQRInfoShukakuSum.getLoginEmployeeId());
+		formReadQRStartShukakuSum.setLoginEmployeeName(formDispQRInfoShukakuSum.getLoginEmployeeName());
+		formReadQRStartShukakuSum.setSelectedDeviceLabel(formDispQRInfoShukakuSum.getSelectedDeviceLabel());
+		formReadQRStartShukakuSum.setBoxSum(formDispQRInfoShukakuSum.getBoxSum());
+		
+		
+		// キャンセル(取消してもう一度)である場合は登録処理を行わない
+		if (formDispQRInfoShukakuSum.getPushedButtunKbn().equals(ButtonKbn.CANCEL)) {
+			
+			formReadQRStartShukakuSum.setMessage("ＱＲコードの読み取りが取消されました。");
+			
+			mav.addObject("formReadQRStartShukakuSum", formReadQRStartShukakuSum);
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			mav.setViewName("scrReadQRStartShukakuSum.html");
+			return mav;
+			
+			
+		}
+		
+		
+		DaoShukakuBoxSum daoShukakuBoxSum = new DaoShukakuBoxSum(jdbcTemplate);
+		boolean ret = false;
+		
+		
+		
+		
+		// _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+		// 
+		// 収穫ケース数合計の登録
+		// 
+		// _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+		
+		
+		
+		// ------------------------------------------------
+		// 指定されたハウス、収穫日の"未削除"データを”削除状態”に更新
+		ret = daoShukakuBoxSum.updateDeleteState(formDispQRInfoShukakuSum.getHouseId()
+												,formDispQRInfoShukakuSum.getRegistDatetime()
+												,formDispQRInfoShukakuSum.getLoginEmployeeId()
+												,"scrDispQRInfoShukakuSum"
+												);
+		
+		// 更新処理結果判定
+		if (ret == false) {
+			
+			log.error("【ERR】" + pgmId + " :収穫ケース数合計の更新処理で異常が発生しました。");
+			formReadQRStartShukakuSum.setMessage("【エラー】登録処理で異常が発生しました（収穫ケース数登録エラー）。もう一度ＱＲコードの読み取り行うかシステム担当者にご連絡ください。");
+			
+			mav.addObject("formReadQRStartShukakuSum", formReadQRStartShukakuSum);
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			mav.setViewName("scrReadQRStartShukakuSum.html");
+			return mav;
+			
+			
+		}
+		
+		
+		// ------------------------------------------------
+		// 指定されたハウス、収穫日の最新の収穫ケース数合計の情報を登録
+		
+		
+		ShukakuBoxSum shukakuBoxSum = new ShukakuBoxSum();
+		
+		shukakuBoxSum.setHouseId(formDispQRInfoShukakuSum.getHouseId());
+		shukakuBoxSum.setShukakuDate(formDispQRInfoShukakuSum.getRegistDatetime());
+		shukakuBoxSum.setRegistDatetime(LocalDateTime.now());
+		shukakuBoxSum.setRegistEmployeeid(formReadQRStartShukakuSum.getLoginEmployeeId());
+		shukakuBoxSum.setBiko(formDispQRInfoShukakuSum.getBiko());
+		shukakuBoxSum.setBoxSum(formDispQRInfoShukakuSum.getBoxSum());
+		
+		
+		ret = daoShukakuBoxSum.regist(shukakuBoxSum
+									, formDispQRInfoShukakuSum.getLoginEmployeeId()
+									,"scrDispQRInfoShukakuSum"
+									);
+		
+		// 登録処理結果判定
+		if (ret == false) {
+			
+			log.error("【ERR】" + pgmId + " :収穫ケース数合計の登録処理で異常が発生しました。");
+			formReadQRStartShukakuSum.setMessage("【エラー】登録処理で異常が発生しました（収穫ケース数登録エラー）。もう一度ＱＲコードの読み取り行うかシステム担当者にご連絡ください。");
+			
+			mav.addObject("formReadQRStartShukakuSum", formReadQRStartShukakuSum);
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			mav.setViewName("scrReadQRStartShukakuSum.html");
+			return mav;
+			
+			
+		}
+		
+		
+		
+		
+		// ------------------------------------------------
+		// ハウスIDに対するハウス名を取得
+		
+		DaoHouse daoHouse = new DaoHouse(jdbcTemplate);
+		String houseName = daoHouse.getNameFromId(formDispQRInfoShukakuSum.getHouseId());
+		
+		
+		if (houseName.trim().equals("") == true) {
+			log.error("【ERR】" + pgmId + " :ハウス名の取得で異常終了 ハウスID=[" + formDispQRInfoShukakuSum.getHouseId() + "]");
+			formReadQRStartShukakuSum.setMessage("【エラー】登録処理で異常が発生しました（収穫ケース数登録エラー）。もう一度ＱＲコードの読み取り行うかシステム担当者にご連絡ください。");
+			
+			mav.addObject("formReadQRStartShukakuSum", formReadQRStartShukakuSum);
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			mav.setViewName("scrReadQRStartShukakuSum.html");
+			return mav;
+		}
+		
+		
+		
+		// ------------------------------------------------
+		// 正常終了メッセージのセット
+		
+		
+		// 作業開始日時
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		String shukakuDateString = formatter.format(shukakuBoxSum.getShukakuDate());
+		
+		formReadQRStartShukakuSum.setMessage("☆収穫ケース数合計を登録しました。\nハウス：" + houseName + "\n収穫日：" + shukakuDateString + "\n収穫数：" + shukakuBoxSum.getBoxSum());
+		
+		
+		
+		mav.addObject("formReadQRStartShukakuSum", formReadQRStartShukakuSum);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrReadQRStartShukakuSum.html");
+		return mav;
+	}
+	
+	
+	//------------------------------------------------------------------------------------------------
+	// 管理画面機能
+	//------------------------------------------------------------------------------------------------
+	
+	//管理者システムのindex画面の起動
+	@RequestMapping(value ="/matsuoka/indexKanri",method = RequestMethod.GET)
+	public ModelAndView indexKanri(ModelAndView mav) {
+		
+		String pgmId = classId + ".indexKanri";
+		
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		// ※ログインユーザはFormIndexKanriのコンストラクタで「管理者ユーザ固定」にしている
+		FormIndexKanri formIndexKanri = new FormIndexKanri();
+		
+		mav.addObject("formIndexKanri",formIndexKanri);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		
+		
+		mav.setViewName("scrIndexKanri.html");
+		return mav;
+	}
+	
+	
+	// 表示作業期間選択画面への遷移
+	@RequestMapping(value ="/matsuoka/TransitionKanriDummy",method = RequestMethod.GET)
+	public ModelAndView trunsition_WorkDummy(ModelAndView mav) {
+
+		String pgmId = classId + ".trunsition_WorkDummy";
+		
+		log.info("【INF】" + pgmId + ":処理開始");
+
+		// ※ログインユーザはFormIndexKanriのコンストラクタで「管理者ユーザ固定」にしている
+		FormIndexKanri formIndexKanri = new FormIndexKanri();
+		
+		mav.addObject("formIndexKanri",formIndexKanri);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrIndexKanri.html");
+		return mav;
+	}
+	
+	
+	//------------------------------------------------------------------------------------------------
+	//■社員情報メンテナンス
+	//------------------------------------------------------------------------------------------------
+	
+	
+	// 一覧画面への遷移
+	@RequestMapping(value ="/matsuoka/TransitionKanriMainteEmployeeList",method = RequestMethod.GET)
+	public ModelAndView trunsition_KanriMainteEmployeeList(ModelAndView mav) {
+
+		String pgmId = classId + ".trunsition_KanriMainteEmployeeList";
+		
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		DaoFormKanriMainteEmployee dao = new DaoFormKanriMainteEmployee(jdbcTemplate);
+		
+		//------------------------------------------------
+		// ダミーの値をセット
+		FormKanriMainteEmployeeList formKanriMainteEmployeeList;
+		
+		formKanriMainteEmployeeList = dao.getAllEmployeeData();
+		
+		if (formKanriMainteEmployeeList == null) {
+			log.info("【INF】" + pgmId + ":データが0件でした。");
+		}
+		
+		
+		
+		mav.addObject("formKanriMainteEmployeeList",formKanriMainteEmployeeList);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrKanriMainteEmployeeList.html");
+		return mav;
+	}
+	
+	
+	
 }

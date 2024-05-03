@@ -45,37 +45,41 @@
 <body>
 
 <header class="ymd-header">
-   管理作業一覧
+   松岡農園管理画面TOP
 </header>
 <div class="ymd-navigation">
-	
+	<ul class="gnav">
+    <li><a th:href="@{/matsuoka/indexKanri}"}>ＴＯＰ</a></li>
+    <li><a href="">マスタメンテナンス</a>
+        <ul>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteEmployeeList}">社員情報ﾒﾝﾃﾅﾝｽ</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">ハウス情報ﾒﾝﾃﾅﾝｽ</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">作業情報ﾒﾝﾃﾅﾝｽ</a></li>
+        </ul>
+    </li>
+    <li><a href="">分析・集計</a>
+        <ul>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">作業内容修正</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">作業状況確認</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">収穫情報確認</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">社員能力分析</a></li>
+        </ul>
+    </li>
+	</ul>
 </div>
 
 <center>
 <div class="ymd-base-container">
 	<br>
 	<div class="ymd-container" style="width: 100%;">
-	作業内容を選択してください。
+	XXXXXXXXXXXXXXXXXXXXXX
 	</div>
 	<br>
 	<br>
 	<!-- action(呼出しプログラムはボタン押下時にJavaScriptでセットし直す) -->
-	<form name="sendForm"  th:action="@{/matsuoka/TransitionSelectWorkStatusDate}" th:object="${formIndexKanri}" th:method="post" style="width: 100%;">
-		<!-- ログイン社員ID情報 -->
-		<input type="hidden" id="loginEmployeeId"    style="width: 100%;" th:field="*{loginEmployeeId}" />
-		<input type="hidden" id="loginEmployeeName"  style="width: 100%;" th:field="*{loginEmployeeName}" />
+	<form name="sendForm"  th:action="@{/matsuoka/TransitionKanriDummy}" th:object="${formIndexKanri}" th:method="post" style="width: 100%;">
+		XXXXXXXXXXXXXX
 		
-		<!-- ボタン（ボタン押下時の飛び出しプログラム名を隠し項目に持つ）   -->
-		<br>
-		<div class="ymd-button">
-			<input type="hidden" name="callPgmName" value="TransitionSelectWorkStatusDate" />
-			<a name="send">作業状況閲覧</a>
-		</div>
-		<br>
-		<div class="ymd-button">
-			<input type="hidden" name="callPgmName" value="TransitionSelectAnalisisKinds" />
-			<a name="send">作業結果分析</a>
-		</div>
 		<br>
 	</form>
 	
