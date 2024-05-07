@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head style="height: 100%;">
+<meta charset="UTF-8">
+<title>ログイン</title>
+<!--リセットＣＳＳ-->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/destyle.css@4.0.0/destyle.min.css">
+<!--Font Awesome(無償版)のアイコン-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<!-- jQueryがレスポンシブに対応するため必要になるコード...らしい-->
+<!-- 参考：https://job-support.ne.jp/blog/javascript/howto-jquery-->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- ▽や△のアイコンをCSSで使うためにリンクを貼る -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+<!--オリジナルＣＳＳ(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<link href="/matsuoka/css/style.css?ver='+ new Date().getTime() +'" rel="stylesheet" type="text/css">');
+//-->
+</script>
+<!--オリジナルJavaScript(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<script src="/matsuoka/js/scrKanriMainteEmployeeList.js?ver='+ new Date().getTime() +'"></script>');
+//-->
+</script>
+
+
+<!-- 
+	サーバでデプロイする場合、CSS,JavaScript,画像などはドキュメントルート（※）内に配置すること
+	※例
+	  ＣＳＳ    ：/var/www/html/css
+	  JavaScript：/var/www/html/js
+	  画像      ：/var/www/html/images
+ -->
+
+
+ 
+</head>
+<body>
+
+<header class="ymd-header">
+   社員情報メンテナンス(一覧表示)
+</header>
+<div class="ymd-navigation">
+	<ul class="gnav">
+    <li><a th:href="@{/matsuoka/indexKanri}"}>ＴＯＰ</a></li>
+    <li><a href="">マスタメンテナンス</a>
+        <ul>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteEmployeeList}">社員情報ﾒﾝﾃﾅﾝｽ</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">ハウス情報ﾒﾝﾃﾅﾝｽ</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">作業情報ﾒﾝﾃﾅﾝｽ</a></li>
+        </ul>
+    </li>
+    <li><a href="">分析・集計</a>
+        <ul>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">作業内容修正</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">作業状況確認</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">収穫情報確認</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">社員能力分析</a></li>
+        </ul>
+    </li>
+	</ul>
+</div>
+
+<center>
+<div class="ymd-base-container">
+	<!-- action(呼出しプログラムはボタン押下時にJavaScriptでセットし直す) -->
+	<form name="sendForm"  th:action="@{/matsuoka/TransitionKanriMainteEmployeeDetail}" th:object="${formKanriMainteEmployeeList}" th:method="post" style="width: 100%;">
+		
+		
+		<!-- 検索条件入力エリア -->
+		
+		<br>
+		
+		<!-- 警告メッセージ表示エリア -->
+		<div class="ymd-container" style="color: red;">
+			<span th:text="*{message}" />
+		</div>
+		
+		
+		<!-- ボタン表示エリア -->
+		<div class="ymd-container" style="float: right;">
+			<div class="ymd-kanri-button">
+				<a name="new"><span>新規追加</span></a>
+			</div>
+		</div>
+		
+		<!-- 非表示項目 -->
+		<input type="hidden" id="selectEmployeeId" th:field="*{selectEmployeeId}" />
+		<br>
+		
+		
+		
+		<!-- 一覧表ヘッダ部 -->
+		<div class="ymd-list-headre-container" style="width: 100%;">
+			
+			<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
+			<div class="ymd-list-headre-container" style="width: 100%; display:flex">
+			    <div class="ymd-list-header-text" style="width: 120px;">氏名</div>
+			    <div class="ymd-list-header-text" style="width: 130px;">電話番号</div>
+			    <div class="ymd-list-header-text" style="width:  80px;">郵便番号</div>
+			    <div class="ymd-list-header-text" style="width: 300px;">住所</div>
+			    <div class="ymd-list-header-text" style="width:  70px;">時給</div>
+			    <div class="ymd-list-header-text" style="width: calc(100% - 700px);">備考</div>
+			</div>
+		</div>
+		
+		
+		<!-- 一覧表明細部 -->
+		
+		<!-- 【参考】https://medium-company.com/springboot-thymeleaf-list/ -->
+		<!-- 【参考】https://hitori-goto.com/2021/01/26/springboot-thymeleaf-send-dynamic-table-data/ -->
+		<div class="ymd-list-detail-container" name="detail-parent" th:each="list,stat : *{employeeList}" style="width: 100%; border-bottom: 1px dashed rgb(219, 219, 219);">
+			
+			<!-- 隠し項目 -->
+			<input type="hidden" name="employeeId"   th:field="*{employeeList[__${stat.index}__].employeeId}" />
+			
+			<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
+			<div class="ymd-list-detail-container" name="detail-row" style="width: 100%; display:flex">
+			    <div class="ymd-list-detail-data" style="width: 120px;"><span th:text="*{employeeList[__${stat.index}__].employeeName}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 130px;"><span th:text="*{employeeList[__${stat.index}__].phone}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  80px;"><span th:text="*{employeeList[__${stat.index}__].postCd}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 300px;"><span th:text="*{employeeList[__${stat.index}__].address}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  70px;"><span th:text="*{employeeList[__${stat.index}__].hourlyWage}" /></div>
+			    <div class="ymd-list-detail-data" style="width: calc(100% - 700px);"><span th:text="*{employeeList[__${stat.index}__].biko}" /></div>
+			</div>
+		</div>
+	</form>
+	
+	
+</div>
+</center>
+
+
+</body>
+</html>

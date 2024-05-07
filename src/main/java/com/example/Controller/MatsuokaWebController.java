@@ -25,6 +25,7 @@ import com.example.DAO.DaoHouseWorkStatusShukaku;
 import com.example.DAO.DaoShukakuBoxSum;
 import com.example.DAO.DaoWork;
 import com.example.counst.ButtonKbn;
+import com.example.counst.SpecialUser;
 import com.example.counst.SpecialWork;
 import com.example.entity.HouseWorkStatus;
 import com.example.entity.HouseWorkStatusShukaku;
@@ -35,6 +36,7 @@ import com.example.form.FormDispQRInfoShukaku;
 import com.example.form.FormDispQRInfoShukakuSum;
 import com.example.form.FormIndexKanri;
 import com.example.form.FormIndexQR;
+import com.example.form.FormKanriMainteEmployeeDetail;
 import com.example.form.FormKanriMainteEmployeeList;
 import com.example.form.FormReadQRCode;
 import com.example.form.FormReadQRStart;
@@ -1118,7 +1120,7 @@ public class MatsuokaWebController {
 			Duration duration = Duration.between(houseWorkStatusShukaku.getStartDateTime(), houseWorkStatusShukaku.getEndDateTime());
 			long hours = duration.toHours();
 			long minutes = duration.minusHours(hours).toMinutes();
-			
+			//【メモ】\nで改行して表示させてる
 			formReadQRStartShukaku.setMessage("☆作業完了(100%)で登録しました。\n作業開始：" + startDateTime + "\n作業終了：" + endDateTime + "\n作業時間：" + hours + " 時間 " + minutes + " 分");
 			
 		}
@@ -1293,6 +1295,7 @@ public class MatsuokaWebController {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String shukakuDateString = formatter.format(shukakuBoxSum.getShukakuDate());
 		
+		// 【メモ】\nで改行して表示させている
 		formReadQRStartShukakuSum.setMessage("☆収穫ケース数合計を登録しました。\nハウス：" + houseName + "\n収穫日：" + shukakuDateString + "\n収穫数：" + shukakuBoxSum.getBoxSum());
 		
 		
@@ -1303,6 +1306,14 @@ public class MatsuokaWebController {
 		mav.setViewName("scrReadQRStartShukakuSum.html");
 		return mav;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	//------------------------------------------------------------------------------------------------
@@ -1349,6 +1360,16 @@ public class MatsuokaWebController {
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//------------------------------------------------------------------------------------------------
 	//■社員情報メンテナンス
 	//------------------------------------------------------------------------------------------------
@@ -1365,14 +1386,130 @@ public class MatsuokaWebController {
 		DaoFormKanriMainteEmployee dao = new DaoFormKanriMainteEmployee(jdbcTemplate);
 		
 		//------------------------------------------------
-		// ダミーの値をセット
+		// 一覧表示用にデータを取得
 		FormKanriMainteEmployeeList formKanriMainteEmployeeList;
 		
 		formKanriMainteEmployeeList = dao.getAllEmployeeData();
 		
 		if (formKanriMainteEmployeeList == null) {
+			
+			formKanriMainteEmployeeList = new FormKanriMainteEmployeeList();
+			formKanriMainteEmployeeList.setMessage("検索処理で異常が発生しました。システム管理者にご連絡ください。");
+			log.info("【ERR】" + pgmId + ":検索処理で異常終了");
+		
+		} else if (formKanriMainteEmployeeList.getEmployeeList().size() == 0) {
+		
+			formKanriMainteEmployeeList.setMessage("データが0件でした。");
 			log.info("【INF】" + pgmId + ":データが0件でした。");
 		}
+		
+		
+		
+		mav.addObject("formKanriMainteEmployeeList",formKanriMainteEmployeeList);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrKanriMainteEmployeeList.html");
+		return mav;
+	}
+	
+	//詳細画面への遷移
+	@RequestMapping(value ="/matsuoka/TransitionKanriMainteEmployeeDetail",method = RequestMethod.POST)
+	public ModelAndView trunsition_KanriMainteEmployeeDetail(@ModelAttribute FormKanriMainteEmployeeList formKanriMainteEmployeeList, ModelAndView mav) {
+		
+		String pgmId = classId + ".trunsition_KanriMainteEmployeeDetail";
+		
+		log.info("【INF】" + pgmId + " :処理開始 社員ID=[" + formKanriMainteEmployeeList.getSelectEmployeeId() + "]");
+		
+		String targetEmployeeId = formKanriMainteEmployeeList.getSelectEmployeeId();
+		
+		
+		FormKanriMainteEmployeeDetail formKanriMainteEmployeeDetail = new FormKanriMainteEmployeeDetail();
+		
+		
+		if (targetEmployeeId.equals("") == true) {
+			
+			//------------------------------------------------
+			//社員IDが指定されていない場合(新規登録)：次画面を空表示
+			
+			// 処理なし
+			
+		}else{
+			//------------------------------------------------
+			//社員IDが指定されている  場合(更新削除)：社員情報を検索して次画面に表示
+			
+			DaoFormKanriMainteEmployee dao = new DaoFormKanriMainteEmployee(jdbcTemplate);
+			formKanriMainteEmployeeDetail = dao.getTargetEmployeeData(targetEmployeeId);
+			
+		}
+		
+		
+		mav.addObject("formKanriMainteEmployeeDetail",formKanriMainteEmployeeDetail);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrKanriMainteEmployeeDetail.html");
+		return mav;
+	}
+	
+	
+	@RequestMapping(value ="/matsuoka/EditKanriEmployee",method = RequestMethod.POST)
+	public ModelAndView editKanriEmployee(@ModelAttribute FormKanriMainteEmployeeDetail formKanriMainteEmployeeDetail, ModelAndView mav) {
+		
+		String pgmId = classId + ".editKanriEmployee";
+		
+		log.info("【INF】" + pgmId + " :処理開始");
+		log.info("【INF】" + pgmId + " :ﾎﾞﾀﾝ区分=[" + formKanriMainteEmployeeDetail.getButtonKbn() + "]");
+		log.info("【INF】" + pgmId + " :社員ＩＤ=[" + formKanriMainteEmployeeDetail.getEmployeeId() + "]");
+		log.info("【INF】" + pgmId + " :社員氏名=[" + formKanriMainteEmployeeDetail.getEmployeeName() + "]");
+
+		DaoFormKanriMainteEmployee dao = new DaoFormKanriMainteEmployee(jdbcTemplate);
+		
+		
+		//------------------------------------------------
+		// 登録・更新・削除
+		
+		
+		if (formKanriMainteEmployeeDetail.getButtonKbn().equals("regist") == true) {
+			
+			//------------------------------------------------
+			//登録処理を実施
+			dao.registEmployee(formKanriMainteEmployeeDetail, SpecialUser.KANRI_USER, "scrKanriMainteEmployeeDetail");
+			
+			
+		} else if (formKanriMainteEmployeeDetail.getButtonKbn().equals("update") == true) {
+			
+			//------------------------------------------------
+			//更新処理を実施
+			dao.updateEmployee(formKanriMainteEmployeeDetail, SpecialUser.KANRI_USER, "scrKanriMainteEmployeeDetail");
+			
+			
+		} else if (formKanriMainteEmployeeDetail.getButtonKbn().equals("delete") == true) {
+			
+			//------------------------------------------------
+			//削除処理を実施
+			dao.deleteEmployee(formKanriMainteEmployeeDetail, SpecialUser.KANRI_USER, "scrKanriMainteEmployeeDetail");
+			
+			
+		}
+		
+		
+		//------------------------------------------------
+		// 一覧表示用にデータを取得
+		FormKanriMainteEmployeeList formKanriMainteEmployeeList;
+		
+		formKanriMainteEmployeeList = dao.getAllEmployeeData();
+
+		if (formKanriMainteEmployeeList == null) {
+			
+			formKanriMainteEmployeeList = new FormKanriMainteEmployeeList();
+			formKanriMainteEmployeeList.setMessage("検索処理で異常が発生しました。システム管理者にご連絡ください。");
+			log.info("【ERR】" + pgmId + ":検索処理で異常終了");
+		
+		} else if (formKanriMainteEmployeeList.getEmployeeList().size() == 0) {
+		
+			formKanriMainteEmployeeList.setMessage("データが0件でした。");
+			log.info("【INF】" + pgmId + ":データが0件でした。");
+		}
+		
 		
 		
 		

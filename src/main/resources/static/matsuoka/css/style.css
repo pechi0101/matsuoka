@@ -67,7 +67,7 @@ html {
     /*要素内側の余白*/
     padding-top:0px;
     padding-bottom: 0px;
-    padding-left:3px;
+    padding-left:0px;
     padding-right: 3px;
 	
 	/*文字を上下中央寄せ＋右寄せ*/
@@ -539,7 +539,7 @@ html {
     border-right: 1px solid #eee;
     color: #fff;
     display: block;
-    height: 2rem;
+    height: 30px;
     line-height: 2rem;
     text-align: center;
     text-decoration: none;
@@ -551,7 +551,7 @@ html {
 .gnav li li {
     height: 0;
     overflow: hidden;
-    transition: .5s;
+    transition: .1s;
 }
 .gnav li li a {
     border-top: 1px solid #eee;
@@ -560,6 +560,92 @@ html {
     height: 2rem;
     overflow: visible;
 }
+
+
+
+
+
+
+/*------------------------------------------------*/
+/*ブラウザ表示用のボタン(スマホ用と比較して縦幅と角の丸み、文字サイズが異なる)*/
+
+
+
+/*ボタンの基本デザイン設定*/
+.ymd-kanri-button a {
+	
+    /*ボタン内は要素を横に並べる(ボタンの文字とアイコンを横並びにするために指定)*/
+    display: flex;
+    /*それぞれの要素に均等な余白をつける(今回はdisplay: flexで横並び指定されているため各要素の横に均等に余白を付ける)*/
+    /*...つまりボタンの文字と右矢印のアイコンの間に余白を付けることになる*/
+    justify-content: space-around;
+	
+    /*要素の境界の外側の角を丸める*/
+    border-radius: 10px;
+    /*元々表示されていた位置を基準に、相対位置を指定する(top、rightなどの指定は無しであるため元々表示されていた位置に表示する)*/
+    position: relative;
+    
+    /*上下中央にボタンの文字を表示する*/
+    align-items: center;
+    
+    /*ボタンの最大幅*/
+    max-width: 500px;
+    
+    /*要素外側の余白*/
+    margin-top: 0 auto;
+	margin-bottom: 0 auto;
+	margin-left: 0 auto;
+	margin-right: 0 auto;
+	
+    /*要素内側の余白*/
+    padding-top:8px;
+    padding-bottom: 8px;
+    padding-left:55px; 
+    padding-right: 55px;
+    
+    /*文字色*/
+    color: rgb(0, 0, 0);
+    /*文字サイズ*/
+    font-size: 15px;
+    /*フォントの太さ*/
+    font-weight: 500;
+    
+	/*背景色*/
+    background: #eee;
+    
+    /*マウスホバー時に0.1秒かけて状態を変化する*/
+    transition: 0.1s ease-in-out;
+    
+	/*枠線*/
+	border: 1px;
+	border-style: solid;
+	border-color: gray;
+	
+}
+/*疑似要素(after)で右矢印のアイコンを表示する*/
+.ymd-kanri-button a:after {
+	/*親要素(今回はボタンのこと)を基準に絶対配置を指定する(上下中央の50%、右端から20pxの位置を指定)*/
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    
+    border-radius: 1px;
+    /*マウスホバー解除時に0.1秒かけて状態を変化する*/
+    transition: 0.1s ease-in-out;
+    /*CSS用Unicodeで三角の右矢印(f0da)を指定　参考：https://web-manabu.com/fontawesome4-7-list/ */
+    content: "\f0da";
+    /*右矢印のアイコン*/
+    font-family: "Font Awesome 5 Free";
+    /*フォントの太さ*/
+    font-weight: 900;
+    transform: translateY(-50%);
+}
+/*マウスホバーで背景色と文字色が変化する*/
+.ymd-kanri-button a:hover {
+    background: #313131;
+    color: #FFF;
+}
+
 
 
 
@@ -650,10 +736,6 @@ html {
     /*高さは子要素に合わせる*/
     height: auto;
     
-    /*横幅*/
-    /*width: 100%;*/
-    /*max-width: 90%;*/
-    
     /*要素外側の空白*/
     margin-top: 1px;
     margin-bottom: 1px;
@@ -675,6 +757,10 @@ html {
     
 }
 
+/*マウスオーバーのタイミングで背景色を変える*/
+.ymd-list-detail-container:hover {
+	background-color:rgb(255, 191, 191);
+}
 
 
 
@@ -684,9 +770,6 @@ html {
 .ymd-list-detail-data {
     /*高さ*/
     height: auto;
-    
-    /*横幅*/
-    /*width: 100%;*/
     
     /*要素外側の空白*/
     margin-top: 0 auto;
@@ -705,7 +788,7 @@ html {
     text-align:left;  /*左寄せ*/
     
     /* 背景色 */
-    background-color:white;
+    /*background-color:white;*/
     
 }
 
