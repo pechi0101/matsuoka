@@ -1,6 +1,5 @@
 package com.example.DAO;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -361,9 +360,6 @@ public class DaoFormKanriMainteEmployee {
 	// データ登録
 	public boolean registEmployee(FormKanriMainteEmployeeDetail employeeDetail ,String userName,String registPgmId) {
 		
-		// 年月日時分秒までの日時フォーマットを準備
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		
 		String pgmId = classId + ".registEmployee";
 		log.info("【INF】" + pgmId + ":処理開始 □登録社員=[" + employeeDetail.getEmployeeName() + "]");
 		
@@ -530,11 +526,6 @@ public class DaoFormKanriMainteEmployee {
 			sql  = sql + " where";
 			sql  = sql + "     EMPLOYEEID       = ?";
 			
-			
-			// 年月日時分秒までの日時フォーマットを準備
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			
-			
 			int ret = this.jdbcTemplate.update(sql
 					,employeeDetail.getEmployeeName()
 					,employeeDetail.getPostCd()
@@ -692,11 +683,6 @@ public class DaoFormKanriMainteEmployee {
 			sql  = sql + "    ,SYSUPDYMDHMS     = current_timestamp(3)";
 			sql  = sql + " where";
 			sql  = sql + "     EMPLOYEEID       = ?";
-			
-			
-			// 年月日時分秒までの日時フォーマットを準備
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			
 			
 			int ret = this.jdbcTemplate.update(sql
 					,employeeDetail.getBiko()

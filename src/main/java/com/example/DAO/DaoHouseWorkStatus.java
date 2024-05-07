@@ -691,13 +691,14 @@ public class DaoHouseWorkStatus {
 			sql  = sql + "    ,current_timestamp(3)";
 			sql  = sql + " )";
 			
+			int ret = 0;
 			
 			for (Map<String, Object> rs: rsList) {
 				
 				String colNo = rs.get("COLNO").toString();
 				
 				
-				int ret = this.jdbcTemplate.update(sql
+				ret = this.jdbcTemplate.update(sql
 						,houseWorkStatus.getWorkId()
 						,houseWorkStatus.getHouseId()
 						,colNo
@@ -714,7 +715,7 @@ public class DaoHouseWorkStatus {
 			
 			// メモ：commitはjdbcTemplateが自動で行ってくれる
 			
-			log.info("【INF】" + pgmId + ":処理終了");
+			log.info("【INF】" + pgmId + ":処理終了 ret=[" + ret + "]");
 			
 			return true;
 			
