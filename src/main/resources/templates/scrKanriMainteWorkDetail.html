@@ -26,7 +26,7 @@
 <!--オリジナルJavaScript(常に最新のcssを読込むよう工夫)-->
 <script type="text/JavaScript">
 <!--
-   document.write('<script src="/matsuoka/js/scrKanriMainteEmployeeDetail.js?ver='+ new Date().getTime() +'"></script>');
+   document.write('<script src="/matsuoka/js/scrKanriMainteWorkDetail.js?ver='+ new Date().getTime() +'"></script>');
 //-->
 </script>
 
@@ -45,7 +45,7 @@
 <body>
 
 <header class="ymd-header">
-   社員情報メンテナンス(詳細)
+   作業情報メンテナンス(詳細)
 </header>
 <div class="ymd-navigation">
 	<ul class="gnav">
@@ -71,21 +71,21 @@
 <center>
 <div class="ymd-base-container">
 	<!-- action(呼出しプログラムはボタン押下時にJavaScriptでセットし直す) -->
-	<form name="sendForm"  th:action="@{/matsuoka/EditKanriEmployee}" th:object="${formKanriMainteEmployeeDetail}" th:method="post" style="width: 90%;">
+	<form name="sendForm"  th:action="@{/matsuoka/EditKanriWork}" th:object="${formKanriMainteWorkDetail}" th:method="post" style="width: 90%;">
 		
 		
 		<!-- ヘッダメッセージ表示＋非表示項目エリア -->
 		
 		
 		<br>
-		<div th:if="*{#strings.isEmpty(employeeId)}">
+		<div th:if="*{#strings.isEmpty(workId)}">
 			<!-- 新規追加時のメッセージ -->
 			<div class="ymd-container" style="width: 100%;text-align: left;">
 			下記項目を入力し登録ボタンを押してください。<br>
 			なお※印は入力必須項目です。
 			</div>
 		</div>
-		<div th:if="*{not #strings.isEmpty(employeeId)}">
+		<div th:if="*{not #strings.isEmpty(workId)}">
 			<!-- 更新・削除時のメッセージ -->
 			<div class="ymd-container" style="width: 100%;text-align: left;">
 			下記項目を入力し更新ボタンを。削除する場合は削除ボタンを押してください。<br>
@@ -96,7 +96,7 @@
 		
 		<!-- 隠し項目 -->
 		<input type="hidden" name="buttonKbn"  th:field="*{buttonKbn}" />
-		<input type="hidden" name="employeeId" th:field="*{employeeId}"   />
+		<input type="hidden" name="workId" th:field="*{workId}"   />
 		
 		<br>
 		
@@ -111,48 +111,35 @@
 		<div class="ymd-container" style="width: 100%;display: block;">
 			
 			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
-			    <div class="ymd-label"     style="width: 180px;">※氏名</div>
-			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{employeeName}" placeholder="例：松岡　太郎"/></div>
+			    <div class="ymd-label"     style="width: 180px;">※作業名</div>
+			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{workName}" placeholder="例：葉かき"/></div>
 			</div>
 			<div class="ymd-container" style="width: 100%;">
 				<div class="ymd-container" style="width: 180px;"><span></span></div>
-				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="employeeNameMsg"></div>
+				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="workNameMsg"></div>
 			</div>
+			
 			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
-			    <div class="ymd-label"     style="width: 180px;">電話番号</div>
-			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{phone}" placeholder="例：090-000-0000" /></div>
+			    <div class="ymd-label"     style="width: 180px;">※進捗率区切(%)</div>
+			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{separatePersent}" placeholder="例：10" /></div>
 			</div>
 			<div class="ymd-container" style="width: 100%;">
 				<div class="ymd-container" style="width: 180px;"><span></span></div>
-				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="phoneMsg"></div>
+				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="separatePersentMsg"></div>
 			</div>
+			
 			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
-			    <div class="ymd-label"     style="width: 180px;">郵便番号</div>
-			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{postCd}" placeholder="例：981-0000" /></div>
+			    <div class="ymd-label"     style="width: 180px;">※リセット間隔(日)</div>
+			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{resetSpan}" placeholder="例：7" /></div>
 			</div>
 			<div class="ymd-container" style="width: 100%;">
 				<div class="ymd-container" style="width: 180px;"><span></span></div>
-				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="postCdMsg"></div>
+				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="resetSpanMsg"></div>
 			</div>
-			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
-			    <div class="ymd-label"     style="width: 180px;">住所</div>
-			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{address}" placeholder="例：愛知県弥富市〇〇町１－１１" /></div>
-			</div>
-			<div class="ymd-container" style="width: 100%;">
-				<div class="ymd-container" style="width: 180px;"><span></span></div>
-				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="addressMsg"></div>
-			</div>
-			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
-			    <div class="ymd-label"     style="width: 180px;">時給(円)</div>
-			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{hourlyWage}" placeholder="例：1500" /></div>
-			</div>
-			<div class="ymd-container" style="width: 100%;">
-				<div class="ymd-container" style="width: 180px;"><span></span></div>
-				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="hourlyWageMsg"></div>
-			</div>
+			
 			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
 			    <div class="ymd-label"     style="width: 180px;">備考</div>
-			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{biko}" placeholder="例：収穫が早く指導できる" /></div>
+			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{biko}" placeholder="例：〇〇さんが得意" /></div>
 			</div>
 			<div class="ymd-container" style="width: 100%;">
 				<div class="ymd-container" style="width: 180px;"><span></span></div>
@@ -182,25 +169,27 @@
 			<div class="ymd-container" style="width: calc(100% - 180px); justify-content: flex-end;">
 				<div class="ymd-container">
 					<!-- 登録ボタンは追加の場合のみ表示 -->
-					<div th:if="*{#strings.isEmpty(employeeId)}">
+					<div th:if="*{#strings.isEmpty(workId)}">
 						<div class="ymd-kanri-button">
 							<a name="regist"><span>登　録</span></a>
 						</div>
 					</div>
 					<!-- 更新・削除ボタンは変更の場合のみ表示 -->
-					<div th:if="*{not #strings.isEmpty(employeeId)}">
+					<div th:if="*{not #strings.isEmpty(workId)}">
 						<div class="ymd-kanri-button">
 							<a name="update"><span>更　新</span></a>
 						</div>
 					</div>
-					<div th:if="*{not #strings.isEmpty(employeeId)}">
-						<div class="ymd-kanri-button" style="width:10px"></div><!--ボタンの間のすき間-->
+					<!-- 【メモ】当画面は「削除ボタン」は表示させないためコメントアウト。
+					<div th:if="*{not #strings.isEmpty(workId)}">
+						<div class="ymd-kanri-button" style="width:10px"></div>
 					</div>
-					<div th:if="*{not #strings.isEmpty(employeeId)}">
+					<div th:if="*{not #strings.isEmpty(workId)}">
 						<div class="ymd-kanri-button">
 							<a name="delete"><span>削　除</span></a>
 						</div>
 					</div>
+					-->
 				</div>
 			</div>
 		</div>

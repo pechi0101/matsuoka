@@ -26,7 +26,7 @@
 <!--オリジナルJavaScript(常に最新のcssを読込むよう工夫)-->
 <script type="text/JavaScript">
 <!--
-   document.write('<script src="/matsuoka/js/scrKanriMainteEmployeeList.js?ver='+ new Date().getTime() +'"></script>');
+   document.write('<script src="/matsuoka/js/scrKanriMainteWorkList.js?ver='+ new Date().getTime() +'"></script>');
 //-->
 </script>
 
@@ -45,7 +45,7 @@
 <body>
 
 <header class="ymd-header">
-   社員情報メンテナンス(一覧表示)
+   作業情報メンテナンス(一覧表示)
 </header>
 <div class="ymd-navigation">
 	<ul class="gnav">
@@ -71,12 +71,20 @@
 <center>
 <div class="ymd-base-container">
 	<!-- action(呼出しプログラムはボタン押下時にJavaScriptでセットし直す) -->
-	<form name="sendForm"  th:action="@{/matsuoka/TransitionKanriMainteEmployeeDetail}" th:object="${formKanriMainteEmployeeList}" th:method="post" style="width: 100%;">
+	<form name="sendForm"  th:action="@{/matsuoka/TransitionKanriMainteWorkDetail}" th:object="${formKanriMainteWorkList}" th:method="post" style="width: 100%;">
 		
 		
 		<!-- 検索条件入力エリア -->
 		
 		<br>
+		
+		
+		<!-- 画面ヘッダメッセージ -->
+		<div class="ymd-container" style="width: 100%;text-align: left;">
+		作業情報は紙に印字されたＱＲコードと直結する情報であるため、「新規登録」「削除」はできないよう<br>
+		ボタンを隠してます。「新規登録」「削除」が必要である場合はシステム管理者にご相談ください。
+		</div>
+		
 		
 		<!-- 警告メッセージ表示エリア -->
 		<div class="ymd-container" style="color: red;">
@@ -85,14 +93,16 @@
 		
 		
 		<!-- ボタン表示エリア -->
+		<!-- 【メモ】当画面は「新規登録ボタン」は表示させないためコメントアウト。
 		<div class="ymd-container" style="float: right;">
 			<div class="ymd-kanri-button">
 				<a name="new"><span>新規追加</span></a>
 			</div>
 		</div>
+		-->
 		
 		<!-- 非表示項目 -->
-		<input type="hidden" id="selectEmployeeId" th:field="*{selectEmployeeId}" />
+		<input type="hidden" id="selectWorkId" th:field="*{selectWorkId}" />
 		<br>
 		
 		
@@ -102,12 +112,10 @@
 			
 			<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
 			<div class="ymd-list-headre-container" style="width: 100%; display:flex">
-			    <div class="ymd-list-header-text" style="width: 120px;">氏名</div>
-			    <div class="ymd-list-header-text" style="width: 130px;">電話番号</div>
-			    <div class="ymd-list-header-text" style="width:  80px;">郵便番号</div>
-			    <div class="ymd-list-header-text" style="width: 300px;">住所</div>
-			    <div class="ymd-list-header-text" style="width:  70px;">時給</div>
-			    <div class="ymd-list-header-text" style="width: calc(100% - 700px);">備考</div>
+			    <div class="ymd-list-header-text" style="width: 170px;">作業名</div>
+			    <div class="ymd-list-header-text" style="width: 120px;">進捗率区切(%)</div>
+			    <div class="ymd-list-header-text" style="width: 150px;">リセット間隔(日)</div>
+			    <div class="ymd-list-header-text" style="width: calc(100% - 440px);">備考</div>
 			</div>
 		</div>
 		
@@ -116,19 +124,17 @@
 		
 		<!-- 【参考】https://medium-company.com/springboot-thymeleaf-list/ -->
 		<!-- 【参考】https://hitori-goto.com/2021/01/26/springboot-thymeleaf-send-dynamic-table-data/ -->
-		<div class="ymd-list-detail-container" name="detail-parent" th:each="list,stat : *{employeeList}" style="width: 100%; border-bottom: 1px dashed rgb(219, 219, 219);">
+		<div class="ymd-list-detail-container" name="detail-parent" th:each="list,stat : *{workList}" style="width: 100%; border-bottom: 1px dashed rgb(219, 219, 219);">
 			
 			<!-- 隠し項目 -->
-			<input type="hidden" name="employeeId"   th:field="*{employeeList[__${stat.index}__].employeeId}" />
+			<input type="hidden" name="workId"   th:field="*{workList[__${stat.index}__].workId}" />
 			
 			<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
 			<div class="ymd-list-detail-container" name="detail-row" style="width: 100%; display:flex">
-			    <div class="ymd-list-detail-data" style="width: 120px;"><span th:text="*{employeeList[__${stat.index}__].employeeName}" /></div>
-			    <div class="ymd-list-detail-data" style="width: 130px;"><span th:text="*{employeeList[__${stat.index}__].phone}" /></div>
-			    <div class="ymd-list-detail-data" style="width:  80px;"><span th:text="*{employeeList[__${stat.index}__].postCd}" /></div>
-			    <div class="ymd-list-detail-data" style="width: 300px;"><span th:text="*{employeeList[__${stat.index}__].address}" /></div>
-			    <div class="ymd-list-detail-data" style="width:  70px;"><span th:text="*{employeeList[__${stat.index}__].hourlyWage}" /></div>
-			    <div class="ymd-list-detail-data" style="width: calc(100% - 700px);"><span th:text="*{employeeList[__${stat.index}__].biko}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 170px;"><span th:text="*{workList[__${stat.index}__].workName}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 120px;"><span th:text="*{workList[__${stat.index}__].separatePersent}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 150px;"><span th:text="*{workList[__${stat.index}__].resetSpan}" /></div>
+			    <div class="ymd-list-detail-data" style="width: calc(100% - 440px);"><span th:text="*{workList[__${stat.index}__].biko}" /></div>
 			</div>
 		</div>
 	</form>

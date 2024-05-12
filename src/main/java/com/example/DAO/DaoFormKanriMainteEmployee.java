@@ -27,7 +27,7 @@ public class DaoFormKanriMainteEmployee {
 	// 全件を取得
 	public FormKanriMainteEmployeeList getAllEmployeeData() {
 		
-		String pgmId = classId + ".getLatestWorkStatusForShukaku";
+		String pgmId = classId + ".getAllEmployeeData";
 		log.info("【INF】" + pgmId + ":処理開始");
 		
 		
@@ -179,8 +179,8 @@ public class DaoFormKanriMainteEmployee {
 	// 詳細を取得(社員ID指定)
 	public FormKanriMainteEmployeeDetail getTargetEmployeeData(String employeeId) {
 		
-		String pgmId = classId + ".getLatestWorkStatus";
-		log.info("【INF】" + pgmId + ":処理開始 従業員ID=[" + employeeId + "]");
+		String pgmId = classId + ".getTargetEmployeeData";
+		log.info("【INF】" + pgmId + ":処理開始 社員ID=[" + employeeId + "]");
 		
 		
 		// 返却値
