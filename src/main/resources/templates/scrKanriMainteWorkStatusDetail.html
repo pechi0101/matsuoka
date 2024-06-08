@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head style="height: 100%;">
+<meta charset="UTF-8">
+<title>ログイン</title>
+<!--リセットＣＳＳ-->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/destyle.css@4.0.0/destyle.min.css">
+<!--Font Awesome(無償版)のアイコン-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<!-- jQueryがレスポンシブに対応するため必要になるコード...らしい-->
+<!-- 参考：https://job-support.ne.jp/blog/javascript/howto-jquery-->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- ▽や△のアイコンをCSSで使うためにリンクを貼る -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+<!--オリジナルＣＳＳ(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<link href="/matsuoka/css/style.css?ver='+ new Date().getTime() +'" rel="stylesheet" type="text/css">');
+//-->
+</script>
+<!--オリジナルJavaScript(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<script src="/matsuoka/js/scrKanriMainteWorkStatusDetail.js?ver='+ new Date().getTime() +'"></script>');
+//-->
+</script>
+
+
+<!-- 
+	サーバでデプロイする場合、CSS,JavaScript,画像などはドキュメントルート（※）内に配置すること
+	※例
+	  ＣＳＳ    ：/var/www/html/css
+	  JavaScript：/var/www/html/js
+	  画像      ：/var/www/html/images
+ -->
+
+
+ 
+</head>
+<body>
+
+<header class="ymd-header">
+   作業内容修正(詳細)
+</header>
+<div class="ymd-navigation">
+	<ul class="gnav">
+    <li><a th:href="@{/matsuoka/indexKanri}"}>ＴＯＰ</a></li>
+    <li><a href="">マスタメンテナンス</a>
+        <ul>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteEmployeeList}">社員情報ﾒﾝﾃﾅﾝｽ</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteHouseList}">ハウス情報ﾒﾝﾃﾅﾝｽ</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteWorkList}">作業情報ﾒﾝﾃﾅﾝｽ</a></li>
+        </ul>
+    </li>
+    <li><a href="">分析・集計</a>
+        <ul>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteWorkStatusList}">作業内容修正</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">作業状況確認</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">収穫情報確認</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">社員能力分析</a></li>
+        </ul>
+    </li>
+	</ul>
+</div>
+
+<center>
+<div class="ymd-base-container">
+	<!-- action(呼出しプログラムはボタン押下時にJavaScriptでセットし直す) -->
+	<form name="sendForm"  th:action="@{/matsuoka/EditKanriWorkStatus}" th:object="${formKanriMainteWorkStatusDetail}" th:method="post" style="width: 90%;">
+		
+		
+		<!-- ヘッダメッセージ表示＋非表示項目エリア -->
+		
+		
+		<br>
+		<div th:if="*{#strings.isEmpty(houseId)}">
+			<!-- 新規追加時のメッセージ -->
+			<div class="ymd-container" style="width: 100%;text-align: left;">
+			下記項目を入力し登録ボタンを押してください。<br>
+			なお※印は入力必須項目です。
+			</div>
+		</div>
+		<div th:if="*{not #strings.isEmpty(houseId)}">
+			<!-- 更新・削除時のメッセージ -->
+			<div class="ymd-container" style="width: 100%;text-align: left;">
+			下記項目を入力し更新ボタンを。削除する場合は削除ボタンを押してください。<br>
+			なお※印は入力必須項目です。
+			</div>
+		</div>
+		
+		
+		<!-- 隠し項目 -->
+		<input type="hidden" id="buttonKbn"             th:field="*{buttonKbn}" />
+		<!-- 隠し項目(変更前項目) -->
+		<input type="hidden" id="beforeHouseId"         th:field="*{beforeHouseId}"/>
+		<input type="hidden" id="beforeColNo"           th:field="*{beforeColNo}"/>
+		<input type="hidden" id="beforeWorkId"          th:field="*{beforeWorkId}"/>
+		<input type="hidden" id="beforeStartDateTime"   th:field="*{beforeStartDateTime}"/>
+		<input type="hidden" id="deleteFlg"             th:field="*{deleteFlg}" />
+		
+		<!-- 隠し項目(変更後項目) -->
+		<input type="hidden" id="houseId"               th:field="*{houseId}" />
+		<!--<input type="hidden" id="colNo"             th:field="*{colNo}" />      ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		<input type="hidden" id="workId"                th:field="*{workId}" />
+		<input type="hidden" id="startEmployeeId"       th:field="*{startEmployeeId}" />
+		<!--<input type="hidden" id="startDate"         th:field="*{startDate}" />  ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		<!--<input type="hidden" id="startTime"         th:field="*{startTime}" />  ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		<input type="hidden" id="startDateTime"         th:field="*{startDateTime}" />
+		<input type="hidden" id="endEmployeeId"         th:field="*{endEmployeeId}" />
+		<!--<input type="hidden" id="endDate"           th:field="*{endDate}" />    ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		<!--<input type="hidden" id="endTime"           th:field="*{endTime}" />    ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		<input type="hidden" id="endDateTime"           th:field="*{endDateTime}" />
+		<!--<input type="hidden" id="percent"           th:field="*{percent}" />    ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		<!--<input type="hidden" id="boxCount"          th:field="*{boxCount}" />   ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		<!--<input type="hidden" id="biko"              th:field="*{biko}" />       ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		
+		
+		<br>
+		
+		
+		<!-- データ入力部／入力チェックメッセージ表示エリア -->
+		
+		
+		<div class="ymd-container" style="width: 100%;display: block;">
+			
+			<!-- ************【 ハウス 】*************** -->
+			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+			    <div class="ymd-label"     style="width: 180px;">※ハウス</div>
+			    <div class="ymd-container" style="width: calc(100% - 180px);">
+					<!-- 【メモ】selectedにはtrue/falseをセットする。下記はselectedに「リストのID = 初期表示したいID」の式を入れることでrrue/falseをセットするようにしてる -->
+					<select class="ymd-dropdown" id="dropDownHouse" name="dropDownHouse">
+						<option th:each="house : *{dropDownHouseList}" th:value="${house.houseId}" th:text="${house.houseName}"  th:selected="${house.houseId} eq *{houseId}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="ymd-container" style="width: 100%;">
+				<div class="ymd-container" style="width: 180px;"><span></span></div>
+				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="dropDownHouseMsg"></div>
+			</div>
+			<!-- ************【 列 】*************** -->
+			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+			    <div class="ymd-label"     style="width: 180px;">※列</div>
+			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{colNo}"  placeholder="例：03" /></div>
+			</div>
+			<div class="ymd-container" style="width: 100%;">
+				<div class="ymd-container" style="width: 180px;"><span></span></div>
+				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="colNoMsg"></div>
+			</div>
+			<!-- ************【 作業 】*************** -->
+			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+			    <div class="ymd-label"     style="width: 180px;">※作業</div>
+				<div class="ymd-container" style="width: calc(100% - 180px);">
+					<!-- 【メモ】selectedにはtrue/falseをセットする。下記はselectedに「リストのID = 初期表示したいID」の式を入れることでrrue/falseをセットするようにしてる -->
+					<select class="ymd-dropdown" id="dropDownWork" name="dropDownWork">
+						<option th:each="work : *{dropDownWorkList}" th:value="${work.workId}" th:text="${work.workName}"  th:selected="${work.workId} eq *{workId}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="ymd-container" style="width: 100%;">
+				<div class="ymd-container" style="width: 180px;"><span></span></div>
+				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="dropDownWorkMsg"></div>
+			</div>
+			
+			
+			
+			<!-- ************【 作業開始：社員 】*************** -->
+			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+				<div class="ymd-label"     style="width: 180px;">※作業開始社員</div>
+				<div class="ymd-container" style="width: calc(100% - 180px);">
+					<!-- 【メモ】selectedにはtrue/falseをセットする。下記はselectedに「リストのID = 初期表示したいID」の式を入れることでrrue/falseをセットするようにしてる -->
+					<select class="ymd-dropdown" id="dropDownStartEmployee" name="dropDownStartEmployee">
+						<option th:each="employee : *{dropDownStartEmployeeList}" th:value="${employee.employeeId}" th:text="${employee.employeeName}"  th:selected="${employee.employeeId} eq *{startEmployeeId}"></option>
+					</select>
+				</div>
+				
+			</div>
+			<div class="ymd-container" style="width: 100%;">
+				<div class="ymd-container" style="width: 180px;"><span></span></div>
+				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="dropDownStartEmployeeMsg"></div>
+			</div>
+			<!-- ************【 作業開始：日時】*************** -->
+			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+			    <div class="ymd-label"     style="width: 180px;">※作業開始日時</div>
+			    <!--<div class="ymd-container" style="width: calc(100% - 180px);"><input type="date" style="width: 100%;" th:value="*{#temporals.format(startDateTime, 'yyyy/MM/dd')}" /></div>-->
+			    <div class="ymd-container" style="width: 150px;"><input type="date" id="startDate" style="width: 100%;" th:value="*{startDate}" /></div>
+			    <div class="ymd-container" style="width:  50px;"></div>
+			    <div class="ymd-container" style="width: 150px;"><input type="Time" id="startTime" style="width: 100%;" th:value="*{startTime}" /></div>
+			</div>
+			<div class="ymd-container" style="width: 100%;">
+				<div class="ymd-container" style="width: 180px;"><span></span></div>
+				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="startDateTimeMsg"></div>
+			</div>
+			
+			
+			
+			
+			<!-- ************【 作業終了：社員 】*************** -->
+			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+				<div class="ymd-label"     style="width: 180px;">作業終了社員</div>
+				<div class="ymd-container" style="width: calc(100% - 180px);">
+					<!-- 【メモ】selectedにはtrue/falseをセットする。下記はselectedに「リストのID = 初期表示したいID」の式を入れることでrrue/falseをセットするようにしてる -->
+					<select class="ymd-dropdown" id="dropDownEndEmployee" name="dropDownEndEmployee">
+						<option th:each="employee : *{dropDownEndEmployeeList}" th:value="${employee.employeeId}" th:text="${employee.employeeName}"  th:selected="${employee.employeeId} eq *{endEmployeeId}"></option>
+					</select>
+				</div>
+				
+			</div>
+			<div class="ymd-container" style="width: 100%;">
+				<div class="ymd-container" style="width: 180px;"><span></span></div>
+				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="dropDownEndEmployeeMsg"></div>
+			</div>
+			<!-- ************【 作業終了：日時】*************** -->
+			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+			    <div class="ymd-label"     style="width: 180px;">作業終了日時</div>
+			    <!--<div class="ymd-container" style="width: calc(100% - 180px);"><input type="date" style="width: 100%;" th:value="*{#temporals.format(endDateTime, 'yyyy/MM/dd')}" /></div>-->
+			    <div class="ymd-container" style="width: 150px;"><input type="date" id="endDate" style="width: 100%;" th:value="*{endDate}" /></div>
+			    <div class="ymd-container" style="width:  50px;"></div>
+			    <div class="ymd-container" style="width: 150px;"><input type="Time" id="endTime" style="width: 100%;" th:value="*{endTime}" /></div>
+			</div>
+			<div class="ymd-container" style="width: 100%;">
+				<div class="ymd-container" style="width: 180px;"><span></span></div>
+				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="endDateTimeMsg"></div>
+			</div>
+			
+			
+			
+			<!-- ************【 進捗 】*************** -->
+			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+			    <div class="ymd-label"     style="width: 180px;">※進捗(%)</div>
+			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{percent}" placeholder="例：30" /></div>
+			</div>
+			<div class="ymd-container" style="width: 100%;">
+				<div class="ymd-container" style="width: 180px;"><span></span></div>
+				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="percentMsg"></div>
+			</div>
+			<!-- ************【 収穫ケース数 】*************** -->
+			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+			    <div class="ymd-label"     style="width: 180px;">収穫ケース数</div>
+			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{boxCount}" placeholder="例：5" /></div>
+			</div>
+			<div class="ymd-container" style="width: 100%;">
+				<div class="ymd-container" style="width: 180px;"><span></span></div>
+				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="boxCountMsg"></div>
+			</div>
+			<!-- ************【 備考 】*************** -->
+			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+			    <div class="ymd-label"     style="width: 180px;">備考</div>
+			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{biko}" placeholder="例：外出のため中断" /></div>
+			</div>
+			<div class="ymd-container" style="width: 100%;">
+				<div class="ymd-container" style="width: 180px;"><span></span></div>
+				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="bikoMsg"></div>
+			</div>
+			
+		</div>
+		
+		<br>
+		
+		
+		
+		
+		
+		<!-- ボタンエリア -->
+		
+		
+		<div class="ymd-container" style="display: flex;">
+			<!-- 戻るボタンは左詰め -->
+			<div class="ymd-container" style="width: 180px">
+				<div class="ymd-container">
+						<div class="ymd-kanri-button">
+							<a name="back"><span>戻　る</span></a>
+						</div>
+				</div>
+			</div>
+			<!-- 登録・更新・削除・復旧ボタンは右詰め -->
+			<div class="ymd-container" style="width: calc(100% - 180px); justify-content: flex-end;">
+				<div class="ymd-container">
+					
+					<!-- 復旧ボタンは削除済みの場合のみ表示 -->
+					<div th:if="*{not #strings.isEmpty(beforeHouseId) and deleteFlg}">
+						<div class="ymd-kanri-button">
+							<a name="revival"><span>復　旧</span></a>
+						</div>
+					</div>
+					<!-- 登録ボタンは追加の場合のみ表示 -->
+					<div th:if="*{#strings.isEmpty(beforeHouseId) and !deleteFlg}">
+						<div class="ymd-kanri-button">
+							<a name="regist"><span>登　録</span></a>
+						</div>
+					</div>
+					<!-- 更新・削除ボタンは変更の場合のみ表示 -->
+					<div th:if="*{not #strings.isEmpty(beforeHouseId) and !deleteFlg}">
+						<div class="ymd-kanri-button">
+							<a name="update"><span>更　新</span></a>
+						</div>
+					</div>
+					<div th:if="*{not #strings.isEmpty(beforeHouseId) and !deleteFlg}">
+						<div class="ymd-kanri-button" style="width:10px"></div>
+					</div>
+					<div th:if="*{not #strings.isEmpty(beforeHouseId) and !deleteFlg}">
+						<div class="ymd-kanri-button">
+							<a name="delete"><span>削　除</span></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		
+	</form>
+	
+	
+</div>
+</center>
+
+
+</body>
+</html>

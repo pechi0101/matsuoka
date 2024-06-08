@@ -190,6 +190,7 @@ html {
 	
 	/*文字を上下中央寄せ＋左寄せ*/
 	line-height:auto; /*上下中央寄せ*/
+	align-self:center; /*上下中央寄せ*/
 	text-align:left;  /*左寄せ*/
 	
 	
@@ -236,6 +237,7 @@ html {
 	
 	/*文字を上下中央寄せ＋左寄せ*/
 	line-height:auto; /*上下中央寄せ*/
+	align-self:center; /*上下中央寄せ*/
 	text-align:left;  /*左寄せ*/
 	
 	
@@ -278,6 +280,7 @@ html {
 	
 	/*文字を上下中央寄せ＋左寄せ*/
 	line-height:auto; /*上下中央寄せ*/
+	align-self:center; /*上下中央寄せ*/
 	text-align:left;  /*左寄せ*/
 	
 	/*文字色*/
@@ -512,6 +515,24 @@ html {
 	border-color: gray;
 	
 }
+
+
+/*------------------------------------------------*/
+/*チェックボックスやドロップダウンリスト
+  ※こいつを付けとかないとドロップダウンリストのアイコン（こんんあヤツ→[v]が表示されない）
+    理由はdestyle.min.cssの中で非表示にしてるからなんだけど、過去になぜそのcssを適当したかが不明
+*/
+
+.ymd-checkbox {
+	-webkit-appearance :checkbox;
+}
+
+
+.ymd-dropdown {
+	-webkit-appearance :checkbox;
+}
+
+
 
 
 /*------------------------------------------------*/
@@ -761,6 +782,49 @@ html {
 .ymd-list-detail-container:hover {
 	background-color:rgb(255, 191, 191);
 }
+
+
+
+
+
+/*
+ブラウザ表示用の一覧表(詳細部：背景色グレー)
+*/
+.ymd-list-detail-container-deleted {
+    /*コンテナ内は横に並べる*/
+    display:flex;
+    
+    /*高さは子要素に合わせる*/
+    height: auto;
+    
+    /*要素外側の空白*/
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin-left: 0px;
+    margin-right: 0px;
+    
+    /*要素内側の余白*/
+    padding-top:0px;
+    padding-bottom: 0px;
+    padding-left:0px;
+    padding-right: 0px;
+    
+    /*文字の位置*/
+    line-height:auto; /*上下中央寄せ*/
+    text-align:left;  /*左寄せ*/
+    
+    /*背景色*/
+    background-color:rgb(128, 128, 128);
+    
+}
+
+/*マウスオーバーのタイミングで背景色を変える*/
+.ymd-list-detail-container:hover {
+	background-color:rgb(255, 191, 191);
+}
+
+
+
 
 
 

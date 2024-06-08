@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.DAO.DaoDropDownList;
 import com.example.DAO.DaoFormDispQRInfoButton;
 import com.example.DAO.DaoFormIndexQR;
 import com.example.DAO.DaoFormKanriMainteEmployee;
 import com.example.DAO.DaoFormKanriMainteHouse;
 import com.example.DAO.DaoFormKanriMainteWork;
+import com.example.DAO.DaoFormKanriMainteWorkStatus;
 import com.example.DAO.DaoHouse;
 import com.example.DAO.DaoHouseWorkStatus;
 import com.example.DAO.DaoHouseWorkStatusShukaku;
@@ -44,6 +46,8 @@ import com.example.form.FormKanriMainteHouseDetail;
 import com.example.form.FormKanriMainteHouseList;
 import com.example.form.FormKanriMainteWorkDetail;
 import com.example.form.FormKanriMainteWorkList;
+import com.example.form.FormKanriMainteWorkStatusDetail;
+import com.example.form.FormKanriMainteWorkStatusList;
 import com.example.form.FormReadQRCode;
 import com.example.form.FormReadQRStart;
 import com.example.form.FormReadQRStartShukaku;
@@ -1322,9 +1326,14 @@ public class MatsuokaWebController {
 	
 	
 	
-	//------------------------------------------------------------------------------------------------
-	// 管理画面機能
-	//------------------------------------------------------------------------------------------------
+	
+	
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+	//
+	//  管理システムＴＯＰへの遷移
+	//
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+	
 	
 	//管理者システムのindex画面の起動
 	@RequestMapping(value ="/matsuoka/indexKanri",method = RequestMethod.GET)
@@ -1347,7 +1356,7 @@ public class MatsuokaWebController {
 	}
 	
 	
-	// 表示作業期間選択画面への遷移
+	// ダミー
 	@RequestMapping(value ="/matsuoka/TransitionKanriDummy",method = RequestMethod.GET)
 	public ModelAndView trunsition_WorkDummy(ModelAndView mav) {
 
@@ -1376,9 +1385,11 @@ public class MatsuokaWebController {
 	
 	
 	
-	//------------------------------------------------------------------------------------------------
-	//■社員情報メンテナンス
-	//------------------------------------------------------------------------------------------------
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+	//
+	//  社員情報メンテナンス
+	//
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	
 	
 	// 一覧画面への遷移
@@ -1537,9 +1548,11 @@ public class MatsuokaWebController {
 	
 	
 	
-	//------------------------------------------------------------------------------------------------
-	//■ハウス情報メンテナンス
-	//------------------------------------------------------------------------------------------------
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+	//
+	//  ハウス情報メンテナンス
+	//
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	
 	
 	// 一覧画面への遷移
@@ -1698,9 +1711,11 @@ public class MatsuokaWebController {
 	
 	
 	
-	//------------------------------------------------------------------------------------------------
-	//■作業情報メンテナンス
-	//------------------------------------------------------------------------------------------------
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+	//
+	//  作業情報メンテナンス
+	//
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	
 	
 	// 一覧画面への遷移
@@ -1778,7 +1793,7 @@ public class MatsuokaWebController {
 		return mav;
 	}
 	
-	
+	//登録処理
 	@RequestMapping(value ="/matsuoka/EditKanriWork",method = RequestMethod.POST)
 	public ModelAndView editKanriWork(@ModelAttribute FormKanriMainteWorkDetail formKanriMainteWorkDetail, ModelAndView mav) {
 		
@@ -1845,6 +1860,333 @@ public class MatsuokaWebController {
 		
 		log.info("【INF】" + pgmId + ":処理終了");
 		mav.setViewName("scrKanriMainteWorkList.html");
+		return mav;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+	//
+	//  作業内容情報メンテナンス
+	//
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+	
+	
+	// 一覧画面への遷移
+	@RequestMapping(value ="/matsuoka/TransitionKanriMainteWorkStatusList",method = RequestMethod.GET)
+	public ModelAndView trunsition_KanriMainteWorkStatusList(ModelAndView mav) {
+
+		String pgmId = classId + ".trunsition_KanriMainteWorkStatusList";
+		
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		DaoFormKanriMainteWorkStatus dao = new DaoFormKanriMainteWorkStatus(jdbcTemplate);
+		
+		//------------------------------------------------
+		// 一覧表示用にデータを取得
+		FormKanriMainteWorkStatusList formKanriMainteWorkStatusList;
+		
+		// ※最初は検索条件なしで全て一覧表示するため引数は全て空白かnull
+		formKanriMainteWorkStatusList = dao.getWorkStatusList("", "", "", null,null);
+		
+		if (formKanriMainteWorkStatusList == null) {
+			
+			formKanriMainteWorkStatusList = new FormKanriMainteWorkStatusList();
+			formKanriMainteWorkStatusList.setMessage("検索処理で異常が発生しました。システム管理者にご連絡ください。");
+			log.info("【ERR】" + pgmId + ":検索処理で異常終了");
+		
+		} else if (formKanriMainteWorkStatusList.getWorkStatusList().size() == 0) {
+		
+			formKanriMainteWorkStatusList.setMessage("データが0件でした。");
+			log.info("【INF】" + pgmId + ":データが0件でした。");
+		}
+		
+		
+		// ------------------------------------------------
+		// 絞込み条件欄のドロップダウンリストにセットする値を検索しセット
+		
+		DaoDropDownList daoDropDown = new DaoDropDownList(jdbcTemplate);
+		
+		formKanriMainteWorkStatusList.setDropDownHouseList(   daoDropDown.getHouseList());
+		formKanriMainteWorkStatusList.setDropDownWorkList(    daoDropDown.getWorkList());
+		formKanriMainteWorkStatusList.setDropDownEmployeeList(daoDropDown.getEmployeeList());
+		
+		
+		
+		mav.addObject("formKanriMainteWorkStatusList",formKanriMainteWorkStatusList);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrKanriMainteWorkStatusList.html");
+		return mav;
+	}
+	
+	
+	
+	//詳細画面への遷移
+	@RequestMapping(value ="/matsuoka/TransitionKanriMainteWorkStatusDetail",method = RequestMethod.POST)
+	public ModelAndView trunsition_KanriMainteWorkStatusDetail(@ModelAttribute FormKanriMainteWorkStatusList formKanriMainteWorkStatusList, ModelAndView mav) {
+		
+		String pgmId = classId + ".trunsition_KanriMainteWorkStatusDetail";
+		
+		log.info("【INF】" + pgmId + " :処理開始");
+		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteWorkStatusList.getSelectHouseId() + "]");
+		log.info("【INF】" + pgmId + " :列No        =[" + formKanriMainteWorkStatusList.getSelectColNo() + "]");
+		log.info("【INF】" + pgmId + " :作業ID      =[" + formKanriMainteWorkStatusList.getSelectWorkId() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日時=[" + formKanriMainteWorkStatusList.getSelectStartDateTime() + "]");
+		log.info("【INF】" + pgmId + " :▼フィルタリング条件------------------------------------------------");
+		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteWorkStatusList.getFilterHouseId() + "]");
+		log.info("【INF】" + pgmId + " :作業ID      =[" + formKanriMainteWorkStatusList.getFilterWorkId() + "]");
+		log.info("【INF】" + pgmId + " :社員ID      =[" + formKanriMainteWorkStatusList.getFilterStartEmployeeId() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日Fr=[" + formKanriMainteWorkStatusList.getFilterDateFr() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日To=[" + formKanriMainteWorkStatusList.getFilterDateTo() + "]");
+		log.info("【INF】" + pgmId + " :▲フィルタリング条件------------------------------------------------");
+		
+		
+		String targetHouseId              = formKanriMainteWorkStatusList.getSelectHouseId();
+		String targetColNo                = formKanriMainteWorkStatusList.getSelectColNo();
+		String targetWorkId               = formKanriMainteWorkStatusList.getSelectWorkId();
+		LocalDateTime targetStartDateTime = formKanriMainteWorkStatusList.getSelectStartDateTime();
+		
+		
+		FormKanriMainteWorkStatusDetail formKanriMainteWorkStatusDetail = new FormKanriMainteWorkStatusDetail();
+		
+		if (targetHouseId.equals("") == true) {
+			
+			//------------------------------------------------
+			//ハウスIDが指定されていない場合(新規登録)：次画面を空表示
+			
+			// 処理なし
+			
+		}else{
+			//------------------------------------------------
+			//ハウスIDが指定されている  場合(更新削除)：ハウス情報を検索して次画面に表示
+			
+			DaoFormKanriMainteWorkStatus dao = new DaoFormKanriMainteWorkStatus(jdbcTemplate);
+			formKanriMainteWorkStatusDetail = dao.getWorkStatusDatail(targetHouseId, targetColNo, targetWorkId, targetStartDateTime);
+		}
+		
+		
+		// ------------------------------------------------
+		// 一覧画面で選択・入力したフィルタリング条件を引継ぎ
+		
+		formKanriMainteWorkStatusDetail.setFilterHouseId(        formKanriMainteWorkStatusList.getFilterHouseId());
+		formKanriMainteWorkStatusDetail.setFilterWorkId(         formKanriMainteWorkStatusList.getFilterWorkId());
+		formKanriMainteWorkStatusDetail.setFilterStartEmployeeId(formKanriMainteWorkStatusList.getFilterStartEmployeeId());
+		formKanriMainteWorkStatusDetail.setFilterDateFr(         formKanriMainteWorkStatusList.getFilterDateFr());
+		formKanriMainteWorkStatusDetail.setFilterDateTo(         formKanriMainteWorkStatusList.getFilterDateTo());
+		
+		
+		// ------------------------------------------------
+		// 入力欄のドロップダウンリストにセットする値を検索しセット
+		
+		DaoDropDownList daoDropDown = new DaoDropDownList(jdbcTemplate);
+		
+		formKanriMainteWorkStatusDetail.setDropDownHouseList(        daoDropDown.getHouseList());
+		formKanriMainteWorkStatusDetail.setDropDownWorkList(         daoDropDown.getWorkList());
+		formKanriMainteWorkStatusDetail.setDropDownStartEmployeeList(daoDropDown.getEmployeeList());
+		formKanriMainteWorkStatusDetail.setDropDownEndEmployeeList(  daoDropDown.getEmployeeList());
+		
+		
+		
+		mav.addObject("formKanriMainteWorkStatusDetail",formKanriMainteWorkStatusDetail);
+		
+		log.info("【INF】" + pgmId + ":処理終了 ■■■開始社員ID＝" + formKanriMainteWorkStatusDetail.getStartEmployeeId());
+		mav.setViewName("scrKanriMainteWorkStatusDetail.html");
+		return mav;
+	}
+	
+	
+	
+	//登録処理
+	@RequestMapping(value ="/matsuoka/EditKanriWorkStatus",method = RequestMethod.POST)
+	public ModelAndView editKanriWorkStatus(@ModelAttribute FormKanriMainteWorkStatusDetail formKanriMainteWorkStatusDetail, ModelAndView mav) {
+		
+		String pgmId = classId + ".editKanriWorkStatus";
+		
+		log.info("【INF】" + pgmId + " :処理開始");
+		log.info("【INF】" + pgmId + " :ﾎﾞﾀﾝ区分    =[" + formKanriMainteWorkStatusDetail.getButtonKbn() + "]");
+		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteWorkStatusDetail.getHouseId() + "]");
+		log.info("【INF】" + pgmId + " :列No        =[" + formKanriMainteWorkStatusDetail.getColNo() + "]");
+		log.info("【INF】" + pgmId + " :作業ID      =[" + formKanriMainteWorkStatusDetail.getWorkId() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日時=[" + formKanriMainteWorkStatusDetail.getStartDateTime() + "]");
+		log.info("【INF】" + pgmId + " :▼フィルタリング条件------------------------------------------------");
+		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteWorkStatusDetail.getFilterHouseId() + "]");
+		log.info("【INF】" + pgmId + " :作業ID      =[" + formKanriMainteWorkStatusDetail.getFilterWorkId() + "]");
+		log.info("【INF】" + pgmId + " :社員ID      =[" + formKanriMainteWorkStatusDetail.getFilterStartEmployeeId() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日Fr=[" + formKanriMainteWorkStatusDetail.getFilterDateFr() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日To=[" + formKanriMainteWorkStatusDetail.getFilterDateTo() + "]");
+		log.info("【INF】" + pgmId + " :▲フィルタリング条件------------------------------------------------");
+		
+		
+		DaoFormKanriMainteWorkStatus dao = new DaoFormKanriMainteWorkStatus(jdbcTemplate);
+		
+		
+		//------------------------------------------------
+		// 登録・更新・削除
+		
+		
+		if (formKanriMainteWorkStatusDetail.getButtonKbn().equals("regist") == true) {
+			
+			//------------------------------------------------
+			//登録処理を実施
+			dao.registWorkStatus(formKanriMainteWorkStatusDetail, SpecialUser.KANRI_USER, "scrKanriMainteWorkStatusDetail");
+			
+			
+		} else if (formKanriMainteWorkStatusDetail.getButtonKbn().equals("update") == true) {
+			
+			//------------------------------------------------
+			//更新処理を実施
+			dao.updateWorkStatus(formKanriMainteWorkStatusDetail, SpecialUser.KANRI_USER, "scrKanriMainteWorkStatusDetail");
+			
+			
+		} else if (formKanriMainteWorkStatusDetail.getButtonKbn().equals("delete") == true) {
+			
+			//------------------------------------------------
+			//削除処理を実施
+			dao.deleteWorkStatus(formKanriMainteWorkStatusDetail, SpecialUser.KANRI_USER, "scrKanriMainteWorkStatusDetail");
+			
+			
+		} else if (formKanriMainteWorkStatusDetail.getButtonKbn().equals("revival") == true) {
+			
+			//------------------------------------------------
+			//復旧処理を実施
+			dao.revivalWorkStatus(formKanriMainteWorkStatusDetail, SpecialUser.KANRI_USER, "scrKanriMainteWorkStatusDetail");
+			
+			
+		}
+		
+		
+		//------------------------------------------------
+		// 一覧表示用にデータを取得
+		FormKanriMainteWorkStatusList formKanriMainteWorkStatusList;
+		
+		formKanriMainteWorkStatusList = dao.getWorkStatusList("", "", "", null,null);
+		
+		if (formKanriMainteWorkStatusList == null) {
+			
+			formKanriMainteWorkStatusList = new FormKanriMainteWorkStatusList();
+			formKanriMainteWorkStatusList.setMessage("検索処理で異常が発生しました。システム管理者にご連絡ください。");
+			log.info("【ERR】" + pgmId + ":検索処理で異常終了");
+		
+		} else if (formKanriMainteWorkStatusList.getWorkStatusList().size() == 0) {
+		
+			formKanriMainteWorkStatusList.setMessage("データが0件でした。");
+			log.info("【INF】" + pgmId + ":データが0件でした。");
+		}
+
+		
+		
+		// ------------------------------------------------
+		// 一覧画面で選択・入力したフィルタリング条件を引継ぎ
+		
+		formKanriMainteWorkStatusList.setFilterHouseId(        formKanriMainteWorkStatusDetail.getFilterHouseId());
+		formKanriMainteWorkStatusList.setFilterWorkId(         formKanriMainteWorkStatusDetail.getFilterWorkId());
+		formKanriMainteWorkStatusList.setFilterStartEmployeeId(formKanriMainteWorkStatusDetail.getFilterStartEmployeeId());
+		formKanriMainteWorkStatusList.setFilterDateFr(         formKanriMainteWorkStatusDetail.getFilterDateFr());
+		formKanriMainteWorkStatusList.setFilterDateTo(         formKanriMainteWorkStatusDetail.getFilterDateTo());
+		
+		
+		// ------------------------------------------------
+		// 絞込み条件欄のドロップダウンリストにセットする値を検索しセット
+		
+		DaoDropDownList daoDropDown = new DaoDropDownList(jdbcTemplate);
+		
+		formKanriMainteWorkStatusList.setDropDownHouseList(   daoDropDown.getHouseList());
+		formKanriMainteWorkStatusList.setDropDownWorkList(    daoDropDown.getWorkList());
+		formKanriMainteWorkStatusList.setDropDownEmployeeList(daoDropDown.getEmployeeList());
+		
+		
+		mav.addObject("formKanriMainteWorkStatusList",formKanriMainteWorkStatusList);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrKanriMainteWorkStatusList.html");
+		return mav;
+	}
+	
+	
+	
+	
+	//戻るボタン押下処理
+	@RequestMapping(value ="/matsuoka/TransitionKanriMainteWorkStatusListSearch",method = RequestMethod.POST)
+	public ModelAndView transition_KanriMainteWorkStatusListSearch(@ModelAttribute FormKanriMainteWorkStatusDetail formKanriMainteWorkStatusDetail, ModelAndView mav) {
+		
+		String pgmId = classId + ".transition_KanriMainteWorkStatusListSearch";
+		
+		log.info("【INF】" + pgmId + " :処理開始");
+		log.info("【INF】" + pgmId + " :ﾎﾞﾀﾝ区分    =[" + formKanriMainteWorkStatusDetail.getButtonKbn() + "]");
+		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteWorkStatusDetail.getHouseId() + "]");
+		log.info("【INF】" + pgmId + " :列No        =[" + formKanriMainteWorkStatusDetail.getColNo() + "]");
+		log.info("【INF】" + pgmId + " :作業ID      =[" + formKanriMainteWorkStatusDetail.getWorkId() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日付=[" + formKanriMainteWorkStatusDetail.getStartDate() + "]");
+		log.info("【INF】" + pgmId + " :作業開始時間=[" + formKanriMainteWorkStatusDetail.getStartTime() + "]");
+		log.info("【INF】" + pgmId + " :▼フィルタリング条件------------------------------------------------");
+		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteWorkStatusDetail.getFilterHouseId() + "]");
+		log.info("【INF】" + pgmId + " :作業ID      =[" + formKanriMainteWorkStatusDetail.getFilterWorkId() + "]");
+		log.info("【INF】" + pgmId + " :社員ID      =[" + formKanriMainteWorkStatusDetail.getFilterStartEmployeeId() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日Fr=[" + formKanriMainteWorkStatusDetail.getFilterDateFr() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日To=[" + formKanriMainteWorkStatusDetail.getFilterDateTo() + "]");
+		log.info("【INF】" + pgmId + " :▲フィルタリング条件------------------------------------------------");
+		
+		
+		DaoFormKanriMainteWorkStatus dao = new DaoFormKanriMainteWorkStatus(jdbcTemplate);
+		
+		
+		//------------------------------------------------
+		// 一覧表示用にデータを取得
+		FormKanriMainteWorkStatusList formKanriMainteWorkStatusList;
+		
+		formKanriMainteWorkStatusList = dao.getWorkStatusList("", "", "", null,null);
+		
+		if (formKanriMainteWorkStatusList == null) {
+			
+			formKanriMainteWorkStatusList = new FormKanriMainteWorkStatusList();
+			formKanriMainteWorkStatusList.setMessage("検索処理で異常が発生しました。システム管理者にご連絡ください。");
+			log.info("【ERR】" + pgmId + ":検索処理で異常終了");
+		
+		} else if (formKanriMainteWorkStatusList.getWorkStatusList().size() == 0) {
+		
+			formKanriMainteWorkStatusList.setMessage("データが0件でした。");
+			log.info("【INF】" + pgmId + ":データが0件でした。");
+		}
+		
+		
+		
+		// ------------------------------------------------
+		// 一覧画面で選択・入力したフィルタリング条件を引継ぎ
+		
+		formKanriMainteWorkStatusList.setFilterHouseId(        formKanriMainteWorkStatusDetail.getFilterHouseId());
+		formKanriMainteWorkStatusList.setFilterWorkId(         formKanriMainteWorkStatusDetail.getFilterWorkId());
+		formKanriMainteWorkStatusList.setFilterStartEmployeeId(formKanriMainteWorkStatusDetail.getFilterStartEmployeeId());
+		formKanriMainteWorkStatusList.setFilterDateFr(         formKanriMainteWorkStatusDetail.getFilterDateFr());
+		formKanriMainteWorkStatusList.setFilterDateTo(         formKanriMainteWorkStatusDetail.getFilterDateTo());
+		
+		
+		
+		// ------------------------------------------------
+		// 絞込み条件欄のドロップダウンリストにセットする値を検索しセット
+		
+		DaoDropDownList daoDropDown = new DaoDropDownList(jdbcTemplate);
+		
+		formKanriMainteWorkStatusList.setDropDownHouseList(   daoDropDown.getHouseList());
+		formKanriMainteWorkStatusList.setDropDownWorkList(    daoDropDown.getWorkList());
+		formKanriMainteWorkStatusList.setDropDownEmployeeList(daoDropDown.getEmployeeList());
+		
+		
+		
+		
+		mav.addObject("formKanriMainteWorkStatusList",formKanriMainteWorkStatusList);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrKanriMainteWorkStatusList.html");
 		return mav;
 	}
 	
