@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head style="height: 100%;">
+<meta charset="UTF-8">
+<title>ログイン</title>
+<!--リセットＣＳＳ-->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/destyle.css@4.0.0/destyle.min.css">
+<!--Font Awesome(無償版)のアイコン-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<!-- jQueryがレスポンシブに対応するため必要になるコード...らしい-->
+<!-- 参考：https://job-support.ne.jp/blog/javascript/howto-jquery-->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- ▽や△のアイコンをCSSで使うためにリンクを貼る -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+<!--オリジナルＣＳＳ(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<link href="/matsuoka/css/style.css?ver='+ new Date().getTime() +'" rel="stylesheet" type="text/css">');
+//-->
+</script>
+<!--オリジナルJavaScript(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<script src="/matsuoka/js/scrKanriDispWorkStatus.js?ver='+ new Date().getTime() +'"></script>');
+//-->
+</script>
+
+
+<!-- 
+	サーバでデプロイする場合、CSS,JavaScript,画像などはドキュメントルート（※）内に配置すること
+	※例
+	  ＣＳＳ    ：/var/www/html/css
+	  JavaScript：/var/www/html/js
+	  画像      ：/var/www/html/images
+ -->
+
+
+ 
+</head>
+<body>
+
+<header class="ymd-header">
+   作業状況確認
+</header>
+<div class="ymd-navigation">
+	<ul class="gnav">
+    <li><a th:href="@{/matsuoka/indexKanri}"}>ＴＯＰ</a></li>
+    <li><a href="">マスタメンテナンス</a>
+        <ul>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteEmployeeList}">社員情報ﾒﾝﾃﾅﾝｽ</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteHouseList}">ハウス情報ﾒﾝﾃﾅﾝｽ</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteWorkList}">作業情報ﾒﾝﾃﾅﾝｽ</a></li>
+        </ul>
+    </li>
+    <li><a href="">分析・集計</a>
+        <ul>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteWorkStatusList}">作業内容修正</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">作業状況確認</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">収穫情報確認</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">社員能力分析</a></li>
+        </ul>
+    </li>
+	</ul>
+</div>
+
+<center>
+<div class="ymd-base-container">
+	<!-- action(呼出しプログラムはボタン押下時にJavaScriptでセットし直す) -->
+	<form name="sendForm" th:action="@{/matsuoka/TransitionKanriDispWorkStatus}" th:object="${formKanriDispWorkStatus}" th:method="get" style="width: 100%;">
+		
+		
+		<!-- 検索条件入力エリア -->
+		
+		
+		<!-- 画面ヘッダメッセージ -->
+		<div class="ymd-container" style="width: 100%;text-align: left;">
+		ハウス情報は紙に印字されたＱＲコードと直結する情報であるため、「削除」はできないよう<br>
+		ボタンを隠してます。「新規登録」「削除」が必要である場合はシステム管理者にご相談ください。
+		</div>
+		
+		
+		
+		<br>
+		
+		<!-- 警告メッセージ表示エリア -->
+		<div class="ymd-container" style="color: red;">
+			<span th:text="*{message}" />
+		</div>
+		
+		
+		<!-- 文言表示エリア -->
+		<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
+			<span>■稼働中の作業</span>
+		</div>
+		
+		<!-- 非表示項目 -->
+		<input type="hidden" id="selectHouseId" th:field="*{selectHouseId}" />
+		<input type="hidden" id="selectColNo"   th:field="*{selectColNo}" />
+		<input type="hidden" id="selectWorkId"  th:field="*{selectWorkId}" />
+		<br>
+		
+		<!--_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+		
+		【メモ】
+		当画面の上段「稼働中の作業」には一覧表を複数表示するが、以下のように段々に表示する。
+		        
+				３号隔離[摘花]    ３号隔離[葉かき]  ８号隔離[摘花]
+				[________________][________________][________________]
+				[________________][________________][________________]
+				[________________][________________][________________]
+				[________________][________________][________________]
+				
+				11号隔離[摘花]    11号隔離[葉かき]  大土耕[ＸＸ]
+				[________________][________________][________________]
+				[________________][________________][________________]
+				[________________][________________][________________]
+				[________________][________________][________________]
+				
+				大土耕[ＸＸ]      西土光[ＸＸ]
+				[________________][________________]
+				[________________][________________]
+				[________________][________________]
+				[________________][________________]
+		
+		そのため↓のdivブロックは基本横並びに表示(display:flex)し、表の折り返しを許可する(flex-wrap: wrap)。
+		
+		_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/-->
+		<div class="ymd-container" style="border: solid; display:flex; flex-wrap: wrap;">
+			
+			
+			<!-- ▼１つの表を表現するブロック▼ -->
+			<div class="ymd-container" name="detail-parent" th:each="list, stat : *{activeWorkLists}" style="display:block; width:calc(33.333% - 20px); border-bottom: 1px dashed rgb(219, 219, 219); margin-right:10px;">
+				
+				
+					<!-- 一覧表ヘッダ部 -->
+					
+					<div class="ymd-list-headre-container" style="width: 100%; display:flex">
+					    <span th:text="*{activeWorkLists[__${stat.index}__].houseName}" />
+					    【
+					    <span th:text="*{activeWorkLists[__${stat.index}__].workName}" />
+					    】
+					</div>
+					
+					<div class="ymd-list-headre-container" style="width: 100%;">
+						<!-- 隠し項目 -->
+						<input type="hidden" name="houseId" th:field="*{activeWorkLists[__${stat.index}__].houseId}" />
+						<input type="hidden" name="workId"  th:field="*{activeWorkLists[__${stat.index}__].workId}" />
+						
+						<!-- 基本は各列固定幅であるが、進捗のみ横幅をブラウザに合わせて可変にする -->
+						<div class="ymd-list-headre-container" style="width: 100%; display:flex">
+						    <div class="ymd-list-header-text" style="width: 70px;">列</div>
+						    <div class="ymd-list-header-text" style="width: calc(100% - 70px);">進捗</div>
+						</div>
+					</div>
+					
+					
+					<!-- 一覧表明細部 -->
+					
+					<!-- 【参考】https://medium-company.com/springboot-thymeleaf-list/ -->
+					<!-- 【参考】https://hitori-goto.com/2021/01/26/springboot-thymeleaf-send-dynamic-table-data/ -->
+					<div class="ymd-list-detail-container" name="detail-parent" th:each="listRow, statRow : *{activeWorkLists[__${stat.index}__].activeWorKRows}" style="width: 100%; border-bottom: 1px dashed rgb(219, 219, 219);">
+						
+						<!-- 隠し項目 -->
+						<input type="hidden" name="houseId"       th:field="*{activeWorkLists[__${stat.index}__].activeWorKRows[__${statRow.index}__].houseId}" />
+						<input type="hidden" name="workId"        th:field="*{activeWorkLists[__${stat.index}__].activeWorKRows[__${statRow.index}__].workId}" />
+						<input type="hidden" name="workId"        th:field="*{activeWorkLists[__${stat.index}__].activeWorKRows[__${statRow.index}__].colNo}" />
+						<input type="hidden" name="startDateTime" th:field="*{activeWorkLists[__${stat.index}__].activeWorKRows[__${statRow.index}__].startDateTime}" />
+						<input type="hidden" name="endDateTime"   th:field="*{activeWorkLists[__${stat.index}__].activeWorKRows[__${statRow.index}__].endDateTime}" />
+						
+						<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
+						<div class="ymd-list-detail-container" name="detail-row" style="width: 100%; display:flex">
+							<div class="ymd-list-detail-data" style="width: 70px;"><span th:text="*{activeWorkLists[__${stat.index}__].activeWorKRows[__${statRow.index}__].colNo}" /></div>
+							<div class="ymd-list-detail-data" style="width: calc(100% - 70px);">
+								
+								<!-- _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/ -->
+								
+								<!-- 進捗率（棒グラフ”風”表示）  -->
+								<!-- percentが空白でない場合の進捗表示 -->
+								<div th:if="*{not #strings.isEmpty(activeWorkLists[__${stat.index}__].activeWorKRows[__${statRow.index}__].percent)}">
+									<div th:style="'width:' + *{activeWorkLists[__${stat.index}__].activeWorKRows[__${statRow.index}__].percent} + '%; background-color: rgb(153, 181, 221);'">
+									<span th:text="*{activeWorkLists[__${stat.index}__].activeWorKRows[__${statRow.index}__].percent}" />%
+									</div>
+								</div>
+								<!-- percentが空白である場合の進捗表示 -->
+								<div th:unless="*{not #strings.isEmpty(activeWorkLists[__${stat.index}__].activeWorKRows[__${statRow.index}__].percent)}">
+									<span>－</span>
+								</div>
+								<!-- _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/ -->
+							</div>
+						</div>
+					</div>
+			</div>
+			<!-- ▲１つの表を表現するブロック▲ -->
+			
+		</div>
+		
+	</form>
+	
+	
+</div>
+</center>
+
+
+</body>
+</html>

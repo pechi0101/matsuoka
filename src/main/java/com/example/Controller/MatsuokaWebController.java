@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.DAO.DaoDropDownList;
 import com.example.DAO.DaoFormDispQRInfoButton;
 import com.example.DAO.DaoFormIndexQR;
+import com.example.DAO.DaoFormKanriDispWorkStatus;
 import com.example.DAO.DaoFormKanriMainteEmployee;
 import com.example.DAO.DaoFormKanriMainteHouse;
 import com.example.DAO.DaoFormKanriMainteWork;
@@ -40,6 +41,7 @@ import com.example.form.FormDispQRInfoShukaku;
 import com.example.form.FormDispQRInfoShukakuSum;
 import com.example.form.FormIndexKanri;
 import com.example.form.FormIndexQR;
+import com.example.form.FormKanriDispWorkStatus;
 import com.example.form.FormKanriMainteEmployeeDetail;
 import com.example.form.FormKanriMainteEmployeeList;
 import com.example.form.FormKanriMainteHouseDetail;
@@ -71,7 +73,6 @@ public class MatsuokaWebController {
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-
 	
 	
 	
@@ -2193,5 +2194,57 @@ public class MatsuokaWebController {
 	
 	
 	
+	
+	
+	
+	
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+	//
+	//  作業状況確認
+	//
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+	
+	
+	
+	//システムの初期処理→作業者一覧画面の表示
+	@RequestMapping(value ="/matsuoka/TransitionKanriDispWorkStatus",method = RequestMethod.GET)
+	public ModelAndView transition_KanriDispWorkStatus(ModelAndView mav) {
+		
+		String pgmId = classId + ".transition_KanriDispWorkStatus";
+		
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		DaoFormKanriDispWorkStatus dao = new DaoFormKanriDispWorkStatus(jdbcTemplate);
+		FormKanriDispWorkStatus formKanriDispWorkStatus = dao.getDispData();
+
+		if (formKanriDispWorkStatus == null) {
+			log.info("■■nullだ！！！！");
+		}
+		
+		if (formKanriDispWorkStatus.getActiveWorkLists() == null) {
+			log.info("■□nullだ！！！！");
+		}
+		
+		
+		for (int index = 0 ; index < formKanriDispWorkStatus.getActiveWorkLists().size() ;index++) {
+			
+			
+			if (formKanriDispWorkStatus.getActiveWorkLists().get(index) == null) {
+				log.info("□□nullだ！！！！");
+			}else{
+				log.info("ハウス=[" +  formKanriDispWorkStatus.getActiveWorkLists().get(index).getHouseId() + "]");
+			}
+			
+		}
+		
+		
+		mav.addObject("formKanriDispWorkStatus",formKanriDispWorkStatus);
+		
+		log.info("【INF】" + pgmId + ":処理終了■■■");
+		
+
+		mav.setViewName("scrKanriDispWorkStatus.html");
+		return mav;
+	}
 	
 }
