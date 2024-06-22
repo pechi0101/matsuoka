@@ -2018,7 +2018,13 @@ public class MatsuokaWebController {
 		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteWorkStatusDetail.getHouseId() + "]");
 		log.info("【INF】" + pgmId + " :列No        =[" + formKanriMainteWorkStatusDetail.getColNo() + "]");
 		log.info("【INF】" + pgmId + " :作業ID      =[" + formKanriMainteWorkStatusDetail.getWorkId() + "]");
+		log.info("【INF】" + pgmId + " :作業開始社員=[" + formKanriMainteWorkStatusDetail.getStartEmployeeId() + "]");
 		log.info("【INF】" + pgmId + " :作業開始日時=[" + formKanriMainteWorkStatusDetail.getStartDateTime() + "]");
+		log.info("【INF】" + pgmId + " :作業終了社員=[" + formKanriMainteWorkStatusDetail.getEndEmployeeId() + "]");
+		log.info("【INF】" + pgmId + " :作業終了日時=[" + formKanriMainteWorkStatusDetail.getEndDateTime() + "]");
+		log.info("【INF】" + pgmId + " :ケース数    =[" + formKanriMainteWorkStatusDetail.getBoxCount() + "]");
+		log.info("【INF】" + pgmId + " :進捗        =[" + formKanriMainteWorkStatusDetail.getPercent() + "]");
+		log.info("【INF】" + pgmId + " :備考        =[" + formKanriMainteWorkStatusDetail.getBiko() + "]");
 		log.info("【INF】" + pgmId + " :▼フィルタリング条件------------------------------------------------");
 		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteWorkStatusDetail.getFilterHouseId() + "]");
 		log.info("【INF】" + pgmId + " :作業ID      =[" + formKanriMainteWorkStatusDetail.getFilterWorkId() + "]");
