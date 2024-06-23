@@ -25,6 +25,11 @@ public class FormKanriDispWorkStatus implements Serializable {
 	//※表を複数持ってるArrayList
 	private ArrayList<ActiveWorkList> activeWorkLists;
 	
+	
+	//------------------------------------------------
+	//画面中部に表示する”収穫状況”
+	private ArrayList<ShukakuStatus> shukakuStatusList;
+	
 	//------------------------------------------------
 	//画面下部に表示する”全ハウス・全作業の稼働状況”
 	//※表示する表は１つ。行をArrayListで持ってる
@@ -40,6 +45,7 @@ public class FormKanriDispWorkStatus implements Serializable {
 		this.selectColNo              = "";
 		this.activeWorkLists          = new ArrayList<ActiveWorkList>();
 		this.nonActiveWorkListHeader  = new ArrayList<String>();
+		this.shukakuStatusList        = new ArrayList<ShukakuStatus>(); 
 		this.nonActiveWorkList        = new ArrayList<NonActiveWorkRow>();
 	}
 	
@@ -107,6 +113,26 @@ public class FormKanriDispWorkStatus implements Serializable {
 		}
 		
 	}
+	
+	
+	//------------------------------------------------------------------------------------------------
+	//インナークラス：画面中部に表示する”収穫状況”
+
+	@Data
+	public class ShukakuStatus {
+		
+		private String houseId;
+		private String houseName;
+		private int caseCount;
+		
+		public ShukakuStatus() {
+			this.houseId = "";
+			this.houseName = "";
+			this.caseCount = 0;
+		}
+		
+	}
+	
 	
 	
 	//------------------------------------------------------------------------------------------------

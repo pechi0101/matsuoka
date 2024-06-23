@@ -15,6 +15,7 @@ import com.example.form.FormKanriDispWorkStatus.ActiveWorkList;
 import com.example.form.FormKanriDispWorkStatus.ActiveWorkRow;
 import com.example.form.FormKanriDispWorkStatus.NonActiveWorkCol;
 import com.example.form.FormKanriDispWorkStatus.NonActiveWorkRow;
+import com.example.form.FormKanriDispWorkStatus.ShukakuStatus;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,6 +50,11 @@ public class DaoFormKanriDispWorkStatus {
 			// 画面上部に表示する”稼働中の作業”を取得
 			
 			retForm.setActiveWorkLists(this.getActiveWorkLists());
+			
+			
+			//------------------------------------------------
+			// 画面中部に表示する”収穫状況”を取得
+			retForm.setShukakuStatusList(this.getShukakuStatusList());
 			
 			
 			//------------------------------------------------------------------------------------------------
@@ -114,6 +120,7 @@ public class DaoFormKanriDispWorkStatus {
 			sql  = sql + "    ,TM_HOUSECOL.COLNO";
 			sql  = sql + "    ,DATE_FORMAT(TT_WORK.STARTDATETIME,'%Y%m%d%H%i%S') STARTDATETIME_STRING";
 			sql  = sql + "    ,TT_WORK.STARTEMPLOYEEID";
+			sql  = sql + "    ,TM_EMPLOYEE.EMPLOYEENAME STARTEMPLOYEENAME";
 			sql  = sql + "    ,DATE_FORMAT(TT_WORK.ENDDATETIME,'%Y%m%d%H%i%S') ENDDATETIME_STRING";
 			sql  = sql + "    ,TT_WORK.ENDEMPLOYEEID";
 			sql  = sql + "    ,TT_WORK.PERCENT";
@@ -128,9 +135,9 @@ public class DaoFormKanriDispWorkStatus {
 			sql  = sql + "     from TM_HOUSE";
 			sql  = sql + "     cross join TM_WORK";
 			sql  = sql + "     inner join TT_HOUSE_WORKSTATUS TT_WORK";
-			sql  = sql + "     on  TM_HOUSE.HOUSEID      = TT_WORK.HOUSEID";
-			sql  = sql + "     and TM_WORK.WORKID        = TT_WORK.WORKID";
-			sql  = sql + "     and TT_WORK.DELETEFLG     = 0";
+			sql  = sql + "     on  TM_HOUSE.HOUSEID        = TT_WORK.HOUSEID";
+			sql  = sql + "     and TM_WORK.WORKID          = TT_WORK.WORKID";
+			sql  = sql + "     and TT_WORK.DELETEFLG       = 0";
 			sql  = sql + "     and TT_WORK.STARTEMPLOYEEID <> '" + SpecialUser.TEST_USER + "'";//テストユーザは対象にしない
 			sql  = sql + "    )VM_HOUSEWORK";
 			// ②：上記①に対して全ての列（列マスタ）を列挙する
@@ -148,19 +155,23 @@ public class DaoFormKanriDispWorkStatus {
 			sql  = sql + "     group by HOUSEID,COLNO,WORKID";
 			sql  = sql + "     )VT_WORK";
 			sql  = sql + "     on";
-			sql  = sql + "         VM_HOUSEWORK.HOUSEID  = VT_WORK.HOUSEID";
-			sql  = sql + "     and TM_HOUSECOL.COLNO     = VT_WORK.COLNO";
-			sql  = sql + "     and VM_HOUSEWORK.WORKID   = VT_WORK.WORKID";
+			sql  = sql + "         VM_HOUSEWORK.HOUSEID    = VT_WORK.HOUSEID";
+			sql  = sql + "     and TM_HOUSECOL.COLNO       = VT_WORK.COLNO";
+			sql  = sql + "     and VM_HOUSEWORK.WORKID     = VT_WORK.WORKID";
 			// ④：上記①②③に対して作業状況が「あれば」ヒモ付けてる。※作業の進捗状況(%)や作業開始・終了情報などを取得するため
 			sql  = sql + " left join";
 			sql  = sql + "     TT_HOUSE_WORKSTATUS TT_WORK";
 			sql  = sql + "     on";
-			sql  = sql + "         VT_WORK.HOUSEID       = TT_WORK.HOUSEID";
-			sql  = sql + "     and VT_WORK.COLNO         = TT_WORK.COLNO";
-			sql  = sql + "     and VT_WORK.WORKID        = TT_WORK.WORKID";
-			sql  = sql + "     and VT_WORK.STARTDATETIME = TT_WORK.STARTDATETIME";
-			sql  = sql + "     and TT_WORK.DELETEFLG     = 0";
+			sql  = sql + "         VT_WORK.HOUSEID         = TT_WORK.HOUSEID";
+			sql  = sql + "     and VT_WORK.COLNO           = TT_WORK.COLNO";
+			sql  = sql + "     and VT_WORK.WORKID          = TT_WORK.WORKID";
+			sql  = sql + "     and VT_WORK.STARTDATETIME   = TT_WORK.STARTDATETIME";
+			sql  = sql + "     and TT_WORK.DELETEFLG       = 0";
 			sql  = sql + "     and TT_WORK.STARTEMPLOYEEID <> '" + SpecialUser.TEST_USER + "'";//テストユーザは対象にしない
+			sql  = sql + " left join";
+			sql  = sql + "     TM_EMPLOYEE";
+			sql  = sql + "     on";
+			sql  = sql + "         TT_WORK.STARTEMPLOYEEID = TM_EMPLOYEE.EMPLOYEEID";
 			sql  = sql + " order by";
 			sql  = sql + "     VM_HOUSEWORK.HOUSEID";
 			sql  = sql + "    ,VM_HOUSEWORK.HOUSENAME";
@@ -293,10 +304,10 @@ public class DaoFormKanriDispWorkStatus {
 				if (rs.get("ENDEMPLOYEEID") != null) {
 					detail.setEndEmployeeId(rs.get("ENDEMPLOYEEID").toString());
 				}
-				// 作業終了社員名
-				if (rs.get("ENDEMPLOYEENAME") != null) {
-					detail.setEndEmployeeName(rs.get("ENDEMPLOYEENAME").toString());
-				}
+				// 作業終了社員名  ※不要であるためSQLで取得してない
+				//if (rs.get("ENDEMPLOYEENAME") != null) {
+				//	detail.setEndEmployeeName(rs.get("ENDEMPLOYEENAME").toString());
+				//}
 				
 				
 				// 進捗率
@@ -320,6 +331,116 @@ public class DaoFormKanriDispWorkStatus {
 			
 			log.info("【INF】" + pgmId + ":処理終了 作業中の作業=[" + Integer.toString(retLists.size()) + "]件");
 			return retLists;
+			
+			
+		}catch(Exception e){
+			
+			log.error("【ERR】" + pgmId + ":異常終了");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
+			return null;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	//------------------------------------------------------------------------------------------------
+	// 画面中部に表示する”収穫状況”を取得
+	
+	private ArrayList<ShukakuStatus> getShukakuStatusList() {
+		
+		// 年月日時分秒までの日時フォーマットを準備
+		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		
+		String pgmId = classId + ".getShukakuStatusList";
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		
+		try {
+			
+			String sql = " select";
+			sql  = sql + "     VM_HOUSE.HOUSEID";
+			sql  = sql + "    ,VM_HOUSE.HOUSENAME";
+			sql  = sql + "    ,coalesce(VT_WORKS.BOXCOUNT_SUM,0) BOXCOUNT_SUM";
+			sql  = sql + " from";
+			sql  = sql + "     (";
+			sql  = sql + "     select    TM_HOUSE.HOUSEID";
+			sql  = sql + "              ,TM_HOUSE.HOUSENAME";
+			sql  = sql + "     from      TM_HOUSE";
+			sql  = sql + "     where     DELETEFLG = False";
+			sql  = sql + "     ) VM_HOUSE";
+			sql  = sql + " left join";
+			sql  = sql + "     (";
+			sql  = sql + "     select    HOUSEID";
+			sql  = sql + "              ,SUM(BOXCOUNT) BOXCOUNT_SUM";
+			sql  = sql + "     from      TT_HOUSE_WORKSTATUS_SHUKAKU";
+			sql  = sql + "     where     DELETEFLG = False";
+			sql  = sql + "     and       STARTEMPLOYEEID <> '" + SpecialUser.TEST_USER + "'";
+			sql  = sql + "     group by  HOUSEID";
+			sql  = sql + "     ) VT_WORKS";
+			sql  = sql + "     on  VM_HOUSE.HOUSEID  = VT_WORKS.HOUSEID";
+			sql  = sql + " order by";
+			sql  = sql + "     VM_HOUSE.HOUSEID";
+			
+			
+			
+			/*
+			 * 【メモ】：MySQLの日付フォーマット
+			 * %Y    4 桁の年               例：2024
+			 * %y    2 桁の年               例：24
+			 * %c    月                     例：0 ~ 12
+			 * %m    2 桁の月               例：00 ~ 12
+			 * %e    日                     例：0 ~ 31
+			 * %d    2 桁の日               例：00 ~ 31
+			 * %H    24時制の時間           例：00 ~ 23
+			 * %h    12時制の時間           例：01 ~ 12
+			 * %p    午前・午後             例：AM か PM
+			 * %i    分                     例：00 ~ 59
+			 * %S,%s 秒                     例：00 ~ 59
+			 * %f    ミリ秒                 例：000000 ~ 999999
+			 * %M    月名                   例：January ~ December
+			 * %b    簡略月名               例：Jan ~ Dec
+			 * %W    曜日名                 例：Sunday ~ Saturday
+			 * %b    簡略曜日名             例：Sun ~ Sat
+			 * %a    12時制の時間・分・秒。 例：21:40:13
+			 * %T    24時制の時間・分・秒。 例：21:40:13
+			 */
+			
+			
+			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
+			List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(sql);
+			
+			//インナークラスをNEWするために必要なクラス
+			FormKanriDispWorkStatus wkForm = new FormKanriDispWorkStatus();
+			
+			// 返却値
+			ArrayList<ShukakuStatus> retList = new ArrayList<ShukakuStatus>();
+			
+			
+			for (Map<String, Object> rs: rsList) {
+				
+				ShukakuStatus row = wkForm.new ShukakuStatus();
+				
+				// ハウスID
+				row.setHouseId(rs.get("HOUSEID").toString());
+				// ハウス名
+				row.setHouseName(rs.get("HOUSENAME").toString());
+				//収穫ケース数
+				row.setCaseCount(Integer.parseInt(rs.get("BOXCOUNT_SUM").toString()));
+				
+				
+				//返却値のリストに追加
+				retList.add(row);
+				
+			}
+			
+			
+			log.info("【INF】" + pgmId + ":処理終了 表示するハウスの件数(行数)=[" + Integer.toString(retList.size()) + "]件");
+			return retList;
 			
 			
 		}catch(Exception e){

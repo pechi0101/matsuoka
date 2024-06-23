@@ -92,6 +92,13 @@
 			<span th:text="*{message}" />
 		</div>
 		
+		<!--
+		★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+		★
+		★          画面上部に表示する”稼働中の作業”
+		★
+		★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+		-->
 		
 		<!-- 文言表示エリア -->
 		<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
@@ -102,7 +109,6 @@
 		<input type="hidden" id="selectHouseId" th:field="*{selectHouseId}" />
 		<input type="hidden" id="selectColNo"   th:field="*{selectColNo}" />
 		<input type="hidden" id="selectWorkId"  th:field="*{selectWorkId}" />
-		<br>
 		
 		<!--_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 		
@@ -154,7 +160,8 @@
 						<!-- 基本は各列固定幅であるが、進捗のみ横幅をブラウザに合わせて可変にする -->
 						<div class="ymd-list-headre-container" style="width: 100%; display:flex">
 						    <div class="ymd-list-header-text" style="width: 70px;">列</div>
-						    <div class="ymd-list-header-text" style="width: calc(100% - 70px);">進捗</div>
+						    <div class="ymd-list-header-text" style="width:120px;">作業者名</div>
+						    <div class="ymd-list-header-text" style="width: calc(100% - 190px);">進捗</div>
 						</div>
 					</div>
 					
@@ -175,7 +182,8 @@
 						<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
 						<div class="ymd-list-detail-container" name="detail-row" style="width: 100%; display:flex">
 							<div class="ymd-list-detail-data" style="width: 70px;"><span th:text="*{activeWorkLists[__${stat.index}__].activeWorKRows[__${statRow.index}__].colNo}" /></div>
-							<div class="ymd-list-detail-data" style="width: calc(100% - 70px);">
+							<div class="ymd-list-detail-data" style="width:120px;"><span th:text="*{activeWorkLists[__${stat.index}__].activeWorKRows[__${statRow.index}__].startEmployeeName}" /></div>
+							<div class="ymd-list-detail-data" style="width: calc(100% - 190px);">
 								
 								<!-- _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/ -->
 								
@@ -203,6 +211,74 @@
 		
 		<br>
 		
+		<!--
+		★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+		★
+		★          画面中部に表示する”収穫状況”
+		★
+		★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+		-->
+		
+		<!-- 文言表示エリア -->
+		<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
+			<span>■全ハウスの収穫状況（本シーズン）</span>
+		</div>
+		
+		
+		
+		<!-- 一覧表ヘッダ部 -->
+		<div class="ymd-list-headre-container" style="width: 100%;">
+			
+			<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
+			<div class="ymd-list-headre-container" style="width: 100%; display:flex">
+				<div class="ymd-list-header-text" style="width: 120px;">ハウス名</div>
+				<div class="ymd-list-header-text" style="width: calc(100% - 120px);">収穫数</div>
+			</div>
+		</div>
+		
+		
+		<!-- 一覧表明細部 -->
+		<div class="ymd-list-detail-container" name="detail-parent" th:each="list,stat : *{shukakuStatusList}" style="width: 100%; border-bottom: 1px dashed rgb(219, 219, 219);">
+			
+			<!-- 隠し項目 -->
+			<input type="hidden" name="houseId"   th:field="*{shukakuStatusList[__${stat.index}__].houseId}" />
+			
+			<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
+			<div class="ymd-list-detail-container" name="detail-row" style="width: 100%; display:flex">
+				<div class="ymd-list-detail-data" style="width: 120px;"><span th:text="*{shukakuStatusList[__${stat.index}__].houseName}" /></div>
+				
+				
+				
+				<!-- 収穫ケース数（棒グラフ”風”表示）  -->
+				<div class="ymd-list-detail-data" style="width: calc(100% - 120px);">
+					<!-- ケース数が10に満たない場合の表示（数値はグラフの後ろに表示） -->
+					<div th:if="*{shukakuStatusList[__${stat.index}__].caseCount < 10}" style="display:flex;">
+						<div th:style="'width:' + 'calc(' + *{shukakuStatusList[__${stat.index}__].caseCount} / 300 * 100 + '%); background-color: rgb(153, 181, 221);'">
+						</div>
+						<span th:text="*{shukakuStatusList[__${stat.index}__].caseCount}" />
+					</div>
+					<!-- ケース数が10以上である場合の表示（数値はグラフの中に表示） -->
+					<div th:if="*{shukakuStatusList[__${stat.index}__].caseCount >= 10}" style="display:flex;">
+						<div th:style="'width:' + 'calc(' + *{shukakuStatusList[__${stat.index}__].caseCount} / 300 * 100 + '%); background-color: rgb(153, 181, 221);'">
+						<span th:text="*{shukakuStatusList[__${stat.index}__].caseCount}" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
+		<br>
+		
+		<!--
+		★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+		★
+		★          画面下部に表示する”全ハウス・全作業の稼働状況”
+		★
+		★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+		-->
 		
 		<!-- 文言表示エリア -->
 		<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
