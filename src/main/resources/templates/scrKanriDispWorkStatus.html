@@ -199,8 +199,50 @@
 			
 		</div>
 		
+		
+		
+		<br>
+		
+		
+		<!-- 文言表示エリア -->
+		<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
+			<span>■全ハウス・全作業の稼働状況</span>
+		</div>
+		
+		<!-- ▼表のヘッダ部を表現するブロック 今は”11”列表示するため width=calc(100% / 11)▼ -->
+		<div class="ymd-list-headre-container" name="detail-header-col" style="width: 100%; display:flex;">
+			<!-- ▼表のヘッダ部(１列目)を表現するブロック▼ -->
+			<div class="ymd-list-header-text" name="detail-header-col" style="width: calc(100% / 11);">
+				<span>ハウス名</span>
+			</div>
+			
+			<!-- ▼表のヘッダ部(２列目以降)を表現するブロック▼ -->
+			<div class="ymd-list-header-text" name="detail-header-col" th:each="list, stat : *{nonActiveWorkListHeader}" style="width: calc(100% / 11);">
+				<span th:text="*{nonActiveWorkListHeader[__${stat.index}__]}" />
+			</div>
+		</div>
+		
+		
+		<!-- ▼表の明細部(１行)を表現するブロック▼ -->
+		<div class="ymd-list-detail-container" name="detail-row" th:each="list, stat : *{nonActiveWorkList}" style="display:flex; width:100%;">
+			
+			
+			<!-- ▼表の明細部(１列目)を表現するブロック▼ -->
+			<div class="ymd-list-detail-data" style="width: calc(100% / 11);">
+				<span th:text="*{nonActiveWorkList[__${stat.index}__].houseName}" />
+			</div>
+			
+			<!-- ▼表の明細部(２列目以降)を表現するブロック▼ -->
+			<div class="ymd-list-detail-data" th:each="listCol, statCol : *{nonActiveWorkList[__${stat.index}__].nonActiveWorkCol}" style="width: calc(100% / 11);">
+				<span th:text="*{nonActiveWorkList[__${stat.index}__].nonActiveWorkCol[__${statCol.index}__].progressDays}" />
+			</div>
+			
+		</div>
+		
 	</form>
 	
+	<br>
+	<br>
 	
 </div>
 </center>

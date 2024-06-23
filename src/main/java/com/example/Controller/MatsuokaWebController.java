@@ -2220,28 +2220,28 @@ public class MatsuokaWebController {
 		
 		log.info("【INF】" + pgmId + ":処理開始");
 		
+		// 画面に表示する情報の取得
 		DaoFormKanriDispWorkStatus dao = new DaoFormKanriDispWorkStatus(jdbcTemplate);
 		FormKanriDispWorkStatus formKanriDispWorkStatus = dao.getDispData();
-
+		
+		
+		//------------------------------------------------
+		//デバッグ用ログ出力
 		if (formKanriDispWorkStatus == null) {
 			log.info("■■nullだ！！！！");
 		}
-		
 		if (formKanriDispWorkStatus.getActiveWorkLists() == null) {
 			log.info("■□nullだ！！！！");
 		}
-		
-		
 		for (int index = 0 ; index < formKanriDispWorkStatus.getActiveWorkLists().size() ;index++) {
-			
-			
 			if (formKanriDispWorkStatus.getActiveWorkLists().get(index) == null) {
 				log.info("□□nullだ！！！！");
 			}else{
 				log.info("ハウス=[" +  formKanriDispWorkStatus.getActiveWorkLists().get(index).getHouseId() + "]");
 			}
-			
 		}
+		//------------------------------------------------
+		
 		
 		
 		mav.addObject("formKanriDispWorkStatus",formKanriDispWorkStatus);

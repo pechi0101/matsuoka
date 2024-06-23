@@ -22,21 +22,25 @@ public class FormKanriDispWorkStatus implements Serializable {
 	
 	//------------------------------------------------
 	//画面上部に表示する”稼働中の作業”（表が複数表示されるから"Lists"という名前にしてある）
+	//※表を複数持ってるArrayList
 	private ArrayList<ActiveWorkList> activeWorkLists;
 	
 	//------------------------------------------------
 	//画面下部に表示する”全ハウス・全作業の稼働状況”
-	private ArrayList<HouseStatus> nonActiveWorlList;
+	//※表示する表は１つ。行をArrayListで持ってる
+	private ArrayList<String> nonActiveWorkListHeader;     // 一覧表のヘッダ
+	private ArrayList<NonActiveWorkRow> nonActiveWorkList; // 一覧表の中身
 	
 	
 	//コンストラクタ
 	public FormKanriDispWorkStatus() {
-		this.message             = "";
-		this.selectHouseId       = "";
-		this.selectWorkId        = "";
-		this.selectColNo         = "";
-		this.activeWorkLists     = new ArrayList<ActiveWorkList>();
-		this.nonActiveWorlList   = new ArrayList<HouseStatus>();
+		this.message                  = "";
+		this.selectHouseId            = "";
+		this.selectWorkId             = "";
+		this.selectColNo              = "";
+		this.activeWorkLists          = new ArrayList<ActiveWorkList>();
+		this.nonActiveWorkListHeader  = new ArrayList<String>();
+		this.nonActiveWorkList        = new ArrayList<NonActiveWorkRow>();
 	}
 	
 	
@@ -111,17 +115,17 @@ public class FormKanriDispWorkStatus implements Serializable {
 	//★表１行の情報
 	// @Dataアノテーションでgetter、setterが存在する状態にする
 	@Data
-	public class HouseStatus {
+	public class NonActiveWorkRow {
 		
 		private String houseId;
 		private String houseName;
 		
-		private ArrayList<HouseWorkStatus> houseWorkStatus;
+		private ArrayList<NonActiveWorkCol> nonActiveWorkCol;
 		
-		public HouseStatus() {
+		public NonActiveWorkRow() {
 			this.houseId = "";
 			this.houseName = "";
-			this.houseWorkStatus = new ArrayList<HouseWorkStatus>();
+			this.nonActiveWorkCol = new ArrayList<NonActiveWorkCol>();
 		}
 		
 	}
@@ -129,18 +133,25 @@ public class FormKanriDispWorkStatus implements Serializable {
 	//★表１列の情報
 	// @Dataアノテーションでgetter、setterが存在する状態にする
 	@Data
-	public class HouseWorkStatus {
+	public class NonActiveWorkCol {
 		
 		private String workId;
 		private String workName;
-		private int progressDays;  //リセットから経過した日数
+		
+		@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+		private LocalDateTime startDateTime;
+		@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+		private LocalDateTime resetDateTime;
 		
 		
-		public HouseWorkStatus() {
+		private String progressDays;  //リセットから経過した日数  n日経過／稼働中／－
+		
+		
+		public NonActiveWorkCol() {
 			
 			this.workId       = "";
 			this.workName     = "";
-			this.progressDays = 0;
+			this.progressDays = "";
 			
 		}
 		
