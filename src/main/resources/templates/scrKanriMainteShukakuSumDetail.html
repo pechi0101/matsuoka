@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head style="height: 100%;">
+<meta charset="UTF-8">
+<title>ログイン</title>
+<!--リセットＣＳＳ-->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/destyle.css@4.0.0/destyle.min.css">
+<!--Font Awesome(無償版)のアイコン-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<!-- jQueryがレスポンシブに対応するため必要になるコード...らしい-->
+<!-- 参考：https://job-support.ne.jp/blog/javascript/howto-jquery-->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- ▽や△のアイコンをCSSで使うためにリンクを貼る -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+<!--オリジナルＣＳＳ(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<link href="/matsuoka/css/style.css?ver='+ new Date().getTime() +'" rel="stylesheet" type="text/css">');
+//-->
+</script>
+<!--オリジナルJavaScript(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<script src="/matsuoka/js/scrKanriMainteShukakuSumDetail.js?ver='+ new Date().getTime() +'"></script>');
+//-->
+</script>
+
+
+<!-- 
+	サーバでデプロイする場合、CSS,JavaScript,画像などはドキュメントルート（※）内に配置すること
+	※例
+	  ＣＳＳ    ：/var/www/html/css
+	  JavaScript：/var/www/html/js
+	  画像      ：/var/www/html/images
+ -->
+
+
+ 
+</head>
+<body>
+
+<header class="ymd-header">
+   収穫状況確認・修正(詳細)
+</header>
+<div class="ymd-navigation">
+	<ul class="gnav">
+    <li><a th:href="@{/matsuoka/indexKanri}"}>ＴＯＰ</a></li>
+    <li><a href="">マスタメンテナンス</a>
+        <ul>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteEmployeeList}">社員情報ﾒﾝﾃﾅﾝｽ</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteHouseList}">ハウス情報ﾒﾝﾃﾅﾝｽ</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteWorkList}">作業情報ﾒﾝﾃﾅﾝｽ</a></li>
+        </ul>
+    </li>
+    <li><a href="">分析・集計</a>
+        <ul>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteWorkStatusList}">作業内容修正</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDispWorkStatus}">作業状況確認</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteShukakuSumList}">収穫情報確認</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">社員能力分析</a></li>
+        </ul>
+    </li>
+	</ul>
+</div>
+
+<center>
+<div class="ymd-base-container">
+	<!-- action(呼出しプログラムはボタン押下時にJavaScriptでセットし直す) -->
+	<form name="sendForm"  th:action="@{/matsuoka/TransitionKanriEditShukakuSum}" th:object="${formKanriMainteShukakuSumDetail}" th:method="post" style="width: 90%;">
+		
+		
+		
+		<br>
+		
+		<!--
+		**********************************************************************************
+		*                   新規登録時の表示
+		**********************************************************************************
+		-->
+		
+		
+		<div th:if="*{#strings.isEmpty(boxSum)}">
+			<!-- 新規追加時のメッセージ -->
+			<div class="ymd-container" style="width: 100%;text-align: left;">
+			下記項目を入力し登録ボタンを押してください。<br>
+			なお※印は入力必須項目です。
+			</div>
+			
+			
+			<!-- 隠し項目 -->
+			<input type="hidden" id="buttonKbn"         th:field="*{buttonKbn}" />
+			
+			<!-- 隠し項目(変更後項目) -->
+			<input type="hidden" id="houseId"           th:field="*{houseId}" />
+			<input type="hidden" id="shukakuDate"       th:field="*{shukakuDate}" />
+		
+			<!-- 隠し項目(フィルタリング値) -->
+			<input type="hidden" id="filterHouseId"         th:field="*{filterHouseId}" />
+			<input type="hidden" id="filterDateFr"          th:field="*{filterDateFr}" />
+			<input type="hidden" id="filterDateTo"          th:field="*{filterDateTo}" />
+			
+			
+			<br>
+			
+			
+			<!-- データ入力部／入力チェックメッセージ表示エリア -->
+			
+			
+			<div class="ymd-container" style="width: 100%;display: block;">
+				
+				<!-- ************【 ハウス 】*************** -->
+			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+			    <div class="ymd-label"     style="width: 180px;">※ハウス</div>
+			    <div class="ymd-container" style="width: calc(100% - 180px);">
+					<!-- 【メモ】selectedにはtrue/falseをセットする。下記はselectedに「リストのID = 初期表示したいID」の式を入れることでrrue/falseをセットするようにしてる -->
+					<select class="ymd-dropdown" id="dropDownHouse" name="dropDownHouse">
+						<option th:each="house : *{dropDownHouseList}" th:value="${house.houseId}" th:text="${house.houseName}"  th:selected="${house.houseId} eq *{houseId}"></option>
+					</select>
+				</div>
+				</div>
+				<div class="ymd-container" style="width: 100%;">
+					<div class="ymd-container" style="width: 180px;"><span></span></div>
+					<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="dropDownHouseMsg"></div>
+				</div>
+				
+				<!-- ************【 収穫日】*************** -->
+				<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+				    <div class="ymd-label"     style="width: 180px;">※収穫日</div>
+				    <!--<div class="ymd-container" style="width: calc(100% - 180px);"><input type="date" style="width: 100%;" th:value="*{#temporals.format(startDateTime, 'yyyy/MM/dd')}" /></div>-->
+				    <div class="ymd-container" style="width: 150px;"><input type="date" id="inputShukakuDate" style="width: 100%;" th:value="*{shukakuDate}" /></div>
+				</div>
+				<div class="ymd-container" style="width: 100%;">
+					<div class="ymd-container" style="width: 180px;"><span></span></div>
+					<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="inputShukakuDateMsg"></div>
+				</div>
+				<!-- ************【 収穫ケース数 】*************** -->
+				<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+				    <div class="ymd-label"     style="width: 180px;">※収穫ケース数</div>
+				    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{boxSum}" placeholder="例：5" /></div>
+				</div>
+				<div class="ymd-container" style="width: 100%;">
+					<div class="ymd-container" style="width: 180px;"><span></span></div>
+					<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="boxSumMsg"></div>
+				</div>
+				<!-- ************【 収穫ケース数(QR) 】*************** -->
+				<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+				    <div class="ymd-label"     style="width: 180px;">収穫ケース数(QR)</div>
+				    <div class="ymd-container" style="width: calc(100% - 180px);"><span th:text="*{boxSumQR}"/></div>
+				</div>
+				<!-- ************【 備考 】*************** -->
+				<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+				    <div class="ymd-label"     style="width: 180px;">備考</div>
+				    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{biko}" placeholder="例：外出のため中断" /></div>
+				</div>
+				<div class="ymd-container" style="width: 100%;">
+					<div class="ymd-container" style="width: 180px;"><span></span></div>
+					<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="bikoMsg"></div>
+				</div>
+				
+			</div>
+			
+			<br>
+			
+			
+			<!-- ボタンエリア -->
+			
+			<div class="ymd-container" style="display: flex;">
+				<!-- 戻るボタンは左詰め -->
+				<div class="ymd-container" style="width: 180px">
+					<div class="ymd-container">
+						<div class="ymd-kanri-button">
+							<a name="back"><span>戻　る</span></a>
+						</div>
+					</div>
+				</div>
+				<!-- 登録ボタンは右詰め -->
+				<div class="ymd-container" style="width: calc(100% - 180px); justify-content: flex-end;">
+					<div class="ymd-container">
+						
+						<div class="ymd-kanri-button">
+							<a name="regist"><span>登　録</span></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+		</div>
+		
+		
+		<!--
+		**********************************************************************************
+		*                   更新・削除時の表示
+		**********************************************************************************
+		-->
+		
+		
+		
+		<div th:if="*{not #strings.isEmpty(boxSum)}">
+			
+			<!-- ヘッダメッセージ表示＋非表示項目エリア -->
+			
+			<div class="ymd-container" style="width: 100%;text-align: left;">
+			下記項目を入力し更新ボタンを。削除する場合は削除ボタンを押してください。<br>
+			なお※印は入力必須項目です。<br>
+			また削除ボタンは収穫ケース数を「0に更新する」処理になります。
+			</div>
+			
+			
+			<!-- 隠し項目 -->
+			<input type="hidden" id="buttonKbn"         th:field="*{buttonKbn}" />
+			
+			<!-- 隠し項目(変更後項目) -->
+			<input type="hidden" id="houseId"           th:field="*{houseId}" />
+			<input type="hidden" id="shukakuDate"       th:field="*{shukakuDate}" />
+		
+			<!-- 隠し項目(フィルタリング値) -->
+			<input type="hidden" id="filterHouseId"     th:field="*{filterHouseId}" />
+			<input type="hidden" id="filterDateFr"      th:field="*{filterDateFr}" />
+			<input type="hidden" id="filterDateTo"      th:field="*{filterDateTo}" />
+			
+			<br>
+			
+			
+			<!-- データ入力部／入力チェックメッセージ表示エリア -->
+			
+			
+			<div class="ymd-container" style="width: 100%;display: block;">
+				
+				<!-- ************【 ハウス 】*************** -->
+				<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+				    <div class="ymd-label"     style="width: 180px;">ハウス名</div>
+				    <div class="ymd-container" style="width: calc(100% - 180px);"><span th:text="*{houseName}"/></div>
+				</div>
+				
+				<!-- ************【 収穫日】*************** -->
+				<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+				    <div class="ymd-label"     style="width: 180px;">収穫日</div>
+				    <!--<div class="ymd-container" style="width: calc(100% - 180px);"><input type="date" style="width: 100%;" th:value="*{#temporals.format(startDateTime, 'yyyy/MM/dd')}" /></div>-->
+				    <div class="ymd-container" style="width: calc(100% - 180px);"><span id="dispShukakuDate" th:text="*{#temporals.format(shukakuDate, 'yyyy/MM/dd')}"/></div>
+				</div>
+				<!-- ************【 収穫ケース数 】*************** -->
+				<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+				    <div class="ymd-label"     style="width: 180px;">※収穫ケース数</div>
+				    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{boxSum}" placeholder="例：5" /></div>
+				</div>
+				<div class="ymd-container" style="width: 100%;">
+					<div class="ymd-container" style="width: 180px;"><span></span></div>
+					<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="boxSumMsg"></div>
+				</div>
+				<!-- ************【 収穫ケース数(QR) 】*************** -->
+				<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+				    <div class="ymd-label"     style="width: 180px;">収穫ケース数(QR)</div>
+				    <div class="ymd-container" style="width: calc(100% - 180px);"><span th:text="*{boxSumQR}"/></div>
+				</div>
+				<!-- ************【 備考 】*************** -->
+				<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+				    <div class="ymd-label"     style="width: 180px;">備考</div>
+				    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{biko}" placeholder="例：外出のため中断" /></div>
+				</div>
+				<div class="ymd-container" style="width: 100%;">
+					<div class="ymd-container" style="width: 180px;"><span></span></div>
+					<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="bikoMsg"></div>
+				</div>
+				
+			</div>
+			
+			<br>
+			
+			
+			<!-- ボタンエリア -->
+			
+			<div class="ymd-container" style="display: flex;">
+				<!-- 戻るボタンは左詰め -->
+				<div class="ymd-container" style="width: 180px">
+					<div class="ymd-container">
+						<div class="ymd-kanri-button">
+							<a name="back"><span>戻　る</span></a>
+						</div>
+					</div>
+				</div>
+				<!-- 更新・削除ボタンは右詰め -->
+				<div class="ymd-container" style="width: calc(100% - 180px); justify-content: flex-end;">
+					<div class="ymd-container">
+						
+						<div class="ymd-kanri-button">
+							<a name="update"><span>更　新</span></a>
+						</div>
+						<div class="ymd-kanri-button" style="width:10px"></div>
+						<div class="ymd-kanri-button">
+							<a name="delete"><span>削　除</span></a>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<br>
+		</div>
+		
+		
+	</form>
+	
+	
+</div>
+</center>
+
+
+</body>
+</html>

@@ -15,8 +15,6 @@ function showOrHideRow() {
 	// フィルタリング条件の各値を取得
 	
 	var filterHouseId    = $("#dropDownHouse").val();
-	var filterWorkId     = $("#dropDownWork").val();
-	var filterEmployeeId = $("#dropDownEmployee").val();
 	
 	// 【メモ】日付は「2024-06-12」の形式で取得できるみたい
 	// 【メモ】日付が初期状態(yyyy/mm/ddと画面に表示されてる状態)である場合は空白("")が取得できる
@@ -26,16 +24,11 @@ function showOrHideRow() {
 	filterDateFr = filterDateFr.replace(/-/g,"");//「2024-06-12」のハイフンを正規表現で全て除去しとく
 	filterDateTo = filterDateTo.replace(/-/g,"");//「2024-06-12」のハイフンを正規表現で全て除去しとく
 	
-	var chechedVal = $("#checkBoxDispAllData").prop("checked");
-	
 	
 	
 	console.log("□選択されたハウスID=[" + filterHouseId + "]");
-	console.log("□選択された作業ID  =[" + filterWorkId + "]");
-	console.log("□選択された社員ID  =[" + filterEmployeeId + "]");
 	console.log("□選択された日付From=[" + filterDateFr + "]");
 	console.log("□選択された日付To  =[" + filterDateTo + "]");
-	console.log("□削除行表示？      =[" + chechedVal + "]");
 	
 	
 	
@@ -50,23 +43,12 @@ function showOrHideRow() {
 		
 		// 行内のハウスIDを取得
 		var houseId            = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('[name$="houseId"]').val();
-		// 行内の作業IDを取得
-		var workId             = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('[name$="workId"]').val();
-		// 行内の社員IDを取得
-		var startEmployeeId    = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('[name$="startEmployeeId"]').val();
-		// 行内の開始日Fromを取得
-		var startDate          = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('[name$="startDate"]').val();
-		startDate = startDate.replace(/\//g,"");//「2024/06/12」のスラッシュを正規表現で全て除去しとく
-		
-		var deleteFlg = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('[name$="deleteFlg"]').val();
-		
+		// 行内の収穫日を取得
+		var shukakuDate         = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('[name$="shukakuDate"]').val();
+		shukakuDate = shukakuDate.replace(/\//g,"");//「2024/06/12」のスラッシュを正規表現で全て除去しとく
 		
 		console.log("□ハウスID  =[" + houseId + "]");
-		console.log("□作業ID    =[" + workId + "]");
-		console.log("□社員ID    =[" + startEmployeeId + "]");
-		console.log("□日付From  =[" + startDate + "]");
-		console.log("□削除フラグ=[" + deleteFlg + "]");
-		
+		console.log("□収穫日    =[" + shukakuDate + "]");
 		
 		//★★★★★★★★★★★★★★★★★★
 		// 結果その行を表示するか否かのフラグ
@@ -84,46 +66,26 @@ function showOrHideRow() {
 		if (filterHouseId    != "" && houseId         != filterHouseId) {
 			showFld = false;
 		}
-		//作業ID
-		if (filterWorkId     != "" && workId          != filterWorkId) {
-			showFld = false;
-		}
-		//社員ID
-		if (filterEmployeeId != "" && startEmployeeId != filterEmployeeId) {
-			showFld = false;
-		}
 		
-		
-		//開始日From～To両方とも入力されてる場合→開始日がその範囲外である行は非表示にする
+		//収穫日From～To両方とも入力されてる場合→開始日がその範囲外である行は非表示にする
 		if (filterDateFr     != "" && filterDateTo  != "") {
-			if (startDate      < filterDateFr
-			||  filterDateTo < startDate) {
+			if (shukakuDate    < filterDateFr
+			||  filterDateTo < shukakuDate) {
 				showFld = false;
 			}
 		}
-		//開始日From        のみ入力されてる場合→開始日がそれより小さい行は非表示にする
+		//収穫日From        のみ入力されてる場合→開始日がそれより小さい行は非表示にする
 		if (filterDateFr     != "" && filterDateTo  == "") {
-			if (startDate      < filterDateFr) {
+			if (shukakuDate    < filterDateFr) {
 				showFld = false;
 			}
 		}
-		//開始日To          のみ入力されてる場合→開始日がそれより大きい行は非表示にする
+		//収穫日To          のみ入力されてる場合→開始日がそれより大きい行は非表示にする
 		if (filterDateFr     == "" && filterDateTo  != "") {
-			if (filterDateTo < startDate) {
+			if (filterDateTo < shukakuDate) {
 				showFld = false;
 			}
 		}
-		
-		
-		//------------------------------------------------
-		//「削除した行は表示しない」と 「削除済み」の作業か否かで非表示判定
-		
-		
-		//「削除した行は表示しない」and 「削除済み」 →その行は非表示にする
-		if (chechedVal == false  && deleteFlg === "true") {
-			showFld = false;
-		}
-		
 		
 		//------------------------------------------------
 		//結果判定
@@ -145,26 +107,8 @@ function showOrHideRow() {
 // □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
 // 初期表示処理イベント
 
-/*
-削除された作業はグレー表示する
-*/
+
 $(document).ready(function() {
-	// 一覧の行を取得
-	var rows = $('[name="detail-row"]');
-	
-	console.log("□□□LOOP開始------------------------------------------------");
-	
-	//------------------------------------------------
-	// 各行をループ処理して削除された行である場合、背景色をグレーにする
-	rows.each(function() {
-		// 行内のdeleteFlgを取得
-		var deleteFlg = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('[name$="deleteFlg"]').val();
-		//console.log("□削除フラグ=[" + deleteFlg + "]");
-		if (deleteFlg === "true") {
-			// 行の背景色をグレーにする
-			$(this).removeClass().addClass('ymd-list-detail-container-deleted');
-		}
-	});
 	
 	//------------------------------------------------
 	//上で定義した自作の共通関数で行の表示・非表示を切り替える
@@ -198,24 +142,6 @@ $(function() {
 	});
 	
 	//------------------------------------------------
-	// 「作業」のドロップダウンが変更されたとき
-	//
-	$('#dropDownWork').change(function(){
-		
-		//上で定義した自作の共通関数で行の表示・非表示を切り替える
-		showOrHideRow();
-	});
-	
-	//------------------------------------------------
-	// 「社員」のドロップダウンが変更されたとき
-	//
-	$('#dropDownEmployee').change(function(){
-		
-		//上で定義した自作の共通関数で行の表示・非表示を切り替える
-		showOrHideRow();
-	});
-	
-	//------------------------------------------------
 	// 「日付From」の入力が変更されたとき
 	//
 	$("#searchDateFr").change(function(){
@@ -238,19 +164,7 @@ $(function() {
 	
 	
 	// □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
-	// 新規登録ボタン・削除作業表示チェックボックス表示エリアに関するイベント
-	
-	
-	//------------------------------------------------
-	// 「削除した行も表示する」のチェックが変更されたとき
-	//
-	
-	$('#checkBoxDispAllData').change(function(){
-		
-		//上で定義した自作の共通関数で行の表示・非表示を切り替える
-		showOrHideRow();
-		
-	});
+	// 新規登録ボタン表示エリアに関するイベント
 	
 	
 	//------------------------------------------------
@@ -269,8 +183,6 @@ $(function() {
 		//------------------------------------------------
 		// hidden項目に「選択したフィルタリング条件の情報」をセットしフォームをPOST送信
 		document.getElementById("filterHouseId").value         = $("#dropDownHouse").val();
-		document.getElementById("filterWorkId").value          = $("#dropDownWork").val();
-		document.getElementById("filterStartEmployeeId").value = $("#dropDownEmployee").val();
 		// 【メモ】日付は「2024-06-12」の形式で取得できるみたい
 		// 【メモ】日付が初期状態(yyyy/mm/ddと画面に表示されてる状態)である場合は空白("")が取得できる
 		document.getElementById("filterDateFr").value          = $("#searchDateFr").val();
@@ -280,9 +192,7 @@ $(function() {
 		//------------------------------------------------
 		// hidden項目に「選択した一覧の情報」をセットしフォームをPOST送信(新規追加時は空白)
 		document.getElementById("selectHouseId").value         = "";
-		document.getElementById("selectColNo").value           = "";
-		document.getElementById("selectWorkId").value          = "";
-		document.getElementById("selectStartDateTime").value   = "";
+		document.getElementById("selectShukakuDate").value 　  = "";
 		
 		//------------------------------------------------
 		
@@ -312,8 +222,6 @@ $(function() {
 		//------------------------------------------------
 		// hidden項目に「選択したフィルタリング条件の情報」をセットしフォームをPOST送信
 		document.getElementById("filterHouseId").value         = $("#dropDownHouse").val();
-		document.getElementById("filterWorkId").value          = $("#dropDownWork").val();
-		document.getElementById("filterStartEmployeeId").value = $("#dropDownEmployee").val();
 		// 【メモ】日付は「2024-06-12」の形式で取得できるみたい
 		// 【メモ】日付が初期状態(yyyy/mm/ddと画面に表示されてる状態)である場合は空白("")が取得できる
 		document.getElementById("filterDateFr").value          = $("#searchDateFr").val();
@@ -323,9 +231,7 @@ $(function() {
 		//------------------------------------------------
 		// hidden項目に「選択した一覧の情報」をセットしフォームをPOST送信(新規追加時は空白)
 		document.getElementById("selectHouseId").value         = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="houseId"]').val();
-		document.getElementById("selectColNo").value           = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="colNo"]').val();
-		document.getElementById("selectWorkId").value          = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="workId"]').val();
-		document.getElementById("selectStartDateTime").value   = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="startDateTime"]').val();
+		document.getElementById("selectShukakuDate").value     = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="shukakuDate"]').val();
 		
 		//------------------------------------------------
 		
@@ -333,46 +239,9 @@ $(function() {
 		let form = document.getElementsByTagName('form')[0];
 		
 		//form.action="";     // HTML内で直接記載されているためココでのセットは不要
-    	//form.method="post"; // HTML内で直接記載されているためココでのセットは不要
-    	form.submit();
+		//form.method="post"; // HTML内で直接記載されているためココでのセットは不要
+		form.submit();
 	});
 	
-	//------------------------------------------------
-	// 一覧の特定行押下イベント(削除行)
-	//
-	
-	$('.ymd-list-detail-container-deleted[name$="detail-row"]').click(function() {
-		
-		//alert("変更");
-		//console.log("■" + $(this).closest('.ymd-list-detail-container-deleted[name$="detail-parent"]').find('input[name$="houseId"]').val());
-		
-		
-		//------------------------------------------------
-		// hidden項目に「選択したフィルタリング条件の情報」をセットしフォームをPOST送信
-		document.getElementById("filterHouseId").value         = $("#dropDownHouse").val();
-		document.getElementById("filterWorkId").value          = $("#dropDownWork").val();
-		document.getElementById("filterStartEmployeeId").value = $("#dropDownEmployee").val();
-		// 【メモ】日付は「2024-06-12」の形式で取得できるみたい
-		// 【メモ】日付が初期状態(yyyy/mm/ddと画面に表示されてる状態)である場合は空白("")が取得できる
-		document.getElementById("filterDateFr").value          = $("#searchDateFr").val();
-		document.getElementById("filterDateTo").value          = $("#searchDateTo").val();
-		
-		
-		//------------------------------------------------
-		// hidden項目に「選択した一覧の情報」をセットしフォームをPOST送信(新規追加時は空白)
-		document.getElementById("selectHouseId").value         = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="houseId"]').val();
-		document.getElementById("selectColNo").value           = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="colNo"]').val();
-		document.getElementById("selectWorkId").value          = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="workId"]').val();
-		document.getElementById("selectStartDateTime").value   = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="startDateTime"]').val();
-		
-		//------------------------------------------------
-		
-		//画面内にformタグは１つしかないため０番目を固定で取得
-		let form = document.getElementsByTagName('form')[0];
-		
-		//form.action="";     // HTML内で直接記載されているためココでのセットは不要
-    	//form.method="post"; // HTML内で直接記載されているためココでのセットは不要
-    	form.submit();
-	});
 	
 });

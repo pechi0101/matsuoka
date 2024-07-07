@@ -1,6 +1,7 @@
 package com.example.form;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -28,9 +29,9 @@ public class FormKanriMainteWorkStatusList implements Serializable {
 	private String filterWorkId;
 	private String filterStartEmployeeId;
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private LocalDateTime filterDateFr;
+	private LocalDate filterDateFr;
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private LocalDateTime filterDateTo;
+	private LocalDate filterDateTo;
 	
 	// 表示制御
 	private String deleteWorkStatusDisp; //削除行を表示するか否か 0:表示しない 1:表示する

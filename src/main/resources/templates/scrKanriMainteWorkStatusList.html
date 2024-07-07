@@ -55,7 +55,7 @@
         <ul>
             <li><a th:href="@{/matsuoka/TransitionKanriMainteWorkStatusList}">作業内容修正</a></li>
             <li><a th:href="@{/matsuoka/TransitionKanriDispWorkStatus}">作業状況確認</a></li>
-            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">収穫情報確認</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteShukakuSumList}">収穫情報確認</a></li>
             <li><a th:href="@{/matsuoka/TransitionKanriDummy}">社員能力分析</a></li>
         </ul>
     </li>
@@ -102,10 +102,10 @@
 			</div>
 			<div class="ymd-container" style="width:  30px;"></div>
 			<div class="ymd-label"     style="width:  70px;">日付</div>
-			<div class="ymd-container" style="width: 150px;"><input type="date" id="filterDateFr" style="width: 100%;" th:value="*{filterDateFr}" /></div>
+			<div class="ymd-container" style="width: 150px;"><input type="date" id="searchDateFr" name="searchDateFr" style="width: 100%;" th:value="*{filterDateFr}" /></div>
 			<div class="ymd-container" style="width:  30px;"></div>
 			<div class="ymd-container" style="width:  50px;">～</div>
-			<div class="ymd-container" style="width: 150px;"><input type="date" id="filterDateTo" style="width: 100%;" th:value="*{filterDateTo}" /></div>
+			<div class="ymd-container" style="width: 150px;"><input type="date" id="searchDateTo" name="searchDateTo" style="width: 100%;" th:value="*{filterDateTo}" /></div>
 			
 		</div>
 		

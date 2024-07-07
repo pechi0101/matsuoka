@@ -287,9 +287,9 @@ $(function() {
 			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
 			return;
 			
-		} else if (inputVal.value > 100) {
+		} else if (inputVal.value > 300) {
 			//範囲チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】0～100の範囲内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】0～300の範囲内で入力してください</p>';
 			return;
 			
 		}else{
@@ -333,9 +333,9 @@ $(function() {
 			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
 			return;
 			
-		} else if (inputVal.value > 100) {
+		} else if (inputVal.value > 300) {
 			//範囲チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】0～100の範囲内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】0～300の範囲内で入力してください</p>';
 			return;
 			
 		}else{
@@ -567,9 +567,9 @@ $(function() {
 			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
 			checkOKFlg = false;
 			
-		} else if (inputVal.value > 100) {
+		} else if (inputVal.value > 300) {
 			//範囲チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】0～100の範囲内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】0～300の範囲内で入力してください</p>';
 			checkOKFlg = false;
 			
 		}else{
@@ -605,9 +605,9 @@ $(function() {
 				msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
 				return;
 				
-			} else if (inputVal.value > 100) {
+			} else if (inputVal.value > 300) {
 				//範囲チェック
-				msgArea.innerHTML = '<p class="msg-ng">【NG】0～100の範囲内で入力してください</p>';
+				msgArea.innerHTML = '<p class="msg-ng">【NG】0～300の範囲内で入力してください</p>';
 				return;
 				
 			}else{

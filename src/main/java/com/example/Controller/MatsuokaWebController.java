@@ -1,6 +1,7 @@
 package com.example.Controller;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import com.example.DAO.DaoFormKanriMainteEmployee;
 import com.example.DAO.DaoFormKanriMainteHouse;
 import com.example.DAO.DaoFormKanriMainteWork;
 import com.example.DAO.DaoFormKanriMainteWorkStatus;
+import com.example.DAO.DaoFormKanriShukakuSum;
 import com.example.DAO.DaoHouse;
 import com.example.DAO.DaoHouseWorkStatus;
 import com.example.DAO.DaoHouseWorkStatusShukaku;
@@ -46,6 +48,8 @@ import com.example.form.FormKanriMainteEmployeeDetail;
 import com.example.form.FormKanriMainteEmployeeList;
 import com.example.form.FormKanriMainteHouseDetail;
 import com.example.form.FormKanriMainteHouseList;
+import com.example.form.FormKanriMainteShukakuSumDetail;
+import com.example.form.FormKanriMainteShukakuSumList;
 import com.example.form.FormKanriMainteWorkDetail;
 import com.example.form.FormKanriMainteWorkList;
 import com.example.form.FormKanriMainteWorkStatusDetail;
@@ -2250,6 +2254,299 @@ public class MatsuokaWebController {
 		
 
 		mav.setViewName("scrKanriDispWorkStatus.html");
+		return mav;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+	//
+	//  収穫状況確認メンテナンス
+	//
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+	
+	
+	// 一覧画面への遷移
+	@RequestMapping(value ="/matsuoka/TransitionKanriMainteShukakuSumList",method = RequestMethod.GET)
+	public ModelAndView trunsition_KanriMainteShukakuSumList(ModelAndView mav) {
+
+		String pgmId = classId + ".trunsition_KanriMainteShukakuSumList";
+		
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		DaoFormKanriShukakuSum dao = new DaoFormKanriShukakuSum(jdbcTemplate);
+		
+		//------------------------------------------------
+		// 一覧表示用にデータを取得
+		FormKanriMainteShukakuSumList formKanriMainteShukakuSumList;
+		
+		// ※最初は検索条件なしで全て一覧表示するため引数は全て空白かnull
+		formKanriMainteShukakuSumList = dao.getShukakuSumList("",  null,null);
+		
+		if (formKanriMainteShukakuSumList == null) {
+			
+			formKanriMainteShukakuSumList = new FormKanriMainteShukakuSumList();
+			formKanriMainteShukakuSumList.setMessage("検索処理で異常が発生しました。システム管理者にご連絡ください。");
+			log.info("【ERR】" + pgmId + ":検索処理で異常終了");
+		
+		} else if (formKanriMainteShukakuSumList.getShukakuList().size() == 0) {
+		
+			formKanriMainteShukakuSumList.setMessage("データが0件でした。");
+			log.info("【INF】" + pgmId + ":データが0件でした。");
+		}
+		
+		
+		// ------------------------------------------------
+		// 絞込み条件欄のドロップダウンリストにセットする値を検索しセット
+		
+		DaoDropDownList daoDropDown = new DaoDropDownList(jdbcTemplate);
+		
+		formKanriMainteShukakuSumList.setDropDownHouseList(daoDropDown.getHouseList());
+		
+		
+		mav.addObject("formKanriMainteShukakuSumList",formKanriMainteShukakuSumList);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrKanriMainteShukakuSumList.html");
+		return mav;
+	}
+	
+	
+	
+	//詳細画面への遷移
+	@RequestMapping(value ="/matsuoka/TransitionKanriMainteShukakuSumDetail",method = RequestMethod.POST)
+	public ModelAndView trunsition_KanriMainteShukakuSumDetail(@ModelAttribute FormKanriMainteShukakuSumList formKanriMainteShukakuSumList, ModelAndView mav) {
+		
+		String pgmId = classId + ".trunsition_KanriMainteShukakuSumDetail";
+		
+		log.info("【INF】" + pgmId + " :処理開始");
+		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteShukakuSumList.getSelectHouseId() + "]");
+		log.info("【INF】" + pgmId + " :収穫日      =[" + formKanriMainteShukakuSumList.getSelectShukakuDate() + "]");
+		log.info("【INF】" + pgmId + " :▼フィルタリング条件------------------------------------------------");
+		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteShukakuSumList.getFilterHouseId() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日Fr=[" + formKanriMainteShukakuSumList.getFilterDateFr() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日To=[" + formKanriMainteShukakuSumList.getFilterDateTo() + "]");
+		log.info("【INF】" + pgmId + " :▲フィルタリング条件------------------------------------------------");
+		
+		
+		String targetHouseId              = formKanriMainteShukakuSumList.getSelectHouseId();
+		LocalDate targetShukakuDate   = formKanriMainteShukakuSumList.getSelectShukakuDate();
+		
+		// 返却値
+		FormKanriMainteShukakuSumDetail formKanriMainteShukakuSumDetail = new FormKanriMainteShukakuSumDetail();
+		
+		if (targetHouseId.equals("") == true) {
+			
+			//------------------------------------------------
+			//ハウスIDが指定されていない場合(新規登録)：次画面を空表示
+			
+			// 処理なし
+			
+		}else{
+			//------------------------------------------------
+			//ハウスIDが指定されている  場合(更新削除)：収穫合計情報を検索して次画面に表示
+			
+			DaoFormKanriShukakuSum dao = new DaoFormKanriShukakuSum(jdbcTemplate);
+			
+			
+			//boolean blExistsShukakuSum   = dao.isExistsShukakuSum(  targetHouseId, targetShukakuDate);
+			//boolean blExistsShukakuSumQR = dao.isExistsShukakuSumQR(targetHouseId, targetShukakuDate);
+			
+			
+			formKanriMainteShukakuSumDetail = dao.getShukakuSumDetail(targetHouseId, targetShukakuDate);
+		}
+		
+		
+		// ------------------------------------------------
+		// 一覧画面で選択・入力したフィルタリング条件を引継ぎ
+		
+		formKanriMainteShukakuSumDetail.setFilterHouseId(    formKanriMainteShukakuSumList.getFilterHouseId());
+		formKanriMainteShukakuSumDetail.setFilterDateFr(     formKanriMainteShukakuSumList.getFilterDateFr());
+		formKanriMainteShukakuSumDetail.setFilterDateTo(     formKanriMainteShukakuSumList.getFilterDateTo());
+		
+		
+		// ------------------------------------------------
+		// 入力欄のドロップダウンリストにセットする値を検索しセット
+		
+		DaoDropDownList daoDropDown = new DaoDropDownList(jdbcTemplate);
+		
+		formKanriMainteShukakuSumDetail.setDropDownHouseList( daoDropDown.getHouseList());
+		
+		
+		
+		mav.addObject("formKanriMainteShukakuSumDetail",formKanriMainteShukakuSumDetail);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrKanriMainteShukakuSumDetail.html");
+		return mav;
+	}
+	
+
+	//戻るボタン押下処理
+	@RequestMapping(value ="/matsuoka/TransitionKanriMainteShukakuSumListSearch",method = RequestMethod.POST)
+	public ModelAndView transition_KanriMainteMainteShukakuSumListSearch(@ModelAttribute FormKanriMainteShukakuSumDetail formKanriMainteShukakuSumDetail, ModelAndView mav) {
+
+		String pgmId = classId + ".transition_KanriMainteMainteShukakuSumListSearch";
+		
+		log.info("【INF】" + pgmId + " :処理開始");
+		log.info("【INF】" + pgmId + " :ﾎﾞﾀﾝ区分    =[" + formKanriMainteShukakuSumDetail.getButtonKbn() + "]");
+		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteShukakuSumDetail.getHouseId() + "]");
+		log.info("【INF】" + pgmId + " :収穫日      =[" + formKanriMainteShukakuSumDetail.getShukakuDate() + "]");
+		log.info("【INF】" + pgmId + " :▼フィルタリング条件------------------------------------------------");
+		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteShukakuSumDetail.getFilterHouseId() + "]");
+		log.info("【INF】" + pgmId + " :収穫日Fr    =[" + formKanriMainteShukakuSumDetail.getFilterDateFr() + "]");
+		log.info("【INF】" + pgmId + " :収穫日To    =[" + formKanriMainteShukakuSumDetail.getFilterDateTo() + "]");
+		log.info("【INF】" + pgmId + " :▲フィルタリング条件------------------------------------------------");
+		
+		
+		
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		DaoFormKanriShukakuSum dao = new DaoFormKanriShukakuSum(jdbcTemplate);
+		
+		//------------------------------------------------
+		// 一覧表示用にデータを取得
+		FormKanriMainteShukakuSumList formKanriMainteShukakuSumList;
+		
+		formKanriMainteShukakuSumList = dao.getShukakuSumList("",  null,null);
+		
+		if (formKanriMainteShukakuSumList == null) {
+			
+			formKanriMainteShukakuSumList = new FormKanriMainteShukakuSumList();
+			formKanriMainteShukakuSumList.setMessage("検索処理で異常が発生しました。システム管理者にご連絡ください。");
+			log.info("【ERR】" + pgmId + ":検索処理で異常終了");
+		
+		} else if (formKanriMainteShukakuSumList.getShukakuList().size() == 0) {
+		
+			formKanriMainteShukakuSumList.setMessage("データが0件でした。");
+			log.info("【INF】" + pgmId + ":データが0件でした。");
+		}
+		
+		
+		
+		// ------------------------------------------------
+		// 一覧画面で選択・入力したフィルタリング条件を引継ぎ
+		
+		formKanriMainteShukakuSumList.setFilterHouseId(        formKanriMainteShukakuSumDetail.getFilterHouseId());
+		formKanriMainteShukakuSumList.setFilterDateFr(         formKanriMainteShukakuSumDetail.getFilterDateFr());
+		formKanriMainteShukakuSumList.setFilterDateTo(         formKanriMainteShukakuSumDetail.getFilterDateTo());
+		
+		
+		// ------------------------------------------------
+		// 絞込み条件欄のドロップダウンリストにセットする値を検索しセット
+		
+		DaoDropDownList daoDropDown = new DaoDropDownList(jdbcTemplate);
+		
+		formKanriMainteShukakuSumList.setDropDownHouseList(daoDropDown.getHouseList());
+		
+		
+		mav.addObject("formKanriMainteShukakuSumList",formKanriMainteShukakuSumList);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrKanriMainteShukakuSumList.html");
+		return mav;
+	}
+	
+	
+	
+	//登録処理
+	@RequestMapping(value ="/matsuoka/TransitionKanriEditShukakuSum",method = RequestMethod.POST)
+	public ModelAndView editKanriShukakuSum(@ModelAttribute FormKanriMainteShukakuSumDetail formKanriMainteShukakuSumDetail, ModelAndView mav) {
+		
+		String pgmId = classId + ".editKanriShukakuSum";
+		
+		log.info("【INF】" + pgmId + " :処理開始");
+		log.info("【INF】" + pgmId + " :ﾎﾞﾀﾝ区分    =[" + formKanriMainteShukakuSumDetail.getButtonKbn() + "]");
+		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteShukakuSumDetail.getHouseId() + "]");;
+		log.info("【INF】" + pgmId + " :作業開始日時=[" + formKanriMainteShukakuSumDetail.getShukakuDate() + "]");
+		log.info("【INF】" + pgmId + " :ケース数    =[" + formKanriMainteShukakuSumDetail.getBoxSum() + "]");
+		log.info("【INF】" + pgmId + " :備考        =[" + formKanriMainteShukakuSumDetail.getBiko() + "]");
+		log.info("【INF】" + pgmId + " :▼フィルタリング条件------------------------------------------------");
+		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteShukakuSumDetail.getFilterHouseId() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日Fr=[" + formKanriMainteShukakuSumDetail.getFilterDateFr() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日To=[" + formKanriMainteShukakuSumDetail.getFilterDateTo() + "]");
+		log.info("【INF】" + pgmId + " :▲フィルタリング条件------------------------------------------------");
+		
+		
+		DaoFormKanriShukakuSum dao = new DaoFormKanriShukakuSum(jdbcTemplate);
+		
+		
+		//------------------------------------------------
+		// 登録・更新・削除
+		
+		
+		if (formKanriMainteShukakuSumDetail.getButtonKbn().equals("regist") == true) {
+			
+			//------------------------------------------------
+			//登録処理を実施
+			dao.registShukakuSum(formKanriMainteShukakuSumDetail, SpecialUser.KANRI_USER, "scrKanriMainteShukakuSumDetail");
+			
+			
+		} else if (formKanriMainteShukakuSumDetail.getButtonKbn().equals("update") == true) {
+			
+			//------------------------------------------------
+			//更新処理を実施
+			dao.updateShukakuSum(formKanriMainteShukakuSumDetail, SpecialUser.KANRI_USER, "scrKanriMainteShukakuSumDetail");
+			
+			
+		} else if (formKanriMainteShukakuSumDetail.getButtonKbn().equals("delete") == true) {
+			
+			//------------------------------------------------
+			//削除処理を実施(収穫ケース数を0クリア)
+			dao.zeroClearShukakuSum(formKanriMainteShukakuSumDetail, SpecialUser.KANRI_USER, "scrKanriMainteShukakuSumDetail");
+			
+		}
+		
+		
+		//------------------------------------------------
+		// 一覧表示用にデータを取得
+		FormKanriMainteShukakuSumList formKanriMainteShukakuSumList;
+		
+		formKanriMainteShukakuSumList = dao.getShukakuSumList("", null,null);
+		
+		if (formKanriMainteShukakuSumList == null) {
+			
+			formKanriMainteShukakuSumList = new FormKanriMainteShukakuSumList();
+			formKanriMainteShukakuSumList.setMessage("検索処理で異常が発生しました。システム管理者にご連絡ください。");
+			log.info("【ERR】" + pgmId + ":検索処理で異常終了");
+		
+		} else if (formKanriMainteShukakuSumList.getShukakuList().size() == 0) {
+		
+			formKanriMainteShukakuSumList.setMessage("データが0件でした。");
+			log.info("【INF】" + pgmId + ":データが0件でした。");
+		}
+
+		
+		
+		// ------------------------------------------------
+		// 一覧画面で選択・入力したフィルタリング条件を引継ぎ
+		
+		formKanriMainteShukakuSumList.setFilterHouseId(        formKanriMainteShukakuSumDetail.getFilterHouseId());
+		formKanriMainteShukakuSumList.setFilterDateFr(         formKanriMainteShukakuSumDetail.getFilterDateFr());
+		formKanriMainteShukakuSumList.setFilterDateTo(         formKanriMainteShukakuSumDetail.getFilterDateTo());
+		
+		
+		// ------------------------------------------------
+		// 絞込み条件欄のドロップダウンリストにセットする値を検索しセット
+		
+		DaoDropDownList daoDropDown = new DaoDropDownList(jdbcTemplate);
+		
+		formKanriMainteShukakuSumList.setDropDownHouseList(   daoDropDown.getHouseList());
+		
+		
+		mav.addObject("formKanriMainteShukakuSumList",formKanriMainteShukakuSumList);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrKanriMainteShukakuSumList.html");
 		return mav;
 	}
 	

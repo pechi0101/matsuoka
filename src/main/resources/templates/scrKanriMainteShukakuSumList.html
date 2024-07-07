@@ -23,12 +23,6 @@
    document.write('<link href="/matsuoka/css/style.css?ver='+ new Date().getTime() +'" rel="stylesheet" type="text/css">');
 //-->
 </script>
-<!--オリジナルJavaScript(常に最新のcssを読込むよう工夫)-->
-<script type="text/JavaScript">
-<!--
-   document.write('<script src="/matsuoka/js/scrKanriMainteHouseList.js?ver='+ new Date().getTime() +'"></script>');
-//-->
-</script>
 
 
 <!-- 
@@ -45,7 +39,7 @@
 <body>
 
 <header class="ymd-header">
-   ハウス情報メンテナンス(一覧表示)
+   収穫状況確認・修正(一覧表示)
 </header>
 <div class="ymd-navigation">
 	<ul class="gnav">
@@ -71,39 +65,58 @@
 <center>
 <div class="ymd-base-container">
 	<!-- action(呼出しプログラムはボタン押下時にJavaScriptでセットし直す) -->
-	<form name="sendForm"  th:action="@{/matsuoka/TransitionKanriMainteHouseDetail}" th:object="${formKanriMainteHouseList}" th:method="post" style="width: 100%;">
-		
-		
-		<!-- 検索条件入力エリア -->
+	<form name="sendForm"  th:action="@{/matsuoka/TransitionKanriMainteShukakuSumDetail}" th:object="${formKanriMainteShukakuSumList}" th:method="post" style="width: 100%;">
 		
 		
 		<!-- 画面ヘッダメッセージ -->
 		<div class="ymd-container" style="width: 100%;text-align: left;">
-		ハウス情報は紙に印字されたＱＲコードと直結する情報であるため、「削除」はできないよう<br>
-		ボタンを隠してます。「新規登録」「削除」が必要である場合はシステム管理者にご相談ください。
+		検索条件を入力することで絞込みが可能です。
 		</div>
 		
 		
+		<!-- 検索条件入力エリア -->
 		
-		<br>
+		<div class="ymd-container" style="width: 100%;">
+			<!-- 【メモ】selectedにはtrue/falseをセットする。下記はselectedに「リストのID = 初期表示したいID」の式を入れることでrrue/falseをセットするようにしてる -->
+			<div class="ymd-container" style="width: 100px;">検索条件</div>
+			<div class="ymd-label"     style="width:  70px;">ハウス</div>
+			<div class="ymd-container" style="width: 100px;">
+				<select class="ymd-dropdown" id="dropDownHouse" name="dropDownHouse">
+					<option th:each="house : *{dropDownHouseList}" th:value="${house.houseId}" th:text="${house.houseName}"  th:selected="${house.houseId} eq *{filterHouseId}"></option>
+				</select>
+			</div>
+			<div class="ymd-container" style="width:  30px;"></div>
+			<div class="ymd-label"     style="width:  70px;">日付</div>
+			<div class="ymd-container" style="width: 150px;"><input type="date" id="searchDateFr" name="searchDateFr" style="width: 100%;" th:value="*{filterDateFr}" /></div>
+			<div class="ymd-container" style="width:  30px;"></div>
+			<div class="ymd-container" style="width:  50px;">～</div>
+			<div class="ymd-container" style="width: 150px;"><input type="date" id="searchDateTo" name="searchDateTo" style="width: 100%;" th:value="*{filterDateTo}" /></div>
+			
+		</div>
+		
 		
 		<!-- 警告メッセージ表示エリア -->
 		<div class="ymd-container" style="color: red;">
 			<span th:text="*{message}" />
 		</div>
 		
-		
-		<!-- ボタン表示エリア -->
+		<!-- 新規登録ボタン表示エリア -->
 		<div class="ymd-container" style="float: right;">
-			<div class="ymd-kanri-button">
-				<a name="new"><span>新規追加</span></a>
+			<div class="ymd-container">
+				<div class="ymd-kanri-button">
+					<a name="new"><span>新規追加</span></a>
+				</div>
 			</div>
 		</div>
 		
 		<!-- 非表示項目 -->
-		<input type="hidden" id="selectHouseId" th:field="*{selectHouseId}" />
-		<br>
+		<input type="hidden" id="selectHouseId"         th:field="*{selectHouseId}" />
+		<input type="hidden" id="selectShukakuDate"     th:field="*{selectShukakuDate}" />
 		
+		<input type="hidden" id="filterHouseId"         th:field="*{filterHouseId}" />
+		<input type="hidden" id="filterDateFr"          th:field="*{filterDateFr}" />
+		<input type="hidden" id="filterDateTo"          th:field="*{filterDateTo}" />
+		<br>
 		
 		
 		<!-- 一覧表ヘッダ部 -->
@@ -111,9 +124,11 @@
 			
 			<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
 			<div class="ymd-list-headre-container" style="width: 100%; display:flex">
-			    <div class="ymd-list-header-text" style="width: 120px;">ハウス名</div>
-			    <div class="ymd-list-header-text" style="width: 130px;">列数</div>
-			    <div class="ymd-list-header-text" style="width: calc(100% - 250px);">備考</div>
+			    <div class="ymd-list-header-text" style="width: 150px;">ハウス名</div>
+			    <div class="ymd-list-header-text" style="width: 200px;">収穫日</div>
+			    <div class="ymd-list-header-text" style="width: 200px;">収穫ケース数</div>
+			    <div class="ymd-list-header-text" style="width: 200px;">収穫ケース数(QR)</div>
+			    <div class="ymd-list-header-text" style="width: calc(100% - 750px);">備考</div>
 			</div>
 		</div>
 		
@@ -122,16 +137,21 @@
 		
 		<!-- 【参考】https://medium-company.com/springboot-thymeleaf-list/ -->
 		<!-- 【参考】https://hitori-goto.com/2021/01/26/springboot-thymeleaf-send-dynamic-table-data/ -->
-		<div class="ymd-list-detail-container" name="detail-parent" th:each="list,stat : *{houseList}" style="width: 100%; border-bottom: 1px dashed rgb(219, 219, 219);">
+		<div class="ymd-list-detail-container" name="detail-parent" th:each="list,stat : *{shukakuList}" style="width: 100%; border-bottom: 1px dashed rgb(219, 219, 219);">
 			
 			<!-- 隠し項目 -->
-			<input type="hidden" name="houseId"   th:field="*{houseList[__${stat.index}__].houseId}" />
+			<input type="hidden" name="houseId"         th:field="*{shukakuList[__${stat.index}__].houseId}" />
+			<input type="hidden" name="shukakuDate"     th:field="*{shukakuList[__${stat.index}__].shukakuDate}" />
 			
 			<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
+			
 			<div class="ymd-list-detail-container" name="detail-row" style="width: 100%; display:flex">
-			    <div class="ymd-list-detail-data" style="width: 120px;"><span th:text="*{houseList[__${stat.index}__].houseName}" /></div>
-			    <div class="ymd-list-detail-data" style="width: 130px;"><span th:text="*{houseList[__${stat.index}__].colCount}" /></div>
-			    <div class="ymd-list-detail-data" style="width: calc(100% - 250px);"><span th:text="*{houseList[__${stat.index}__].biko}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 150px;"><span th:text="*{shukakuList[__${stat.index}__].houseName}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 200px;"><span th:text="*{#temporals.format(shukakuList[__${stat.index}__].shukakuDate, 'yyyy/MM/dd')}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 200px;"><span th:text="*{shukakuList[__${stat.index}__].boxSum}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 200px;"><span th:text="*{shukakuList[__${stat.index}__].boxSumQR}" /></div>
+			    <div class="ymd-list-detail-data" style="width: calc(100% - 750px);"><span th:text="*{shukakuList[__${stat.index}__].biko}" /></div>
+			</div>
 			</div>
 		</div>
 	</form>
@@ -140,6 +160,12 @@
 </div>
 </center>
 
+<!--オリジナルJavaScript(常に最新のjavaScriptを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<script src="/matsuoka/js/scrKanriMainteShukakuSumList.js?ver='+ new Date().getTime() +'"></script>');
+//-->
+</script>
 
 </body>
 </html>

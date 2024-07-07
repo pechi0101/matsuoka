@@ -27,9 +27,9 @@ public class FormKanriMainteWorkStatusDetail {
 	private String filterWorkId;
 	private String filterStartEmployeeId;
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private LocalDateTime filterDateFr;
+	private LocalDate filterDateFr;
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private LocalDateTime filterDateTo;
+	private LocalDate filterDateTo;
 	
 	//------------------------------------------------
 	// 元々の(修正前の)主キー情報(一覧画面から引き継いだ作業の主キー情報)

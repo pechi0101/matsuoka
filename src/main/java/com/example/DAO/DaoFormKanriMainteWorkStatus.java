@@ -67,7 +67,7 @@ public class DaoFormKanriMainteWorkStatus {
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS.ENDEMPLOYEEID";
 			sql  = sql + "    ,TM_EMPLOYEE_END.EMPLOYEENAME ENDEMPLOYEENAME";
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS.PERCENT";
-			sql  = sql + "    ,TT_HOUSE_WORKSTATUS.DELETEFLG";
+			sql  = sql + "    ,ifnull(TT_HOUSE_WORKSTATUS.DELETEFLG,'0') DELETEFLG";
 			sql  = sql + "    ,DATE_FORMAT(TT_HOUSE_WORKSTATUS.DELETEYMDHMS,'%Y%m%d%H%i%S') DELETEYMDHMS_STRING";// YYYYMMDDHHMMSS形式で取得（時間は24時間制）
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS.BIKO";
 			sql  = sql + "    ,null BOXCOUNT";
@@ -114,7 +114,7 @@ public class DaoFormKanriMainteWorkStatus {
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS_SHUKAKU.ENDEMPLOYEEID";
 			sql  = sql + "    ,TM_EMPLOYEE_END.EMPLOYEENAME ENDEMPLOYEENAME";
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS_SHUKAKU.PERCENT";
-			sql  = sql + "    ,TT_HOUSE_WORKSTATUS_SHUKAKU.DELETEFLG";
+			sql  = sql + "    ,ifnull(TT_HOUSE_WORKSTATUS_SHUKAKU.DELETEFLG,'0') DELETEFLG";
 			sql  = sql + "    ,DATE_FORMAT(TT_HOUSE_WORKSTATUS_SHUKAKU.DELETEYMDHMS,'%Y%m%d%H%i%S') DELETEYMDHMS_STRING";// YYYYMMDDHHMMSS形式で取得（時間は24時間制）
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS_SHUKAKU.BIKO";
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS_SHUKAKU.BOXCOUNT";
@@ -151,6 +151,8 @@ public class DaoFormKanriMainteWorkStatus {
 			sql  = sql + "    ,WORKID";
 			sql  = sql + "    ,COLNO";
 			sql  = sql + "    ,STARTDATETIME_STRING";
+			
+			//log.info("【INF】" + pgmId + ":検索SQL=[" + sql + "]");
 			
 			
 			
@@ -299,7 +301,7 @@ public class DaoFormKanriMainteWorkStatus {
 			
 		}catch(Exception e){
 			
-			log.error("【ERR】" + pgmId + ":異常終了");
+			log.error("【ERR】" + pgmId + ":異常終了[" + e.toString() + "]");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			
@@ -340,7 +342,7 @@ public class DaoFormKanriMainteWorkStatus {
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS.ENDEMPLOYEEID";
 			sql  = sql + "    ,TM_EMPLOYEE_END.EMPLOYEENAME ENDEMPLOYEENAME";
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS.PERCENT";
-			sql  = sql + "    ,TT_HOUSE_WORKSTATUS.DELETEFLG";
+			sql  = sql + "    ,ifnull(TT_HOUSE_WORKSTATUS.DELETEFLG,'0') DELETEFLG";
 			sql  = sql + "    ,DATE_FORMAT(TT_HOUSE_WORKSTATUS.DELETEYMDHMS,'%Y%m%d%H%i%S') DELETEYMDHMS_STRING";// YYYYMMDDHHMMSS形式で取得（時間は24時間制）
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS.BIKO";
 			sql  = sql + "    ,null BOXCOUNT";
@@ -376,7 +378,7 @@ public class DaoFormKanriMainteWorkStatus {
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS_SHUKAKU.ENDEMPLOYEEID";
 			sql  = sql + "    ,TM_EMPLOYEE_END.EMPLOYEENAME ENDEMPLOYEENAME";
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS_SHUKAKU.PERCENT";
-			sql  = sql + "    ,TT_HOUSE_WORKSTATUS_SHUKAKU.DELETEFLG";
+			sql  = sql + "    ,ifnull(TT_HOUSE_WORKSTATUS_SHUKAKU.DELETEFLG,'0') DELETEFLG";
 			sql  = sql + "    ,DATE_FORMAT(TT_HOUSE_WORKSTATUS_SHUKAKU.DELETEYMDHMS,'%Y%m%d%H%i%S') DELETEYMDHMS_STRING";// YYYYMMDDHHMMSS形式で取得（時間は24時間制）
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS_SHUKAKU.BIKO";
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS_SHUKAKU.BOXCOUNT";

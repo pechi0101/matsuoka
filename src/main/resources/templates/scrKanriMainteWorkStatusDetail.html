@@ -61,7 +61,7 @@
         <ul>
             <li><a th:href="@{/matsuoka/TransitionKanriMainteWorkStatusList}">作業内容修正</a></li>
             <li><a th:href="@{/matsuoka/TransitionKanriDispWorkStatus}">作業状況確認</a></li>
-            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">収穫情報確認</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteShukakuSumList}">収穫情報確認</a></li>
             <li><a th:href="@{/matsuoka/TransitionKanriDummy}">社員能力分析</a></li>
         </ul>
     </li>
@@ -103,7 +103,7 @@
 		<input type="hidden" id="beforeStartDateTime"   th:field="*{beforeStartDateTime}"/>
 		<input type="hidden" id="deleteFlg"             th:field="*{deleteFlg}" />
 		
-		<!-- 隠し項目(変更後項目) -->
+		<!-- 隠し項目(非表示ID) -->
 		<input type="hidden" id="houseId"               th:field="*{houseId}" />
 		<!--<input type="hidden" id="colNo"             th:field="*{colNo}" />      ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
 		<input type="hidden" id="workId"                th:field="*{workId}" />
@@ -118,6 +118,13 @@
 		<!--<input type="hidden" id="percent"           th:field="*{percent}" />    ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
 		<!--<input type="hidden" id="boxCount"          th:field="*{boxCount}" />   ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
 		<!--<input type="hidden" id="biko"              th:field="*{biko}" />       ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		
+		<!-- 隠し項目(フィルタリング値) -->
+		<input type="hidden" id="filterHouseId"         th:field="*{filterHouseId}" />
+		<input type="hidden" id="filterWorkId"          th:field="*{filterWorkId}" />
+		<input type="hidden" id="filterStartEmployeeId" th:field="*{filterStartEmployeeId}" />
+		<input type="hidden" id="filterDateFr"          th:field="*{filterDateFr}" />
+		<input type="hidden" id="filterDateTo"          th:field="*{filterDateTo}" />
 		
 		
 		<br>

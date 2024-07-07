@@ -441,6 +441,8 @@ public class DaoHouseWorkStatus {
 			sql  = sql + "    ,ENDDATETIME";
 			sql  = sql + "    ,ENDEMPLOYEEID";
 			sql  = sql + "    ,PERCENT";
+			sql  = sql + "    ,DELETEFLG";
+			sql  = sql + "    ,DELETEYMDHMS";
 			sql  = sql + "    ,BIKO";
 			sql  = sql + "    ,SYSREGUSERID";
 			sql  = sql + "    ,SYSREGPGMID";
@@ -457,6 +459,8 @@ public class DaoHouseWorkStatus {
 			sql  = sql + "    ,null"; // 登録時は作業終了日時はnull
 			sql  = sql + "    ,null"; // 登録時は作業終了社員はnull
 			sql  = sql + "    ,0";    // 登録時は進捗率は０％
+			sql  = sql + "    ,0";    // 削除フラグ
+			sql  = sql + "    ,null"; // 削除日時
 			sql  = sql + "    ,?";
 			sql  = sql + "    ,?";
 			sql  = sql + "    ,?";
@@ -666,6 +670,8 @@ public class DaoHouseWorkStatus {
 			sql  = sql + "    ,ENDDATETIME";
 			sql  = sql + "    ,ENDEMPLOYEEID";
 			sql  = sql + "    ,PERCENT";
+			sql  = sql + "    ,DELETEFLG";
+			sql  = sql + "    ,DELETEYMDHMS";
 			sql  = sql + "    ,BIKO";
 			sql  = sql + "    ,SYSREGUSERID";
 			sql  = sql + "    ,SYSREGPGMID";
@@ -682,7 +688,9 @@ public class DaoHouseWorkStatus {
 			sql  = sql + "    ,null"; // 登録時は作業終了日時はnull
 			sql  = sql + "    ,null"; // 登録時は作業終了社員はnull
 			sql  = sql + "    ,0";    // 登録時は進捗率は０％
-			sql  = sql + "    ,?";
+			sql  = sql + "    ,0";    // 削除フラグ
+			sql  = sql + "    ,null"; // 削除日時
+			sql  = sql + "    ,?";    // 備考
 			sql  = sql + "    ,?";
 			sql  = sql + "    ,?";
 			sql  = sql + "    ,current_timestamp(3)";

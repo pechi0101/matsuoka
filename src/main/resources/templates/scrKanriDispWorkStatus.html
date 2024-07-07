@@ -61,7 +61,7 @@
         <ul>
             <li><a th:href="@{/matsuoka/TransitionKanriMainteWorkStatusList}">作業内容修正</a></li>
             <li><a th:href="@{/matsuoka/TransitionKanriDispWorkStatus}">作業状況確認</a></li>
-            <li><a th:href="@{/matsuoka/TransitionKanriDummy}">収穫情報確認</a></li>
+            <li><a th:href="@{/matsuoka/TransitionKanriMainteShukakuSumList}">収穫情報確認</a></li>
             <li><a th:href="@{/matsuoka/TransitionKanriDummy}">社員能力分析</a></li>
         </ul>
     </li>
@@ -251,15 +251,23 @@
 				
 				<!-- 収穫ケース数（棒グラフ”風”表示）  -->
 				<div class="ymd-list-detail-data" style="width: calc(100% - 120px);">
-					<!-- ケース数が10に満たない場合の表示（数値はグラフの後ろに表示） -->
-					<div th:if="*{shukakuStatusList[__${stat.index}__].caseCount < 10}" style="display:flex;">
-						<div th:style="'width:' + 'calc(' + *{shukakuStatusList[__${stat.index}__].caseCount} / 300 * 100 + '%); background-color: rgb(153, 181, 221);'">
+					<!--
+					★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+					★　　　【メモ】
+					★　　　収穫ケース数のグラフは 4000ケース＝100% としている
+					★　　　※１ハウス１シーズン3000ケース程度収穫しているため(2024/06 松岡さん)
+					★
+					★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+					-->
+					<!-- ケース数が ”100”に満たない場合の表示（数値はグラフの後ろに表示） -->
+					<div th:if="*{shukakuStatusList[__${stat.index}__].caseCount < 100}" style="display:flex;">
+						<div th:style="'width:' + 'calc(' + *{shukakuStatusList[__${stat.index}__].caseCount} / 4000 * 100 + '%); background-color: rgb(153, 181, 221);'">
 						</div>
 						<span th:text="*{shukakuStatusList[__${stat.index}__].caseCount}" />
 					</div>
-					<!-- ケース数が10以上である場合の表示（数値はグラフの中に表示） -->
-					<div th:if="*{shukakuStatusList[__${stat.index}__].caseCount >= 10}" style="display:flex;">
-						<div th:style="'width:' + 'calc(' + *{shukakuStatusList[__${stat.index}__].caseCount} / 300 * 100 + '%); background-color: rgb(153, 181, 221);'">
+					<!-- ケース数が ”100”以上である場合の表示（数値はグラフの中に表示） -->
+					<div th:if="*{shukakuStatusList[__${stat.index}__].caseCount >= 100}" style="display:flex;">
+						<div th:style="'width:' + 'calc(' + *{shukakuStatusList[__${stat.index}__].caseCount} / 4000 * 100 + '%); background-color: rgb(153, 181, 221);'">
 						<span th:text="*{shukakuStatusList[__${stat.index}__].caseCount}" />
 						</div>
 					</div>
