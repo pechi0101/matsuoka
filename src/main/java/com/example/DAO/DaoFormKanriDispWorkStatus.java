@@ -152,6 +152,7 @@ public class DaoFormKanriDispWorkStatus {
 			sql  = sql + "     from TT_HOUSE_WORKSTATUS";
 			sql  = sql + "     where";
 			sql  = sql + "         TT_HOUSE_WORKSTATUS.STARTEMPLOYEEID <> '" + SpecialUser.TEST_USER + "'";//テストユーザは対象にしない
+			sql  = sql + "     and TT_HOUSE_WORKSTATUS.DELETEFLG       = 0";//未削除のデータのみ扱う 
 			sql  = sql + "     group by HOUSEID,COLNO,WORKID";
 			sql  = sql + "     )VT_WORK";
 			sql  = sql + "     on";

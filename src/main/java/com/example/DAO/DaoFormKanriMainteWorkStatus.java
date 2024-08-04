@@ -973,13 +973,18 @@ public class DaoFormKanriMainteWorkStatus {
 				// 年月日時分秒までの日時フォーマットを準備
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 				
+				// 作業終了日時が未入力である場合を考慮して事前にフォーマットを整えておく
+				String endDateTimeString = null;
+				if (detail.getEndDateTime() != null) {
+					endDateTimeString = formatter.format(detail.getEndDateTime());
+				}
 				
 				ret = this.jdbcTemplate.update(sql
 						,detail.getHouseId()
 						,detail.getWorkId()
 						,formatter.format(detail.getStartDateTime())
 						,detail.getStartEmployeeId()
-						,formatter.format(detail.getEndDateTime())
+						,endDateTimeString
 						,detail.getEndEmployeeId()
 						,detail.getPercent()
 						,detail.getBiko()
@@ -1027,6 +1032,11 @@ public class DaoFormKanriMainteWorkStatus {
 				// 年月日時分秒までの日時フォーマットを準備
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 				
+				// 作業終了日時が未入力である場合を考慮して事前にフォーマットを整えておく
+				String endDateTimeString = null;
+				if (detail.getEndDateTime() != null) {
+					endDateTimeString = formatter.format(detail.getEndDateTime());
+				}
 				
 				ret = this.jdbcTemplate.update(sql
 						,detail.getHouseId()
@@ -1034,7 +1044,7 @@ public class DaoFormKanriMainteWorkStatus {
 						,detail.getWorkId()
 						,formatter.format(detail.getStartDateTime())
 						,detail.getStartEmployeeId()
-						,formatter.format(detail.getEndDateTime())
+						,endDateTimeString
 						,detail.getEndEmployeeId()
 						,detail.getPercent()
 						,detail.getBiko()
