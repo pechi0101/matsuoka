@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.DAO.DaoDropDownList;
 import com.example.DAO.DaoFormDispQRInfoButton;
 import com.example.DAO.DaoFormIndexQR;
+import com.example.DAO.DaoFormKanriDispShukakuAggregate;
 import com.example.DAO.DaoFormKanriDispWorkStatus;
 import com.example.DAO.DaoFormKanriMainteEmployee;
 import com.example.DAO.DaoFormKanriMainteHouse;
@@ -43,6 +44,7 @@ import com.example.form.FormDispQRInfoShukaku;
 import com.example.form.FormDispQRInfoShukakuSum;
 import com.example.form.FormIndexKanri;
 import com.example.form.FormIndexQR;
+import com.example.form.FormKanriDispShukakuAggregateList;
 import com.example.form.FormKanriDispWorkStatus;
 import com.example.form.FormKanriMainteEmployeeDetail;
 import com.example.form.FormKanriMainteEmployeeList;
@@ -2547,6 +2549,73 @@ public class MatsuokaWebController {
 		
 		log.info("【INF】" + pgmId + ":処理終了");
 		mav.setViewName("scrKanriMainteShukakuSumList.html");
+		return mav;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+	//
+	//  収穫状況表示
+	//
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+	
+	
+	// 一覧画面への遷移
+	@RequestMapping(value ="/matsuoka/TransitionKanriDispShukakuAggregate",method = RequestMethod.GET)
+	public ModelAndView trunsition_KanriDispShukakuAggregate(ModelAndView mav) {
+
+		String pgmId = classId + ".trunsition_KanriDispShukakuAggregate";
+		
+		log.info("【INF】" + pgmId + ":処理開始★");
+		
+		DaoFormKanriDispShukakuAggregate dao = new DaoFormKanriDispShukakuAggregate(jdbcTemplate);
+		
+		//------------------------------------------------
+		// 表示用にデータを取得
+		FormKanriDispShukakuAggregateList formKanriDispShukakuAggregateList;
+		
+		
+		formKanriDispShukakuAggregateList = dao.getAggregateData();
+		
+		if (formKanriDispShukakuAggregateList == null) {
+			
+			formKanriDispShukakuAggregateList = new FormKanriDispShukakuAggregateList();
+			formKanriDispShukakuAggregateList.setMessage("検索処理で異常が発生しました。システム管理者にご連絡ください。");
+			log.info("【ERR】" + pgmId + ":検索処理で異常終了");
+		
+		} else if (formKanriDispShukakuAggregateList.getDetailList().size() == 0) {
+		
+			formKanriDispShukakuAggregateList.setMessage("データが0件でした。");
+			log.info("【INF】" + pgmId + ":データが0件でした。");
+		}
+		
+		/*
+		ArrayList<FormKanriDispShukakuAggregateDetail> itemList = formKanriDispShukakuAggregateList.getDetailList();
+		for (int index = 0; index < itemList.size();index++) {
+			FormKanriDispShukakuAggregateDetail detail = itemList.get(index); 
+			log.info("□--------------------------------------");
+			log.info("□ハウスID   =[" + detail.getHouseId() + "]"); 
+			log.info("□ハウス名   =[" + detail.getHouseName() + "]");
+			log.info("□集計年     =[" + detail.getAggregateYear() + "]");
+			log.info("□集計月     =[" + detail.getAggregateMonth() + "]");
+			log.info("□ケース数   =[" + detail.getBoxSum() + "]");
+		}
+		*/
+		
+		mav.addObject("formKanriDispShukakuAggregateList",formKanriDispShukakuAggregateList);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrKanriDispShukakuAggregate.html");
 		return mav;
 	}
 	
