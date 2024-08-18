@@ -1,8 +1,11 @@
 package com.example.Controller;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.DAO.DaoClockInOut;
 import com.example.DAO.DaoDropDownList;
 import com.example.DAO.DaoFormDispQRInfoButton;
 import com.example.DAO.DaoFormIndexQR;
@@ -40,6 +44,7 @@ import com.example.entity.HouseWorkStatusShukaku;
 import com.example.entity.ShukakuBoxSum;
 import com.example.form.FormDispQRInfo;
 import com.example.form.FormDispQRInfoButton;
+import com.example.form.FormDispQRInfoClockInOut;
 import com.example.form.FormDispQRInfoShukaku;
 import com.example.form.FormDispQRInfoShukakuSum;
 import com.example.form.FormIndexKanri;
@@ -58,6 +63,7 @@ import com.example.form.FormKanriMainteWorkStatusDetail;
 import com.example.form.FormKanriMainteWorkStatusList;
 import com.example.form.FormReadQRCode;
 import com.example.form.FormReadQRStart;
+import com.example.form.FormReadQRStartClockInOut;
 import com.example.form.FormReadQRStartShukaku;
 import com.example.form.FormReadQRStartShukakuSum;
 import com.example.form.FormSelectQRReadDevice;
@@ -217,10 +223,16 @@ public class MatsuokaWebController {
 		// ①ＱＲコードで読み取った情報内にカンマが存在しない
 		// ②ＱＲコードをカンマで分解し、分解した要素が５以外
 		// ③分解したＱＲコードの最初の情報が適切でない：要素１つ目(接頭文字列)が文字列"MatsuokaQRData"であること
-		// ④分解したＱＲコードの最初の情報が適切でない：要素２つ目(ハウスID  )が５ケタであること
-		// ④分解したＱＲコードの最初の情報が適切でない：要素３つ目(列№      )が２ケタであること
-		// ④分解したＱＲコードの最初の情報が適切でない：要素４つ目(作業区分  )が１ケタであること
-		// ④分解したＱＲコードの最初の情報が適切でない：要素５つ目(作業ID    )が７ケタであること
+		//   分解したＱＲコードの最初の情報が適切でない：要素２つ目(ハウスID  )が５ケタであること
+		//   分解したＱＲコードの最初の情報が適切でない：要素３つ目(列№      )が２ケタであること
+		//   分解したＱＲコードの最初の情報が適切でない：要素４つ目(作業区分  )が１ケタであること
+		//   分解したＱＲコードの最初の情報が適切でない：要素５つ目(作業ID    )が７ケタであること
+		//                 上記③又は
+		// ④分解したＱＲコードの最初の情報が適切でない：要素１つ目(接頭文字列)が文字列"MatsuokaQRData"であること
+		//   分解したＱＲコードの最初の情報が適切でない：要素２つ目(ダミー    )が1ケタであること
+		//   分解したＱＲコードの最初の情報が適切でない：要素３つ目(ダミー    )が1ケタであること
+		//   分解したＱＲコードの最初の情報が適切でない：要素４つ目(ダミー    )が1ケタであること
+		//   分解したＱＲコードの最初の情報が適切でない：要素５つ目(作業ID    )が7ケタであること ※9000001(出退勤入力)
 		// ------------------------------------------------
 		
 		FormReadQRStart formReadQRStart = new FormReadQRStart();
@@ -247,12 +259,22 @@ public class MatsuokaWebController {
 			return mav;
 		}
 		if (
-			qrDataList[0].equals("MatsuokaQRData") == false
-		||  qrDataList[1].length() != 5
-		||  qrDataList[2].length() != 2
-		||  qrDataList[3].length() != 1
-		||  qrDataList[4].length() != 7
-		) {
+			qrDataList[0].equals("MatsuokaQRData") == true
+		&&  qrDataList[1].length() == 5
+		&&  qrDataList[2].length() == 2
+		&&  qrDataList[3].length() == 1
+		&&  qrDataList[4].length() == 7
+		            ||
+			qrDataList[0].equals("MatsuokaQRData") == true
+		&&  qrDataList[1].length() == 1
+		&&  qrDataList[2].length() == 1
+		&&  qrDataList[3].length() == 1
+		&&  qrDataList[4].length() == 7
+		) { 
+			
+			//チェックOK
+			
+		} else {
 			log.error("【ERR】" + pgmId + " :誤ったＱＲコードが読込まれました。QR=[" + formReadQRCode.getQrcode() + "]");
 			formReadQRStart.setMessage("【エラー】誤ったＱＲコードが読込まれました。再度ＱＲコードの読み取りをお願いいたします。");
 			
@@ -263,6 +285,135 @@ public class MatsuokaWebController {
 		}
 		
 		
+		
+		
+		
+		// ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+		// _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+		// 
+		// 作業が「出退勤入力」である場合
+		// 
+		// _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+		
+		
+		if (qrDataList[4].equals(SpecialWork.CLOCK_IN_OUT) == true) {
+			
+			
+			// ------------------------------------------------
+			// ＱＲコードにセットされている情報をセット
+			
+			//なし
+			
+			//FormDispQRInfoClockInOut formDispQRInfoClockInOut = new FormDispQRInfoClockInOut();
+			//formDispQRInfoClockInOut.setLoginEmployeeId(formReadQRCode.getLoginEmployeeId());
+			//formDispQRInfoClockInOut.setLoginEmployeeName(formReadQRCode.getLoginEmployeeName());
+			//formDispQRInfoClockInOut.setSelectedDeviceLabel(formReadQRCode.getSelectedDeviceLabel());
+			
+			
+			// ------------------------------------------------
+			// 今日の日付を取得
+			LocalDateTime nowDateTime = LocalDateTime.now();
+			LocalDate nowDate         = nowDateTime.toLocalDate();
+			LocalTime nowTime         = nowDateTime.toLocalTime().withNano(0); // 時分秒のみを LocalTime 型で取り出し、ミリ秒をゼロにする(画面のinput type="time"にセットする場合ミリ秒があると時間が表示されないため)
+			
+			// 年、月、日を文字列として取得するためのフォーマッタ
+			DateTimeFormatter yearFormatter  = DateTimeFormatter.ofPattern("yyyy");
+			DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MM");
+			DateTimeFormatter dayFormatter   = DateTimeFormatter.ofPattern("dd");
+			
+			
+			// ------------------------------------------------
+			// 今日の日付で「出勤」状態の情報があるか否かのチェック
+			
+			DaoClockInOut dao = new DaoClockInOut(jdbcTemplate);
+			Boolean exeitsClockInData = dao.exsistsClockInData( formReadQRCode.getLoginEmployeeId()
+															   ,nowDate.format(yearFormatter)
+															   ,nowDate.format(monthFormatter)
+															   ,nowDate.format(dayFormatter)
+															   );
+			
+			
+			FormDispQRInfoClockInOut formDispQRInfoClockInOut = null;
+			
+			// ------------------------------------------------
+			// 「出勤」状態の情報が存在する場合：最新の年月日を出勤日として表示
+			if (exeitsClockInData == true) {
+				
+				formDispQRInfoClockInOut = dao.getClockInData(  formReadQRCode.getLoginEmployeeId()
+															   ,nowDate.format(yearFormatter)
+															   ,nowDate.format(monthFormatter)
+															   ,nowDate.format(dayFormatter)
+															   );
+				
+				// 退勤日を現在日時でセット
+				formDispQRInfoClockInOut.setClockOutDate(nowDate);
+				formDispQRInfoClockInOut.setClockOutTime(nowTime);
+				formDispQRInfoClockInOut.setClockOutTimeString(nowTime.format(DateTimeFormatter.ofPattern("HH:mm")));
+				formDispQRInfoClockInOut.setClockOutDatetime(nowDateTime);
+				
+				// 上記で取得した内容にログインユーザ情報やQRコード読取端末情報を追加
+				formDispQRInfoClockInOut.setLoginEmployeeId(    formReadQRCode.getLoginEmployeeId());
+				formDispQRInfoClockInOut.setLoginEmployeeName(  formReadQRCode.getLoginEmployeeName());
+				formDispQRInfoClockInOut.setSelectedDeviceLabel(formReadQRCode.getSelectedDeviceLabel());
+				
+				formDispQRInfoClockInOut.setMessage("退勤登録");
+			}
+			
+			// ------------------------------------------------
+			// 「出勤」状態の情報が存在しない場合：現在の年月日を出勤日として表示
+			if (exeitsClockInData == false) {
+				
+				formDispQRInfoClockInOut = new FormDispQRInfoClockInOut();
+				
+				formDispQRInfoClockInOut.setClockInYear(        nowDate.format(yearFormatter));
+				formDispQRInfoClockInOut.setClockInMonth(       nowDate.format(monthFormatter));
+				formDispQRInfoClockInOut.setClockInDay(         nowDate.format(dayFormatter));
+				formDispQRInfoClockInOut.setClockInDatetime(    nowDateTime);
+				
+				// 出勤日時(現在日時)をセット
+				formDispQRInfoClockInOut.setClockInDate(nowDate);
+				formDispQRInfoClockInOut.setClockInTime(nowTime);
+				formDispQRInfoClockInOut.setClockInTimeString(nowTime.format(DateTimeFormatter.ofPattern("HH:mm")));
+				
+				
+				// 退勤日をnullでセット
+				formDispQRInfoClockInOut.setClockOutDate(null);
+				formDispQRInfoClockInOut.setClockOutTime(null);
+				formDispQRInfoClockInOut.setClockOutTimeString(null);
+				formDispQRInfoClockInOut.setClockOutDatetime(null);
+				
+				// 上記で取得した内容にログインユーザ情報やQRコード読取端末情報を追加
+				formDispQRInfoClockInOut.setLoginEmployeeId(    formReadQRCode.getLoginEmployeeId());
+				formDispQRInfoClockInOut.setLoginEmployeeName(  formReadQRCode.getLoginEmployeeName());
+				formDispQRInfoClockInOut.setSelectedDeviceLabel(formReadQRCode.getSelectedDeviceLabel());
+				
+				formDispQRInfoClockInOut.setMessage("出勤登録");
+			
+			}
+			
+			
+			// ------------------------------------------------
+			
+			mav.addObject("formDispQRInfoClockInOut", formDispQRInfoClockInOut);
+			
+			
+			log.info("【INF】" + pgmId + ":処理終了!!!");
+			mav.setViewName("scrDispQRInfoClockInOut.html");
+			// ★★★★★★★★★★★★★★★★★★★★★★★★★
+			//
+			//          出退勤情報ココで処理終了
+			//
+			// ★★★★★★★★★★★★★★★★★★★★★★★★★
+			return mav;
+			
+			
+			
+		}
+		
+		
+		
+		
+		// ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 		// _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 		// 
 		// 作業が「収穫」作業である場合
@@ -276,7 +427,7 @@ public class MatsuokaWebController {
 			// ------------------------------------------------
 			// ＱＲコードにセットされている情報をセット
 			FormDispQRInfoShukaku formDispQRInfoShukaku = new FormDispQRInfoShukaku();
-
+			
 			formDispQRInfoShukaku.setLoginEmployeeId(formReadQRCode.getLoginEmployeeId());
 			formDispQRInfoShukaku.setLoginEmployeeName(formReadQRCode.getLoginEmployeeName());
 			formDispQRInfoShukaku.setSelectedDeviceLabel(formReadQRCode.getSelectedDeviceLabel());
@@ -475,7 +626,7 @@ public class MatsuokaWebController {
 		
 		
 		
-		
+		// ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 		// _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 		// 
 		// 作業が「収穫(合計入力)」作業である場合
@@ -579,7 +730,7 @@ public class MatsuokaWebController {
 		
 		
 		
-		
+		// ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 		// _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 		// 
 		// 作業が一般作業である場合
@@ -1321,6 +1472,220 @@ public class MatsuokaWebController {
 		
 		log.info("【INF】" + pgmId + ":処理終了");
 		mav.setViewName("scrReadQRStartShukakuSum.html");
+		return mav;
+	}
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value ="/matsuoka/RegistQRInfoClockInOut",method = RequestMethod.POST)
+	public ModelAndView registQRInfoClockInOut(@ModelAttribute FormDispQRInfoClockInOut formDispQRInfoClockInOut, ModelAndView mav) {
+		
+		String pgmId = classId + ".registQRInfoClockInOut";
+		
+		log.info("【INF】" + pgmId + " :★処理開始 押したボタンのボタン区分=[" + formDispQRInfoClockInOut.getPushedButtunKbn() + "]");
+		log.info("【INF】" + pgmId + " :社員ID=[" + formDispQRInfoClockInOut.getLoginEmployeeId() + "]、社員名=[" + formDispQRInfoClockInOut.getLoginEmployeeName() + "]");
+		log.info("【INF】" + pgmId + " :選択デバイス名=[" + formDispQRInfoClockInOut.getSelectedDeviceLabel() + "]");
+		log.info("【INF】" + pgmId + " :出勤日  =[" + formDispQRInfoClockInOut.getClockInDate() + "]");
+		log.info("【INF】" + pgmId + " :出勤時間=[" + formDispQRInfoClockInOut.getClockInTime() + "]");
+		log.info("【INF】" + pgmId + " :出勤日時=[" + formDispQRInfoClockInOut.getClockInDatetime() + "]");
+		log.info("【INF】" + pgmId + " :退勤日  =[" + formDispQRInfoClockInOut.getClockOutDate() + "]");
+		log.info("【INF】" + pgmId + " :退勤時間=[" + formDispQRInfoClockInOut.getClockOutTime() + "]");
+		log.info("【INF】" + pgmId + " :退勤日時=[" + formDispQRInfoClockInOut.getClockOutDatetime() + "]");
+		log.info("【INF】" + pgmId + " :出勤日時(変更前)=[" + formDispQRInfoClockInOut.getBeforeClockInDatetime() + "]");
+		
+		
+		FormReadQRStartClockInOut formReadQRStartClockInOut = new FormReadQRStartClockInOut();
+		
+		// ログイン社員ID、社員名をセット
+		formReadQRStartClockInOut.setLoginEmployeeId(formDispQRInfoClockInOut.getLoginEmployeeId());
+		formReadQRStartClockInOut.setLoginEmployeeName(formDispQRInfoClockInOut.getLoginEmployeeName());
+		formReadQRStartClockInOut.setSelectedDeviceLabel(formDispQRInfoClockInOut.getSelectedDeviceLabel());
+		
+		
+		// キャンセル(取消してもう一度)である場合は登録処理を行わない
+		if (formDispQRInfoClockInOut.getPushedButtunKbn().equals(ButtonKbn.CANCEL)) {
+			
+			formReadQRStartClockInOut.setMessage("ＱＲコードの読み取りが取消されました。");
+			
+			mav.addObject("formReadQRStartClockInOut", formReadQRStartClockInOut);
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			mav.setViewName("scrReadQRStartClockInOut.html");
+			return mav;
+			
+			
+		}
+		
+		
+		DaoClockInOut daoClockInOut = new DaoClockInOut(jdbcTemplate);
+		boolean ret = true;
+		
+		
+		
+		
+		// _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+		// 
+		// 出退勤情報の登録
+		// 
+		// _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+		
+		
+		// 変更前出勤日がnullである場合、変更後の出勤日を入れとく（後続処理で異常終了しないために）
+		if (formDispQRInfoClockInOut.getBeforeClockInDatetime() == null) {
+			formDispQRInfoClockInOut.setBeforeClockInDatetime(formDispQRInfoClockInOut.getClockInDatetime());
+		}
+		
+		
+		// ------------------------------------------------
+		// 変更前出勤日の日付を取得
+		LocalDate beforeClockInDate      = formDispQRInfoClockInOut.getBeforeClockInDatetime().toLocalDate();
+		LocalTime beforeClockInTime      = formDispQRInfoClockInOut.getBeforeClockInDatetime().toLocalTime();
+		
+		// ------------------------------------------------
+		// 変更後出勤日の日付を取得
+		LocalDate clockInDate            = formDispQRInfoClockInOut.getClockInDatetime().toLocalDate();
+		LocalTime clockInTime            = formDispQRInfoClockInOut.getClockInDatetime().toLocalTime();
+		
+		
+		// 年、月、日を文字列として取得するためのフォーマッタ
+		DateTimeFormatter yearFormatter  = DateTimeFormatter.ofPattern("yyyy");
+		DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MM");
+		DateTimeFormatter dayFormatter   = DateTimeFormatter.ofPattern("dd");
+		
+		// 変更後の年月日をセット
+		formDispQRInfoClockInOut.setClockInYear( clockInDate.format(yearFormatter));
+		formDispQRInfoClockInOut.setClockInMonth(clockInDate.format(monthFormatter));
+		formDispQRInfoClockInOut.setClockInDay(  clockInDate.format(dayFormatter));
+		
+		
+		// ------------------------------------------------
+		// 勤務時間を編集。出退勤日時の差を「ｎ時間」で取得する
+		
+		if (formDispQRInfoClockInOut.getClockInDatetime()  != null
+		&&  formDispQRInfoClockInOut.getClockOutDatetime() != null) {
+			
+			// LocalDateTime の差を Duration として取得
+			Duration duration = Duration.between(
+											  formDispQRInfoClockInOut.getClockInDatetime()
+											, formDispQRInfoClockInOut.getClockOutDatetime()
+											);
+			// Duration から時間を取得
+			double hours = duration.toMinutes() / 60.0;
+			
+			// 小数点以下第2位で四捨五入、結果をdouble型で取得
+			BigDecimal roundedHours = new BigDecimal(hours).setScale(2, RoundingMode.HALF_UP);
+			Double workingHours = roundedHours.doubleValue();
+			
+			formDispQRInfoClockInOut.setWorkingHours(workingHours);
+			
+		}
+		
+		DaoClockInOut dao = new DaoClockInOut(jdbcTemplate);
+		
+		// ------------------------------------------------
+		// 勤務時間が重複していないかをチェック
+		Boolean isDuplication = dao.isDuplicationClockInDataTime(
+															formReadQRStartClockInOut.getLoginEmployeeId()
+														   ,clockInDate.format(yearFormatter)
+														   ,clockInDate.format(monthFormatter)
+														   ,clockInDate.format(dayFormatter)
+														   ,formDispQRInfoClockInOut.getClockInDatetime()
+														   ,formDispQRInfoClockInOut.getClockOutDatetime()
+														   );
+		
+		// チェック結果判定
+		if (isDuplication == true) {
+			
+			log.error("【ERR】" + pgmId + " :出退勤の登録・更新処理で重複チェックエラー。");
+			formReadQRStartClockInOut.setMessage("【エラー】入力した出退勤日時と重複した出退勤情報が存在します。もう一度ＱＲコードの読み取りを行い出退勤登録をやり直してください。");
+			
+			mav.addObject("formReadQRStartClockInOut", formReadQRStartClockInOut);
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			mav.setViewName("scrReadQRStartClockInOut.html");
+			return mav;
+			
+			
+		}
+		
+		
+		
+		// ------------------------------------------------
+		// 変更"後"出勤日の日付で「出勤」状態の情報があるか否かのチェック
+		
+		Boolean exeitsClockInData = dao.exsistsClockInData( formReadQRStartClockInOut.getLoginEmployeeId()
+														   ,clockInDate.format(yearFormatter)
+														   ,clockInDate.format(monthFormatter)
+														   ,clockInDate.format(dayFormatter)
+														   );
+		
+		// ------------------------------------------------
+		// 「出勤」状態の情報が存在する場合：更新処理（出退勤日時の変更、又は退勤を行う場合は更新）
+		if (exeitsClockInData == true) {
+			
+			ret = dao.update(formDispQRInfoClockInOut
+							, formDispQRInfoClockInOut.getLoginEmployeeId()
+							,"scrDispQRInfoClockInOut"
+							);
+		}
+		
+		// ------------------------------------------------
+		// 「出勤」状態の情報が存在しない場合：登録処理
+		if (exeitsClockInData == false) {
+			
+			ret = dao.regist(formDispQRInfoClockInOut
+							, formDispQRInfoClockInOut.getLoginEmployeeId()
+							,"scrDispQRInfoClockInOut"
+							);
+		}
+		
+		// 登録/更新処理結果判定
+		if (ret == false) {
+			
+			log.error("【ERR】" + pgmId + " :出退勤の登録・更新処理で異常が発生しました。");
+			formReadQRStartClockInOut.setMessage("【エラー】出退勤処理で異常が発生しました。もう一度ＱＲコードの読み取り行うかシステム担当者にご連絡ください。");
+			
+			mav.addObject("formReadQRStartClockInOut", formReadQRStartClockInOut);
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			mav.setViewName("scrReadQRStartClockInOut.html");
+			return mav;
+			
+			
+		}
+		
+		
+		// ------------------------------------------------
+		// 正常終了メッセージのセット
+		
+		
+		// 作業開始日時
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		
+		// 出退勤日時をメッセージ表示用に文字列編集
+		String clockInDateTimeString = "";
+		if (formDispQRInfoClockInOut.getClockInDatetime() != null) {
+			clockInDateTimeString = formatter.format(formDispQRInfoClockInOut.getClockInDatetime());
+		}
+		String clockOutDateTimeString = "";
+		if (formDispQRInfoClockInOut.getClockOutDatetime() != null) {
+			clockOutDateTimeString = formatter.format(formDispQRInfoClockInOut.getClockOutDatetime());
+		}
+		
+		
+		
+		// 【メモ】\nで改行して表示させている
+		formReadQRStartClockInOut.setMessage("出退勤情報を登録しました。\n出勤日時：" + clockInDateTimeString + "\n退勤日時：" + clockOutDateTimeString + "\n勤務時間：" + formDispQRInfoClockInOut.getWorkingHours() + "時間");
+		
+		
+		
+		mav.addObject("formReadQRStartClockInOut", formReadQRStartClockInOut);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrReadQRStartClockInOut.html");
 		return mav;
 	}
 	

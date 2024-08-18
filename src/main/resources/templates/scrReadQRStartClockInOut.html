@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!--リセットＣＳＳ-->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/destyle.css@4.0.0/destyle.min.css">
+<!--Font Awesome(無償版)のアイコン-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+<!--オリジナルＣＳＳ(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<link href="/matsuoka/css/style.css?ver='+ new Date().getTime() +'" rel="stylesheet" type="text/css">');
+//-->
+</script>
+
+<!-- 
+	サーバでデプロイする場合、CSS,JavaScript,画像などはドキュメントルート（※）内に配置すること
+	※例
+	  ＣＳＳ    ：/var/www/html/css
+	  JavaScript：/var/www/html/js
+	  画像      ：/var/www/html/images
+ -->
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<!-- jQueryがレスポンシブに対応するため必要になるコード...らしい-->
+<!-- 参考：https://job-support.ne.jp/blog/javascript/howto-jquery-->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- ▽や△のアイコンをCSSで使うためにリンクを貼る -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<header class="ymd-header">
+	ＱＲコード読取起動
+</header>
+<div class="ymd-navigation">
+	<a th:href="@{/matsuoka/indexQR}">&lt;&lt; 最初に戻る</a>
+</div>
+
+
+<center>
+<div class="ymd-base-container">
+
+
+	<br>
+	
+	<!--  -->
+	<form name="readQRStartForm" th:action="@{/matsuoka/TransitionReadQR}" th:object="${formReadQRStartClockInOut}" th:method="post" style="width: 100%;">
+		
+		<!-- 非表示項目エリア -->
+		<input type="hidden" id="loginEmployeeId"     style="width: 100%;" th:field="*{loginEmployeeId}" />
+		<input type="hidden" id="loginEmployeeName"   style="width: 100%;" th:field="*{loginEmployeeName}" />
+		<input type="hidden" id="selectedDeviceLabel" style="width: 100%;" th:field="*{selectedDeviceLabel}" />
+		
+		<!-- ユーザ表示エリア -->
+		<div class="ymd-login-username" style="width: 100%;">
+			作業者名：<p th:text="*{loginEmployeeName}"></p>
+		</div>
+		
+		
+		
+		<!-- メッセージ表示エリア -->
+		<div class="ymd-container" id="result-message-area" style="width: 100%; display: block;border: 1px;border-style: solid; border-color: gray;">
+			<span>【処理結果メッセージ】</span>
+			<br>
+			<textarea
+				id="message"
+				th:field="*{message}"
+				readonly
+				style="width: 100%; height: 100px;"
+			/></textarea>
+		</div>
+		
+		
+		
+		<!-- ＱＲリーダ起動ボタン表示エリア -->
+		<br>
+		<div class="ymd-container" style="width: 100%;">
+			ＱＲコードの読み取りを開始する場合、下のボタンを押してください。<br>
+		</div>
+		<br>
+		<div class="ymd-button">
+			<a href="javascript:readQRStartForm.submit();">ＱＲコード読取開始</a>
+		</div>
+		
+		<br>
+		
+	
+	</form>
+	
+	
+	
+</div>
+
+</body>
+</html>

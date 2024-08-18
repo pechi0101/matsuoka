@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head style="height: 100%;">
+<meta charset="UTF-8">
+<title>ログイン</title>
+<!--リセットＣＳＳ-->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/destyle.css@4.0.0/destyle.min.css">
+<!--Font Awesome(無償版)のアイコン-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<!-- jQueryがレスポンシブに対応するため必要になるコード...らしい-->
+<!-- 参考：https://job-support.ne.jp/blog/javascript/howto-jquery-->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- ▽や△のアイコンをCSSで使うためにリンクを貼る -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+<!--オリジナルＣＳＳ(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<link href="/matsuoka/css/style.css?ver='+ new Date().getTime() +'" rel="stylesheet" type="text/css">');
+//-->
+</script>
+
+<!-- 
+	サーバでデプロイする場合、CSS,JavaScript,画像などはドキュメントルート（※）内に配置すること
+	※例
+	  ＣＳＳ    ：/var/www/html/css
+	  JavaScript：/var/www/html/js
+	  画像      ：/var/www/html/images
+ -->
+
+
+ 
+</head>
+<body>
+
+<header class="ymd-header">
+   ＱＲコード読取結果
+</header>
+<div class="ymd-navigation">
+	<a th:href="@{/matsuoka/indexQR}">&lt;&lt; 最初に戻る</a>
+</div>
+
+<center>
+<div class="ymd-base-container">
+	<br>
+	<form name="sendForm"  th:action="@{/matsuoka/RegistQRInfoClockInOut}" th:object="${formDispQRInfoClockInOut}" th:method="post" style="width: 100%;">
+		
+		<!-- ユーザ表示エリア -->
+		<input type="hidden" id="loginEmployeeId"     th:field="*{loginEmployeeId}" />
+		<input type="hidden" id="loginEmployeeName"   th:field="*{loginEmployeeName}" />
+		<input type="hidden" id="selectedDeviceLabel" th:field="*{selectedDeviceLabel}" />
+		
+		
+		<div class="ymd-login-username" style="width: 100%;">
+			作業者名：<p th:text="*{loginEmployeeName}"></p>
+		</div>
+		
+		<!-- 非表示項目  -->
+		<input type="hidden" id="clockInDatetime"       th:field="*{clockInDatetime}" />
+		<input type="hidden" id="clockOutDatetime"      th:field="*{clockOutDatetime}" />
+		
+		
+		
+		<!-- ＱＲコード読込情報＋作業最新情報 -->
+		<br>
+		<div class="ymd-container" style="width: 100%;">
+			下記内容で登録してもよいですか？
+		</div>
+		
+		<!-- 表示項目  -->
+		<div class="ymd-container" style="width: 100%;">
+			<!-- 作業内容は背景を赤くする（誤った作業内容のＱＲコードを登録してしまわないようにするため強調する目的） -->
+			<div class="ymd-label"     style="width: 30%;"><span>登録内容</span></div>
+			<div class="ymd-container" style="width: 70%; background-color: rgb(254, 180, 180);"><span style="font-size: 25px;" th:text="*{message}" /></div>
+		</div>
+		
+		<!-- 出勤登録時は出勤日時が入力/変更可能 -->
+		<th:block th:if="*{message eq '出勤登録'}" >
+		<div class="ymd-container" style="width: 100%;">
+			<div class="ymd-label"     style="width: 30%;"><span>出勤日</span></div>
+			<div class="ymd-container" style="width: 70%;"><input type="date" id="inputClockInDate" th:value="*{clockInDate}" /></div>
+		</div>
+		<div class="ymd-container" style="width: 100%;">
+			<div class="ymd-label"     style="width: 30%;"><span>出勤時間</span></div>
+			<div class="ymd-container" style="width: 70%;"><input type="time" id="inputClockInTime" th:value="*{clockInTime}" /></div>
+		</div>
+		<div class="ymd-container" style="width: 100%;">
+			<div class="ymd-container" style="width: 30%;"><span></span></div>
+			<div class="ymd-msg-label" style="width: 70%;" id="inputClockInDateTimeMsg"></div>
+		</div>
+		</th:block>
+		
+		<!-- 退勤登録時は出勤日時が入力/変更不可(readonly) -->
+		<th:block th:if="*{message eq '退勤登録'}" >
+		<div class="ymd-container" style="width: 100%;">
+			<div class="ymd-label"     style="width: 30%;"><span>出勤日</span></div>
+			<div class="ymd-container" style="width: 70%;"><input type="date" id="inputClockInDate" th:value="*{clockInDate}" readonly/></div>
+		</div>
+		<div class="ymd-container" style="width: 100%;">
+			<div class="ymd-label"     style="width: 30%;"><span>出勤時間</span></div>
+			<div class="ymd-container" style="width: 70%;"><input type="time" id="inputClockInTime" th:value="*{clockInTime}" readonly/></div>
+		</div>
+		<div class="ymd-container" style="width: 100%;">
+			<div class="ymd-container" style="width: 30%;"><span></span></div>
+			<div class="ymd-msg-label" style="width: 70%;" id="inputClockInDateTimeMsg"></div>
+		</div>
+		</th:block>
+		
+		
+		
+		<div class="ymd-container" style="width: 100%;">
+			<div class="ymd-label"     style="width: 30%;"><span>退勤日</span></div>
+			<div class="ymd-container" style="width: 70%;"><input type="date" id="inputClockOutDate" th:value="*{clockOutDate}" /></div>
+		</div>
+		<div class="ymd-container" style="width: 100%;">
+			<div class="ymd-label"     style="width: 30%;"><span>退勤時間</span></div>
+			<div class="ymd-container" style="width: 70%;"><input type="time" id="inputClockOutTime" th:value="*{clockOutTime}" /></div>
+		</div>
+		<div class="ymd-container" style="width: 100%;">
+			<div class="ymd-container" style="width: 30%;"><span></span></div>
+			<div class="ymd-msg-label" style="width: 70%;" id="inputClockOutDateTimeMsg"></div>
+		</div>
+		
+		
+		<div class="ymd-container" style="width: 100%;">
+			<div class="ymd-label"     style="width: 30%;"><span>時給</span></div>
+			<div class="ymd-container" style="width: 70%;"><span th:text="*{hourLywage}"/></div>
+		</div>
+		
+		
+		
+		
+		<br>
+		
+		<div class="ymd-container" style="width: 100%;">
+			上記でよろしければ「登録／更新」ボタンを押してください。もう一度ＱＲコードを読み直す場合は一番下の「取消てもう一度」ボタンを押してください。
+		</div>
+		
+		<br>
+		<!-- 押下ボタン情報（非表示項目） -->
+		<input type="hidden" id="pushedButtunKbn"     style="width: 100%;" th:field="*{pushedButtunKbn}" />
+		
+		<!-- ボタン表示 -->
+		<div name="buttonDispArea" style="width: 100%;">
+			
+			<div class="ymd-button" style="width: 100%;">
+				<a name="regist"><span th:text="登録／更新" /></a>
+			</div>
+			<br>
+			
+			<div class="ymd-button" style="width: 100%;">
+				<a name="cancel"><span th:text="取消してもう一度" /></a>
+			</div>
+			<br>
+			
+		</div>
+	</form>
+</div>
+</center>
+
+
+<!--オリジナルJavaScript(常に最新を読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<script src="/matsuoka/js/scrDispQRInfoClockInOut.js?ver='+ new Date().getTime() +'"></script>');
+//-->
+</script>
+
+
+</body>
+</html>

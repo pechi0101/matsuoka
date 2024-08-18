@@ -75,11 +75,30 @@
 <center>
 <div class="ymd-base-container">
 	
-	
-	<canvas id="aggregateChart1"></canvas>
-	
-	<canvas id="aggregateChart2"></canvas>
-	
+	<br>
+	<!-- 文言表示エリア -->
+	<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
+		<span>■収穫ケース数合計：月毎／全ハウス合計</span>
+	</div>
+		
+	<br>
+	<canvas id="aggregateChart1" style="width: 90%; height: 300px"></canvas>
+	<br>
+	<br>
+	<!-- 文言表示エリア -->
+	<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
+		<span>■収穫ケース数合計：月毎／ハウス毎（横並びグラフ）</span>
+	</div>
+	<br>
+	<canvas id="aggregateChart2" style="width: 90%; height: 300px"></canvas>
+	<br>
+	<br>
+	<!-- 文言表示エリア -->
+	<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
+		<span>■収穫ケース数合計：月毎／ハウス毎（積み上げグラフ）</span>
+	</div>
+	<br>
+	<canvas id="aggregateChart3" style="width: 90%; height: 300px"></canvas>
 	<br>
 	<br>
 	
@@ -303,7 +322,10 @@
 			datasets: chartDatasets
 		},
 		options: {
+			//responsive:グラフが画面サイズやウィンドウのリサイズに応じて自動的に調整される場合true
 			responsive: true,
+			//凡例(legendレジェンド)の表示＝true
+			//グラフにマウスカーソルをあてた際に表示されるツールチップの表示内＝ラベル(ハウス名): 収穫ケース数合計
 			plugins: {
 				legend: {
 					display: true
@@ -331,6 +353,157 @@
 	/*]]>*/
 </script>
 
+
+
+
+
+
+<!--       グラフ描画３       -->
+
+
+<script type="text/javascript" th:inline="javascript">
+
+	//  【メモ】
+	//  以下のようなグラフ(積み上げ棒グラフというらしい)を描画したい場合
+	//  ①と②の配列を準備してそれをグラフにブチ込むカンジ
+	//  基本は「グラフ描画２」と同じ、グラフのOption設定が異なるのみ
+	//  
+	//                   □□□：３号隔離   ■■■：４号隔離
+	//  
+	//          |                      ■
+	//          |                      ■
+	//       15 |   ■                 ■
+	//          |   ■       ■        ■  
+	//          |   ■       ■        ■                 ■  
+	//       10 |   □       ■        □                 ■   ←②データセット配列
+	//          |   □       ■        □                 ■  
+	//          |   □       □        □                 □  
+	//        5 |   □       □        □                 □  
+	//          |   □       □        □                 □  
+	//          |   □       □        □                 □  
+	//          +----------------------------------------------
+	//            2024-01  2024-02   2024-03       …   2024-12 ←①ラベル配列
+	//  
+	//  
+	//  ①labels ラベル配列(テキスト配列)
+	//  +----------------------------------------------------------+
+	//  |2024-01                                                   |
+	//  +----------------------------------------------------------+
+	//  |2024-02                                                   |
+	//  +----------------------------------------------------------+
+	//  |2024-03                                                   |
+	//                      …中略…
+	//  |2024-12                                                   |
+	//  +----------------------------------------------------------+
+	//  
+	//  ②datasets データセット配列(オブジェクト配列)
+	//  +----------------------------------------------------------+
+	//  |ハウスID：10001(キー値)                                   |
+	//  |----------------------------------------------------------|
+	//  |ラベル  ：３号隔離                                        |
+	//  |データ  ：[X][X][X][X][X][X][X][X][X][X][X][X]            |
+	//  |背景色  ：#FFFFFFF                                        |
+	//  |枠線の色：#FFFFFFF                                        |
+	//  |                                                          |
+	//  +----------------------------------------------------------+
+	//  |ハウスID：10002(キー値)                                   |
+	//  |----------------------------------------------------------|
+	//  |ラベル  ：４号隔離                                        |
+	//  |データ  ：[X][X][X][X][X][X][X][X][X][X][X][X]            |
+	//  |背景色  ：#FFFFFFF                                        |
+	//  |枠線の色：#FFFFFFF                                        |
+	//  +----------------------------------------------------------+
+
+
+
+	/*<![CDATA[*/
+	// Thymeleafで渡されたデータをJavaScriptに変換
+	var aggregateData = /*[[${formKanriDispShukakuAggregateList.detailList}]]*/ [];
+
+	// データ構造を確認するためにコンソールに出力
+	//console.log('データ:', aggregateData);
+	
+	// 年月ごと、houseIdごとにデータを整理する
+	var labels   = [];
+	var datasets = {};
+
+	aggregateData.forEach(function(item) {
+		var label = item.aggregateYear + '-' + item.aggregateMonth; // 年月をラベルとして使用
+		
+		if (!labels.includes(label)) {
+			labels.push(label);
+		}
+		
+		//ハウスIDをキーにしたdatasets要素が存在しない場合、追加作成する。
+		if (!datasets[item.houseId]) {
+			datasets[item.houseId] = {
+				label: item.houseName,
+				data: Array(labels.length).fill(0),  //ラベルの要素数分の配列を作成して0で初期化
+				backgroundColor: getRandomColor(),
+				borderColor: getRandomColor(),
+				borderWidth: 1
+			};
+		}
+		
+		var index = labels.indexOf(label);
+		datasets[item.houseId].data[index] = parseFloat(item.boxSum);
+	});
+
+	// ラベルとデータセットを整理
+	var chartLabels   = labels;
+	var chartDatasets = Object.values(datasets);
+
+	// グラフの描画
+	var ctx = document.getElementById('aggregateChart3').getContext('2d');
+	var myChart = new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: chartLabels,
+			datasets: chartDatasets
+		},
+		options: {
+			//responsive:グラフが画面サイズやウィンドウのリサイズに応じて自動的に調整される場合true
+			responsive: true,
+			//凡例(legendレジェンド)の表示＝true
+			//グラフにマウスカーソルをあてた際に表示されるツールチップの表示内＝ラベル(ハウス名): 収穫ケース数合計
+			plugins: {
+				legend: {
+					display: true
+				},
+				tooltip: {
+					callbacks: {
+						label: function(context) {
+							return context.dataset.label + ': ' + context.raw;
+						}
+					}
+				}
+			},
+			//★★★★★  ココのOptionで「積み上げ棒グラフ」にしてる ★★★★★★★
+			//options.scales.x.stacked: X軸の積み上げ設定。true にすることで積み上げ棒グラフになります。
+			//options.scales.y.stacked: Y軸の積み上げ設定。true にすることで積み上げ棒グラフになります。
+			//→積み上げ棒グラフにするには両方ともtrueにする
+			scales: {
+				x: {
+					stacked: true
+				},
+				y: {
+					stacked: true
+				}
+			}
+		}
+	});
+
+	// ランダムな色を生成する関数
+	function getRandomColor() {
+		var letters = '0123456789ABCDEF';
+		var color = '#';
+		for (var i = 0; i < 6; i++) {
+			color += letters[Math.floor(Math.random() * 16)];
+		}
+		return color;
+	}
+	/*]]>*/
+</script>
 
 </body>
 </html>
