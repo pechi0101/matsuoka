@@ -63,29 +63,6 @@ public class DaoFormKanriDispShukakuAggregate {
 			sql  = sql + "     AGGRE.HOUSEID";
 			sql  = sql + "    ,AGGRE.AGGREGATEYEAR";
 			sql  = sql + "    ,AGGRE.AGGREGATEMONTH";
-			/*
-			sql  = sql + " where";
-			sql  = sql + "     TT_HOUSE_WORKSTATUS.STARTEMPLOYEEID <> '" + SpecialUser.TEST_USER + "'";//テストユーザは対象にしない
-			if (houseId != null && "".equals(houseId) == false) {
-			sql  = sql + " and TT_HOUSE_WORKSTATUS.HOUSEID          = '" + houseId + "'";
-			}
-			if (colNo != null   && "".equals(colNo)   == false) {
-			sql  = sql + " and TT_HOUSE_WORKSTATUS.COLNO            = '" + colNo + "'";
-			}
-			if (workId != null  && "".equals(workId)  == false) {
-			sql  = sql + " and TT_HOUSE_WORKSTATUS.WORKID           = '" + workId + "'";
-			}
-			if (startDateTimeFr != null) {
-			sql  = sql + " and TT_HOUSE_WORKSTATUS.STARTDATETIME   >= '" + formatter.format(startDateTimeFr) + "'";
-			}
-			if (startDateTimeTo != null) {
-			sql  = sql + " and TT_HOUSE_WORKSTATUS.STARTDATETIME   <= '" + formatter.format(startDateTimeTo) + "'";
-			}
-			*/
-			
-			
-			//log.info("【INF】" + pgmId + ":検索SQL=[" + sql + "]");
-			
 			
 			
 			/*

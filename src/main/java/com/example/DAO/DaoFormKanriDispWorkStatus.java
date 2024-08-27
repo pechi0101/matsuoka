@@ -460,7 +460,7 @@ public class DaoFormKanriDispWorkStatus {
 	
 	
 	//------------------------------------------------------------------------------------------------
-	// 画面上部に表示する”稼働中の作業”を取得
+	// 画面下部に表示する”稼働中/非稼働中の作業”を取得
 	
 	private ArrayList<NonActiveWorkRow> getNonActiveWorkList() {
 		
