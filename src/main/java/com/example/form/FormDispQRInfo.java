@@ -41,6 +41,7 @@ public class FormDispQRInfo implements Serializable {
 	private LocalDateTime endDatetime;
 	private String endEmployeeid;
 	private String endEmployeeName;
+	private int percentStart;
 	private int percent;
 	private String biko;
 	
@@ -72,6 +73,10 @@ public class FormDispQRInfo implements Serializable {
 		}
 		
 		if (workStatus == DaoHouseWorkStatus.STATUS_WORKING) {
+			workStatusString = "作業中：" + Integer.toString(percentStart) + "% まで完了";
+		}
+		
+		if (workStatus == DaoHouseWorkStatus.STATUS_WORKING_STOP) {
 			workStatusString = "作業中：" + Integer.toString(percent) + "% まで完了";
 		}
 		

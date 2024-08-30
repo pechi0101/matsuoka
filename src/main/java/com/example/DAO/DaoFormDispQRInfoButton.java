@@ -82,7 +82,7 @@ public class DaoFormDispQRInfoButton {
 				//リストに追加
 				buttonDispInfoList.add(wkrs);
 			}
-
+			
 			// 作業開始ボタンをセット
 			FormDispQRInfoButton startButton = new FormDispQRInfoButton();
 			startButton.setButtonEnabledFlg(true);
@@ -91,6 +91,15 @@ public class DaoFormDispQRInfoButton {
 			//startButton.setButtonString("作業開始"); //【メモ】ボタン表示文字列の編集はFormDispQRInfoButtonクラスのgetterに記載
 			//リストに追加
 			buttonDispInfoList.add(startButton);
+			
+			// 作業再開ボタンをセット
+			FormDispQRInfoButton restartButton = new FormDispQRInfoButton();
+			restartButton.setButtonEnabledFlg(true);
+			restartButton.setButtonKbn(ButtonKbn.RESTART);
+			restartButton.setPercent(0);
+			//restartButton.setButtonString("作業開始"); //【メモ】ボタン表示文字列の編集はFormDispQRInfoButtonクラスのgetterに記載
+			//リストに追加
+			buttonDispInfoList.add(restartButton);
 			
 			
 			//------------------------------------------------

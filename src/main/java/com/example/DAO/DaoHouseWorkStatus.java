@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.example.counst.IntegerErrorCode;
 import com.example.entity.HouseWorkStatus;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ public class DaoHouseWorkStatus {
 	public static int STATUS_NOT = 0;	    // 作業未実施状態
 	public static int STATUS_DONE = 1;	    // 作業完了状態
 	public static int STATUS_WORKING = 2; // 作業中状態
+	public static int STATUS_WORKING_STOP = 3; // 作業中断状態
 	public static int STATUS_ERROR = 9;   // 作業状況取得エラー/作業状況判定エラー
 	
 	
@@ -46,6 +48,7 @@ public class DaoHouseWorkStatus {
 			sql  = sql + "    ,STARTEMPLOYEEID";
 			sql  = sql + "    ,DATE_FORMAT(ENDDATETIME,'%Y%m%d%H%i%S') ENDDATETIME_STRING"; // YYYYMMDDHHMMSS形式で取得（時間は24時間制）
 			sql  = sql + "    ,ENDEMPLOYEEID";
+			sql  = sql + "    ,PERCENT_START";
 			sql  = sql + "    ,PERCENT";
 			sql  = sql + "    ,BIKO";
 			sql  = sql + " from";
@@ -139,8 +142,11 @@ public class DaoHouseWorkStatus {
 				}
 				
 				
-				// 進捗率
+				// 進捗率_開始
+				houseWorkStatus.setPercentStart(Integer.parseInt(rs.get("PERCENT_START").toString()));
+				// 進捗率_終了
 				houseWorkStatus.setPercent(Integer.parseInt(rs.get("PERCENT").toString()));
+				
 				// 備考
 				if (rs.get("BIKO") != null) {
 					houseWorkStatus.setBiko(rs.get("BIKO").toString());
@@ -150,16 +156,17 @@ public class DaoHouseWorkStatus {
 				break;
 			}
 			
-			log.info("【DBG】" + pgmId + "作業開始日時=[" + startDateTimeString + "]作業完了日時=[" + endDateTimeString + "]");
+			log.info("【DBG】" + pgmId + "作業開始日時=[" + startDateTimeString + "]作業完了日時=[" + endDateTimeString + "]進捗率_開始=[" + houseWorkStatus.getPercentStart() + "]進捗率_終了=[" + houseWorkStatus.getPercent() + "]");
 			
 			
 			
 			
 			// ------------------------------------------------
-			// 作業状況判定
-			// 作業完了日が取得出来ていない                        ＝作業未実施状態
-			// 作業完了日が取得出来ている＋作業完了日が入っている  ＝作業完了  状態
-			// 作業完了日が取得出来ている＋作業完了日が入っていない＝作業中    状態
+			// ■作業状況判定
+			// 作業完了日が取得出来ていない                                     ：作業未実施状態
+			// 作業完了日が取得出来ている＋作業完了日が入っている  ＋進捗＝100% ：作業完了  状態
+			// 作業完了日が取得出来ている＋作業完了日が入っている  ＋進捗≠100% ：作業中断  状態
+			// 作業完了日が取得出来ている＋作業完了日が入っていない             ：作業中    状態
 			
 			
 			// 返却値は「判定エラー」で初期化
@@ -169,13 +176,21 @@ public class DaoHouseWorkStatus {
 			if (
 			   startDateTimeString.trim().length() == 0) {
 				
-				houseWorkStatus.setWorkStatus(DaoHouseWorkStatus.STATUS_NOT); //作業未実施状態
+				houseWorkStatus.setWorkStatus(DaoHouseWorkStatus.STATUS_NOT);//作業未実施状態
 				
 			} else if (
 			   startDateTimeString.trim().length() > 0
-			&& endDateTimeString.trim().length()   > 0) {
+			&& endDateTimeString.trim().length()   > 0
+			&& houseWorkStatus.getPercent()       == 100) {
 				
 				houseWorkStatus.setWorkStatus(DaoHouseWorkStatus.STATUS_DONE);//作業完了  状態
+				
+			} else if (
+			   startDateTimeString.trim().length() > 0
+			&& endDateTimeString.trim().length()   > 0
+			&& houseWorkStatus.getPercent()       != 100) {
+				
+				houseWorkStatus.setWorkStatus(DaoHouseWorkStatus.STATUS_WORKING_STOP);//作業中断  状態
 				
 			} else if (
 			   startDateTimeString.trim().length() > 0
@@ -320,16 +335,17 @@ public class DaoHouseWorkStatus {
 				break;
 			}
 			
-			log.info("【DBG】" + pgmId + "作業開始日時=[" + startDateTimeString + "]作業完了日時=[" + endDateTimeString + "]");
+			log.info("【DBG】" + pgmId + "作業開始日時=[" + startDateTimeString + "]作業完了日時=[" + endDateTimeString + "]進捗率_開始=[" + houseWorkStatus.getPercentStart() + "]進捗率_終了=[" + houseWorkStatus.getPercent() + "]");
 			
 			
 			
 			
 			// ------------------------------------------------
-			// 作業状況判定
-			// 作業完了日が取得出来ていない                        ＝作業未実施状態
-			// 作業完了日が取得出来ている＋作業完了日が入っている  ＝作業完了  状態
-			// 作業完了日が取得出来ている＋作業完了日が入っていない＝作業中    状態
+			// ■作業状況判定
+			// 作業完了日が取得出来ていない                                     ：作業未実施状態
+			// 作業完了日が取得出来ている＋作業完了日が入っている  ＋進捗＝100% ：作業完了  状態
+			// 作業完了日が取得出来ている＋作業完了日が入っている  ＋進捗≠100% ：作業中断  状態
+			// 作業完了日が取得出来ている＋作業完了日が入っていない             ：作業中    状態
 			
 			
 			// 返却値は「判定エラー」で初期化
@@ -339,13 +355,21 @@ public class DaoHouseWorkStatus {
 			if (
 			   startDateTimeString.trim().length() == 0) {
 				
-				houseWorkStatus.setWorkStatus(DaoHouseWorkStatus.STATUS_NOT); //作業未実施状態
+				houseWorkStatus.setWorkStatus(DaoHouseWorkStatus.STATUS_NOT);//作業未実施状態
 				
 			} else if (
 			   startDateTimeString.trim().length() > 0
-			&& endDateTimeString.trim().length()   > 0) {
+			&& endDateTimeString.trim().length()   > 0
+			&& houseWorkStatus.getPercent()       == 100) {
 				
 				houseWorkStatus.setWorkStatus(DaoHouseWorkStatus.STATUS_DONE);//作業完了  状態
+				
+			} else if (
+			   startDateTimeString.trim().length() > 0
+			&& endDateTimeString.trim().length()   > 0
+			&& houseWorkStatus.getPercent()       != 100) {
+				
+				houseWorkStatus.setWorkStatus(DaoHouseWorkStatus.STATUS_WORKING_STOP);//作業中断  状態
 				
 			} else if (
 			   startDateTimeString.trim().length() > 0
@@ -419,6 +443,139 @@ public class DaoHouseWorkStatus {
 		}
 	}
 	
+
+	
+	
+	// 最新の進捗率を取得
+	public int getLatestPercent(String workId,String houseId,String colNo) {
+		
+		String pgmId = classId + ".getLatestPercent";
+		log.info("【INF】" + pgmId + ":処理開始 作業ID=[" + workId + "]、ハウスID=[" + houseId + "]、列No=[" + colNo + "]");
+		
+		
+		// 返却値
+		int latestPersent = 0;
+		
+		try {
+			
+			// ------------------------------------------------
+			// 【メモ】
+			// 下の通り最新の進捗率(※)を返却する   ※返却したものを次の作業の「作業開始時点の進捗率」にする目的
+			//
+			// ■例１：作業未実施状態である場合
+			// 検索結果なし
+			//			              ▼
+			//			           0%を返却
+			// 
+			// ■例２：作業中である場合
+			// ３号隔離  01   葉かき  2024/08/25 15:00 ～ 2024/08/25 18:00   0% ～ 20%
+			// ３号隔離  01   葉かき  2024/08/26 09:00 ～ 2024/08/25 12:00  20% ～ 80% ★コレを検索
+			//			              ▼
+			//			          80%を返却
+			// 
+			// ■例３：作業中である場合
+			// ３号隔離  01   葉かき  2024/08/25 15:00 ～ 2024/08/25 18:00   0% ～ 20%
+			// ３号隔離  01   葉かき  2024/08/26 09:00 ～ 2024/08/25 12:00  20% ～ 80% ★コレを検索
+			// ３号隔離  01   葉かき  2024/08/26 09:00 ～                   80% ～ 
+			//			              ▼
+			//			          80%を返却
+			// 
+			// ■例３：作業完了状態である場合
+			// ３号隔離  01   葉かき  2024/08/25 15:00 ～ 2024/08/25 18:00   0% ～ 20%
+			// ３号隔離  01   葉かき  2024/08/26 09:00 ～ 2024/08/25 12:00  20% ～ 80%
+			// ３号隔離  01   葉かき  2024/08/26 09:00 ～ 2024/08/26 15:00  80% ～100% ★コレを検索
+			//			              ▼
+			//			           0%を返却
+			//
+			// ------------------------------------------------
+			
+			String sql = " select distinct";
+			sql  = sql + "     TT_HOUSE_WORKSTATUS.PERCENT";
+			sql  = sql + " from";
+			sql  = sql + "     TT_HOUSE_WORKSTATUS";
+			sql  = sql + "    ,(";
+			sql  = sql + "     select";
+			sql  = sql + "         WORKID";
+			sql  = sql + "        ,HOUSEID";
+			sql  = sql + "        ,COLNO";
+			sql  = sql + "        ,MAX(STARTDATETIME) MAX_STARTDATETIME";
+			sql  = sql + "     from";
+			sql  = sql + "         TT_HOUSE_WORKSTATUS";
+			sql  = sql + "     where";
+			sql  = sql + "         WORKID          = ?";
+			sql  = sql + "     and HOUSEID         = ?";
+			sql  = sql + "     and COLNO           = ?";
+			sql  = sql + "     and ENDDATETIME     IS NOT NULL";
+			sql  = sql + "     group by";
+			sql  = sql + "         WORKID";
+			sql  = sql + "        ,HOUSEID";
+			sql  = sql + "        ,COLNO";
+			sql  = sql + "    )VT_HOUSE_WORKSTATUS";
+			sql  = sql + " where";
+			sql  = sql + "     TT_HOUSE_WORKSTATUS.WORKID          = VT_HOUSE_WORKSTATUS.WORKID";
+			sql  = sql + " and TT_HOUSE_WORKSTATUS.HOUSEID         = VT_HOUSE_WORKSTATUS.HOUSEID";
+			sql  = sql + " and TT_HOUSE_WORKSTATUS.COLNO           = VT_HOUSE_WORKSTATUS.COLNO";
+			sql  = sql + " and TT_HOUSE_WORKSTATUS.STARTDATETIME   = VT_HOUSE_WORKSTATUS.MAX_STARTDATETIME";
+			
+			
+			
+			/*
+			 * 【メモ】：MySQLの日付フォーマット
+			 * %Y    4 桁の年               例：2024
+			 * %y    2 桁の年               例：24
+			 * %c    月                     例：0 ~ 12
+			 * %m    2 桁の月               例：00 ~ 12
+			 * %e    日                     例：0 ~ 31
+			 * %d    2 桁の日               例：00 ~ 31
+			 * %H    24時制の時間           例：00 ~ 23
+			 * %h    12時制の時間           例：01 ~ 12
+			 * %p    午前・午後             例：AM か PM
+			 * %i    分                     例：00 ~ 59
+			 * %S,%s 秒                     例：00 ~ 59
+			 * %f    ミリ秒                 例：000000 ~ 999999
+			 * %M    月名                   例：January ~ December
+			 * %b    簡略月名               例：Jan ~ Dec
+			 * %W    曜日名                 例：Sunday ~ Saturday
+			 * %b    簡略曜日名             例：Sun ~ Sat
+			 * %a    12時制の時間・分・秒。 例：21:40:13
+			 * %T    24時制の時間・分・秒。 例：21:40:13
+			 */
+			
+			
+			
+			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
+			List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(sql,workId,houseId,colNo);
+			
+			
+			
+			for (Map<String, Object> rs: rsList) {
+				
+				// 進捗率
+				latestPersent = Integer.parseInt(rs.get("PERCENT").toString());
+				
+				// 値は１件のみ取得されるためここでLOOP終了
+				break;
+			}
+			
+			// MAXの進捗率が100%である場合は0%を返却
+			if (latestPersent == 100) {
+				latestPersent = 0;
+			}
+			
+			
+			log.info("【INF】" + pgmId + ":処理終了 取得進捗率=[" + Integer.toString(latestPersent) + "]%");
+			return latestPersent;
+			
+		}catch(Exception e){
+			
+			log.error("【ERR】" + pgmId + ":異常終了");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
+			return IntegerErrorCode.ERROR;
+		}
+	}
+	
 	
 	
 	// データ登録（作業開始）
@@ -440,6 +597,7 @@ public class DaoHouseWorkStatus {
 			sql  = sql + "    ,STARTEMPLOYEEID";
 			sql  = sql + "    ,ENDDATETIME";
 			sql  = sql + "    ,ENDEMPLOYEEID";
+			sql  = sql + "    ,PERCENT_START";
 			sql  = sql + "    ,PERCENT";
 			sql  = sql + "    ,DELETEFLG";
 			sql  = sql + "    ,DELETEYMDHMS";
@@ -458,7 +616,8 @@ public class DaoHouseWorkStatus {
 			sql  = sql + "    ,?";
 			sql  = sql + "    ,null"; // 登録時は作業終了日時はnull
 			sql  = sql + "    ,null"; // 登録時は作業終了社員はnull
-			sql  = sql + "    ,0";    // 登録時は進捗率は０％
+			sql  = sql + "    ,?";    // 進捗率_開始
+			sql  = sql + "    ,0";    // 登録時は進捗率_終了は０％
 			sql  = sql + "    ,0";    // 削除フラグ
 			sql  = sql + "    ,null"; // 削除日時
 			sql  = sql + "    ,?";
@@ -478,6 +637,7 @@ public class DaoHouseWorkStatus {
 					,houseWorkStatus.getColNo()
 					,formatter.format(houseWorkStatus.getStartDateTime())
 					,houseWorkStatus.getStartEmployeeId()
+					,houseWorkStatus.getPercentStart()
 					,houseWorkStatus.getBiko()
 					,userName
 					,registPgmId
@@ -516,6 +676,7 @@ public class DaoHouseWorkStatus {
 			sql  = sql + " set";
 			sql  = sql + "     ENDDATETIME   = ?";
 			sql  = sql + "    ,ENDEMPLOYEEID = ?";
+			sql  = sql + "    ,PERCENT_START = ?";
 			sql  = sql + "    ,PERCENT       = ?";
 			sql  = sql + "    ,BIKO          = ?";
 			sql  = sql + "    ,SYSUPDUSERID  = ?";
@@ -535,6 +696,7 @@ public class DaoHouseWorkStatus {
 			int ret = this.jdbcTemplate.update(sql
 					,formatter.format(houseWorkStatus.getEndDateTime())
 					,houseWorkStatus.getEndEmployeeId()
+					,houseWorkStatus.getPercentStart()
 					,houseWorkStatus.getPercent()
 					,houseWorkStatus.getBiko()
 					,userName
@@ -579,9 +741,10 @@ public class DaoHouseWorkStatus {
 			
 			String sql = " update TT_HOUSE_WORKSTATUS";
 			sql  = sql + " set";
-			//sql  = sql + "     ENDDATETIME   = ?";// ”作業中断”なので終了社員IDはセット不要
-			//sql  = sql + "    ,ENDEMPLOYEEID = ?";// ”作業中断”なので終了日時  はセット不要
-			sql  = sql + "     PERCENT       = ?";
+			sql  = sql + "     ENDDATETIME   = ?";
+			sql  = sql + "    ,ENDEMPLOYEEID = ?";
+			sql  = sql + "    ,PERCENT_START = ?";
+			sql  = sql + "    ,PERCENT       = ?";
 			sql  = sql + "    ,BIKO          = ?";
 			sql  = sql + "    ,SYSUPDUSERID  = ?";
 			sql  = sql + "    ,SYSUPDPGMID   = ?";
@@ -598,8 +761,9 @@ public class DaoHouseWorkStatus {
 			
 			
 			int ret = this.jdbcTemplate.update(sql
-					//,formatter.format(houseWorkStatus.getEndDateTime())
-					//,houseWorkStatus.getEndEmployeeId()
+					,formatter.format(houseWorkStatus.getEndDateTime())
+					,houseWorkStatus.getEndEmployeeId()
+					,houseWorkStatus.getPercentStart()
 					,houseWorkStatus.getPercent()
 					,houseWorkStatus.getBiko()
 					,userName
@@ -645,6 +809,8 @@ public class DaoHouseWorkStatus {
 		
 		try {
 			
+			
+			// 指定ハウスの全列を取得
 			String sql = " select";
 			sql  = sql + "     COLNO";
 			sql  = sql + " from";
@@ -669,6 +835,7 @@ public class DaoHouseWorkStatus {
 			sql  = sql + "    ,STARTEMPLOYEEID";
 			sql  = sql + "    ,ENDDATETIME";
 			sql  = sql + "    ,ENDEMPLOYEEID";
+			sql  = sql + "    ,PERCENT_START";
 			sql  = sql + "    ,PERCENT";
 			sql  = sql + "    ,DELETEFLG";
 			sql  = sql + "    ,DELETEYMDHMS";
@@ -687,7 +854,8 @@ public class DaoHouseWorkStatus {
 			sql  = sql + "    ,?";
 			sql  = sql + "    ,null"; // 登録時は作業終了日時はnull
 			sql  = sql + "    ,null"; // 登録時は作業終了社員はnull
-			sql  = sql + "    ,0";    // 登録時は進捗率は０％
+			sql  = sql + "    ,?";    // 進捗率_開始
+			sql  = sql + "    ,0";    // 登録時は進捗率_終了は０％
 			sql  = sql + "    ,0";    // 削除フラグ
 			sql  = sql + "    ,null"; // 削除日時
 			sql  = sql + "    ,?";    // 備考
@@ -712,6 +880,7 @@ public class DaoHouseWorkStatus {
 						,colNo
 						,formatter.format(houseWorkStatus.getStartDateTime())
 						,houseWorkStatus.getStartEmployeeId()
+						,houseWorkStatus.getPercentStart()
 						,houseWorkStatus.getBiko()
 						,userName
 						,registPgmId
@@ -752,6 +921,7 @@ public class DaoHouseWorkStatus {
 			sql  = sql + " set";
 			sql  = sql + "     ENDDATETIME   = ?";
 			sql  = sql + "    ,ENDEMPLOYEEID = ?";
+			sql  = sql + "    ,PERCENT_START = ?";
 			sql  = sql + "    ,PERCENT       = ?";
 			sql  = sql + "    ,BIKO          = ?";
 			sql  = sql + "    ,SYSUPDUSERID  = ?";
@@ -771,6 +941,7 @@ public class DaoHouseWorkStatus {
 			int ret = this.jdbcTemplate.update(sql
 					,formatter.format(houseWorkStatus.getEndDateTime())
 					,houseWorkStatus.getEndEmployeeId()
+					,houseWorkStatus.getPercentStart()
 					,houseWorkStatus.getPercent()
 					,houseWorkStatus.getBiko()
 					,userName
@@ -815,9 +986,10 @@ public class DaoHouseWorkStatus {
 			
 			String sql = " update TT_HOUSE_WORKSTATUS";
 			sql  = sql + " set";
-			//sql  = sql + "     ENDDATETIME   = ?";// ”作業中断”なので終了社員IDはセット不要
-			//sql  = sql + "    ,ENDEMPLOYEEID = ?";// ”作業中断”なので終了日時  はセット不要
-			sql  = sql + "     PERCENT       = ?";
+			sql  = sql + "     ENDDATETIME   = ?";
+			sql  = sql + "    ,ENDEMPLOYEEID = ?";
+			sql  = sql + "    ,PERCENT_START = ?";
+			sql  = sql + "    ,PERCENT       = ?";
 			sql  = sql + "    ,BIKO          = ?";
 			sql  = sql + "    ,SYSUPDUSERID  = ?";
 			sql  = sql + "    ,SYSUPDPGMID   = ?";
@@ -834,8 +1006,9 @@ public class DaoHouseWorkStatus {
 			
 			
 			int ret = this.jdbcTemplate.update(sql
-					//,formatter.format(houseWorkStatus.getEndDateTime())
-					//,houseWorkStatus.getEndEmployeeId()
+					,formatter.format(houseWorkStatus.getEndDateTime())
+					,houseWorkStatus.getEndEmployeeId()
+					,houseWorkStatus.getPercentStart()
 					,houseWorkStatus.getPercent()
 					,houseWorkStatus.getBiko()
 					,userName

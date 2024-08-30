@@ -34,6 +34,9 @@ public class FormDispQRInfoButton {
 		if (buttonKbn.equals(ButtonKbn.START) == true) {
 			buttonString = "作業開始";
 			
+		} else if (buttonKbn.equals(ButtonKbn.RESTART) == true) {
+			buttonString = "作業再開";
+			
 		} else if (buttonKbn.equals(ButtonKbn.END) == true) {
 			buttonString = "作業完了 100%";
 			

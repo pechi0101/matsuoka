@@ -37,6 +37,7 @@ import com.example.DAO.DaoHouseWorkStatusShukaku;
 import com.example.DAO.DaoShukakuBoxSum;
 import com.example.DAO.DaoWork;
 import com.example.counst.ButtonKbn;
+import com.example.counst.IntegerErrorCode;
 import com.example.counst.SpecialUser;
 import com.example.counst.SpecialWork;
 import com.example.entity.HouseWorkStatus;
@@ -490,9 +491,9 @@ public class MatsuokaWebController {
 			// それとも「作業終了(または中断)」であるのかを判定する
 			
 			
-			// ＱＲコードから取得した「作業ID、ハウスID、列№」でハウス作業進捗テーブルを検索。
+			// ＱＲコードから取得した「作業ID、ハウスID」とログイン社員IDでハウス作業進捗テーブルを検索。
 			DaoHouseWorkStatusShukaku daoHouseWorkStatusShukaku = new DaoHouseWorkStatusShukaku(jdbcTemplate);
-			HouseWorkStatusShukaku houseWorkStatusShukaku =  daoHouseWorkStatusShukaku.getLatestWorkStatus(formDispQRInfoShukaku.getWorkId(), formDispQRInfoShukaku.getHouseId(), formDispQRInfoShukaku.getColNo());
+			HouseWorkStatusShukaku houseWorkStatusShukaku =  daoHouseWorkStatusShukaku.getLatestWorkStatus(formDispQRInfoShukaku.getWorkId(), formDispQRInfoShukaku.getHouseId(), formReadQRCode.getLoginEmployeeId());
 
 			log.info("【DBG】" + pgmId + ":最新の作業状況=[" + houseWorkStatusShukaku.getWorkStatus() + "]");
 			
@@ -522,7 +523,7 @@ public class MatsuokaWebController {
 			// 次画面に表示する「作業開始」「作業中断」などのボタンの情報を取得
 			
 			DaoFormDispQRInfoButton daoButton = new DaoFormDispQRInfoButton(jdbcTemplate);
-			ArrayList<FormDispQRInfoButton> buttonDispInfoList = daoButton.getDispQRInfoButtonList(formDispQRInfoShukaku.getWorkId(),houseWorkStatusShukaku.getPercent());
+			ArrayList<FormDispQRInfoButton> buttonDispInfoList = daoButton.getDispQRInfoButtonList(formDispQRInfoShukaku.getWorkId(),houseWorkStatusShukaku.getPercentStart());
 			
 			if (buttonDispInfoList == null) {
 				log.error("【ERR】" + pgmId + " :未登録なハウス作業のＱＲコード読込まれました。作業ID=[" + formDispQRInfoShukaku.getWorkId() + "]");
@@ -602,6 +603,32 @@ public class MatsuokaWebController {
 						
 					}
 				}
+			}
+			
+			
+			
+			// ------------------------------------------------
+			// 最新のデータが「作業中断状態」である場合は「作業再開」「取消」ボタンのみ有効にする
+			
+			if (formDispQRInfoShukaku.getWorkStatus() == DaoHouseWorkStatus.STATUS_WORKING_STOP) {
+				
+				for (int index = 0 ; index < formDispQRInfoShukaku.getButtonDispInfoList().size(); index ++) {
+					
+					log.info("【DBG】" + pgmId + ":□index=[" + index + "]ボタン区分=[" + formDispQRInfoShukaku.getButtonDispInfoList().get(index).getButtonKbn() + "]");
+					if (
+					   formDispQRInfoShukaku.getButtonDispInfoList().get(index).getButtonKbn().equals(ButtonKbn.RESTART) == true   //作業再開ボタン
+					|| formDispQRInfoShukaku.getButtonDispInfoList().get(index).getButtonKbn().equals(ButtonKbn.CANCEL) == true  //取消ボタン
+					) {
+						
+						formDispQRInfoShukaku.getButtonDispInfoList().get(index).setButtonEnabledFlg(true);
+						
+					} else {
+						formDispQRInfoShukaku.getButtonDispInfoList().get(index).setButtonEnabledFlg(false);
+						
+					}
+					
+				}
+				
 			}
 			
 			
@@ -824,6 +851,7 @@ public class MatsuokaWebController {
 		
 		// 作業状況と進捗率（％）と開始日時、備考を画面表示用にセット
 		formDispQRInfo.setWorkStatus(houseWorkStatus.getWorkStatus());
+		formDispQRInfo.setPercentStart(houseWorkStatus.getPercentStart());
 		formDispQRInfo.setPercent(houseWorkStatus.getPercent());
 		formDispQRInfo.setStartDatetime(houseWorkStatus.getStartDateTime());
 		formDispQRInfo.setBiko(houseWorkStatus.getBiko());
@@ -836,7 +864,7 @@ public class MatsuokaWebController {
 		// 次画面に表示する「作業開始」「作業中断」などのボタンの情報を取得
 		
 		DaoFormDispQRInfoButton daoButton = new DaoFormDispQRInfoButton(jdbcTemplate);
-		ArrayList<FormDispQRInfoButton> buttonDispInfoList = daoButton.getDispQRInfoButtonList(formDispQRInfo.getWorkId(),houseWorkStatus.getPercent());
+		ArrayList<FormDispQRInfoButton> buttonDispInfoList = daoButton.getDispQRInfoButtonList(formDispQRInfo.getWorkId(),houseWorkStatus.getPercentStart());
 		
 		if (buttonDispInfoList == null) {
 			log.error("【ERR】" + pgmId + " :未登録なハウス作業のＱＲコード読込まれました。作業ID=[" + formDispQRInfo.getWorkId() + "]");
@@ -860,6 +888,7 @@ public class MatsuokaWebController {
 			
 			formDispQRInfo.setStartDatetime(null);
 			formDispQRInfo.setStartEmployeeid("");
+			formDispQRInfo.setPercentStart(0);
 			formDispQRInfo.setPercent(0);
 			formDispQRInfo.setBiko("");
 		}
@@ -895,10 +924,7 @@ public class MatsuokaWebController {
 		
 		
 		// ------------------------------------------------
-		// 最新のデータが「作業中状態」である場合は「作業開始」「作業完了」「作業中断」「取消」ボタンのみ有効にする
-		// 【メモ】
-		//「作業開始」ボタンは前回作業終了を入力し忘れた場合の救済措置として表示しておく。
-		//
+		// 最新のデータが「作業中状態」である場合は「作業完了」「作業中断」「取消」ボタンのみ有効にする
 		
 		if (formDispQRInfo.getWorkStatus() == DaoHouseWorkStatus.STATUS_WORKING) {
 			
@@ -906,8 +932,7 @@ public class MatsuokaWebController {
 				
 				log.info("【DBG】" + pgmId + ":■index=[" + index + "]ボタン区分=[" + formDispQRInfo.getButtonDispInfoList().get(index).getButtonKbn() + "]");
 				if (
-				   formDispQRInfo.getButtonDispInfoList().get(index).getButtonKbn().equals(ButtonKbn.START) == true   //作業開始ボタン
-				|| formDispQRInfo.getButtonDispInfoList().get(index).getButtonKbn().equals(ButtonKbn.END) == true     //作業完了ボタン
+				   formDispQRInfo.getButtonDispInfoList().get(index).getButtonKbn().equals(ButtonKbn.END) == true     //作業完了ボタン
 				|| formDispQRInfo.getButtonDispInfoList().get(index).getButtonKbn().equals(ButtonKbn.HALFWAY) == true//作業中断ボタン
 				|| formDispQRInfo.getButtonDispInfoList().get(index).getButtonKbn().equals(ButtonKbn.CANCEL) == true //取消ボタン
 				) {
@@ -919,6 +944,32 @@ public class MatsuokaWebController {
 					
 				}
 			}
+		}
+		
+		
+		
+		// ------------------------------------------------
+		// 最新のデータが「作業中断状態」である場合は「作業再開」「取消」ボタンのみ有効にする
+		
+		if (formDispQRInfo.getWorkStatus() == DaoHouseWorkStatus.STATUS_WORKING_STOP) {
+			
+			for (int index = 0 ; index < formDispQRInfo.getButtonDispInfoList().size(); index ++) {
+				
+				log.info("【DBG】" + pgmId + ":□index=[" + index + "]ボタン区分=[" + formDispQRInfo.getButtonDispInfoList().get(index).getButtonKbn() + "]");
+				if (
+				   formDispQRInfo.getButtonDispInfoList().get(index).getButtonKbn().equals(ButtonKbn.RESTART) == true   //作業再開ボタン
+				|| formDispQRInfo.getButtonDispInfoList().get(index).getButtonKbn().equals(ButtonKbn.CANCEL) == true  //取消ボタン
+				) {
+					
+					formDispQRInfo.getButtonDispInfoList().get(index).setButtonEnabledFlg(true);
+					
+				} else {
+					formDispQRInfo.getButtonDispInfoList().get(index).setButtonEnabledFlg(false);
+					
+				}
+				
+			}
+			
 		}
 		
 		
@@ -975,6 +1026,23 @@ public class MatsuokaWebController {
 		
 		
 		
+		// ------------------------------------------------
+		// 作業開始時点の進捗率を取得
+		int percentStart = daoHouseWorkStatus.getLatestPercent(formDispQRInfo.getWorkId(), formDispQRInfo.getHouseId(),formDispQRInfo.getColNo());
+		
+		// 取得処理結果判定
+		if (percentStart == IntegerErrorCode.ERROR) {
+			
+			log.error("【ERR】" + pgmId + " :作業状況の登録・更新処理で異常が発生しました。");
+			formReadQRStart.setMessage("【エラー】登録処理で異常が発生しました（作業開始時点の進捗率取得エラー）。もう一度ＱＲコードの読み取り行うかシステム担当者にご連絡ください。");
+			
+			mav.addObject("formReadQRStart", formReadQRStart);
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			mav.setViewName("scrReadQRStart.html");
+			return mav;
+			
+		}
 		
 		
 		
@@ -993,17 +1061,18 @@ public class MatsuokaWebController {
 			houseWorkStatus.setWorkId(formDispQRInfo.getWorkId());
 			houseWorkStatus.setHouseId(formDispQRInfo.getHouseId());
 			houseWorkStatus.setColNo(formDispQRInfo.getColNo());
+			houseWorkStatus.setPercentStart(percentStart);
 			houseWorkStatus.setPercent(formDispQRInfo.getPushedButtunPercent());
 			houseWorkStatus.setBiko(formDispQRInfo.getBiko());
-			
 			
 			
 			// ------------------------------------------------
 			// 作業状況のデータを登録・更新し遷移先に表示するメッセージの設定
 			
 			
-			// 作業開始
-			if (formDispQRInfo.getPushedButtunKbn().equals(ButtonKbn.START)) {
+			// 作業開始/作業再開
+			if (formDispQRInfo.getPushedButtunKbn().equals(ButtonKbn.START)
+			||  formDispQRInfo.getPushedButtunKbn().equals(ButtonKbn.RESTART)) {
 				
 				houseWorkStatus.setStartEmployeeId(formDispQRInfo.getLoginEmployeeId());
 				houseWorkStatus.setStartDateTime(LocalDateTime.now());
@@ -1026,18 +1095,18 @@ public class MatsuokaWebController {
 				houseWorkStatus.setEndDateTime(LocalDateTime.now());
 				
 				ret = daoHouseWorkStatus.updateEndStatusAllCol(houseWorkStatus, formDispQRInfo.getLoginEmployeeId(), "scrDispQRInfo");
-
+				
 				// 作業開始日時
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-				String startDateTime = formatter.format(houseWorkStatus.getStartDateTime());
-				String endDateTime = formatter.format(houseWorkStatus.getEndDateTime());
-				// 作業時間をｎ時間ｍ分で表示
-				Duration duration = Duration.between(houseWorkStatus.getStartDateTime(), houseWorkStatus.getEndDateTime());
-				long hours = duration.toHours();
-				long minutes = duration.minusHours(hours).toMinutes();
+				//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+				//String startDateTime = formatter.format(houseWorkStatus.getStartDateTime());
+				//String endDateTime = formatter.format(houseWorkStatus.getEndDateTime());
+				//// 作業時間をｎ時間ｍ分で表示
+				//Duration duration = Duration.between(houseWorkStatus.getStartDateTime(), houseWorkStatus.getEndDateTime());
+				//long hours = duration.toHours();
+				//long minutes = duration.minusHours(hours).toMinutes();
 				
-				formReadQRStart.setMessage("☆作業完了(100%)で登録しました。\n作業開始：" + startDateTime + "\n作業終了：" + endDateTime + "\n作業時間：" + hours + " 時間 " + minutes + " 分");
-				
+				//formReadQRStart.setMessage("☆作業完了(100%)で登録しました。\n作業開始：" + startDateTime + "\n作業終了：" + endDateTime + "\n作業時間：" + hours + " 時間 " + minutes + " 分");
+				formReadQRStart.setMessage("☆作業完了(100%)で登録しました。");
 			}
 			
 			
@@ -1047,8 +1116,8 @@ public class MatsuokaWebController {
 				
 				houseWorkStatus.setStartEmployeeId(formDispQRInfo.getStartEmployeeid());
 				houseWorkStatus.setStartDateTime(formDispQRInfo.getStartDatetime());
-				//houseWorkStatus.setEndEmployeeId();  // ”作業中断”なので終了社員IDはセット不要
-				//houseWorkStatus.setEndDateTime();    // ”作業中断”なので終了日時  はセット不要
+				houseWorkStatus.setEndEmployeeId(formDispQRInfo.getLoginEmployeeId());
+				houseWorkStatus.setEndDateTime(LocalDateTime.now());
 				
 				ret = daoHouseWorkStatus.updateHalfWayStatusAllCol(houseWorkStatus, formDispQRInfo.getLoginEmployeeId(), "scrDispQRInfo");
 				
@@ -1100,6 +1169,7 @@ public class MatsuokaWebController {
 		houseWorkStatus.setWorkId(formDispQRInfo.getWorkId());
 		houseWorkStatus.setHouseId(formDispQRInfo.getHouseId());
 		houseWorkStatus.setColNo(formDispQRInfo.getColNo());
+		houseWorkStatus.setPercentStart(percentStart);
 		houseWorkStatus.setPercent(formDispQRInfo.getPushedButtunPercent());
 		houseWorkStatus.setBiko(formDispQRInfo.getBiko());
 		
@@ -1109,8 +1179,9 @@ public class MatsuokaWebController {
 		// 作業状況のデータを登録・更新し遷移先に表示するメッセージの設定
 		
 		
-		// 作業開始
-		if (formDispQRInfo.getPushedButtunKbn().equals(ButtonKbn.START)) {
+		// 作業開始/作業再開
+		if (formDispQRInfo.getPushedButtunKbn().equals(ButtonKbn.START)
+		||  formDispQRInfo.getPushedButtunKbn().equals(ButtonKbn.RESTART)) {
 			
 			houseWorkStatus.setStartEmployeeId(formDispQRInfo.getLoginEmployeeId());
 			houseWorkStatus.setStartDateTime(LocalDateTime.now());
@@ -1134,16 +1205,17 @@ public class MatsuokaWebController {
 			
 			ret = daoHouseWorkStatus.updateEndStatus(houseWorkStatus, formDispQRInfo.getLoginEmployeeId(), "scrDispQRInfo");
 			
-			// 作業開始日時
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-			String startDateTime = formatter.format(houseWorkStatus.getStartDateTime());
-			String endDateTime = formatter.format(houseWorkStatus.getEndDateTime());
-			// 作業時間をｎ時間ｍ分で表示
-			Duration duration = Duration.between(houseWorkStatus.getStartDateTime(), houseWorkStatus.getEndDateTime());
-			long hours = duration.toHours();
-			long minutes = duration.minusHours(hours).toMinutes();
+			//// 作業開始日時
+			//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+			//String startDateTime = formatter.format(houseWorkStatus.getStartDateTime());
+			//String endDateTime = formatter.format(houseWorkStatus.getEndDateTime());
+			//// 作業時間をｎ時間ｍ分で表示
+			//Duration duration = Duration.between(houseWorkStatus.getStartDateTime(), houseWorkStatus.getEndDateTime());
+			//long hours = duration.toHours();
+			//long minutes = duration.minusHours(hours).toMinutes();
 			
-			formReadQRStart.setMessage("☆作業完了(100%)で登録しました。\n作業開始：" + startDateTime + "\n作業終了：" + endDateTime + "\n作業時間：" + hours + " 時間 " + minutes + " 分");
+			//formReadQRStart.setMessage("☆作業完了(100%)で登録しました。\n作業開始：" + startDateTime + "\n作業終了：" + endDateTime + "\n作業時間：" + hours + " 時間 " + minutes + " 分");
+			formReadQRStart.setMessage("☆作業完了(100%)で登録しました。");
 			
 		}
 		
@@ -1154,8 +1226,8 @@ public class MatsuokaWebController {
 			
 			houseWorkStatus.setStartEmployeeId(formDispQRInfo.getStartEmployeeid());
 			houseWorkStatus.setStartDateTime(formDispQRInfo.getStartDatetime());
-			//houseWorkStatus.setEndEmployeeId();  // ”作業中断”なので終了社員IDはセット不要
-			//houseWorkStatus.setEndDateTime();    // ”作業中断”なので終了日時  はセット不要
+			houseWorkStatus.setEndEmployeeId(formDispQRInfo.getLoginEmployeeId());
+			houseWorkStatus.setEndDateTime(LocalDateTime.now());
 			
 			ret = daoHouseWorkStatus.updateHalfWayStatus(houseWorkStatus, formDispQRInfo.getLoginEmployeeId(), "scrDispQRInfo");
 			
@@ -1280,16 +1352,17 @@ public class MatsuokaWebController {
 			
 			ret = daoHouseWorkStatusShukaku.updateEndStatus(houseWorkStatusShukaku, formDispQRInfoShukaku.getLoginEmployeeId(), "scrDispQRInfo");
 			
-			// 作業開始日時
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-			String startDateTime = formatter.format(houseWorkStatusShukaku.getStartDateTime());
-			String endDateTime = formatter.format(houseWorkStatusShukaku.getEndDateTime());
-			// 作業時間をｎ時間ｍ分で表示
-			Duration duration = Duration.between(houseWorkStatusShukaku.getStartDateTime(), houseWorkStatusShukaku.getEndDateTime());
-			long hours = duration.toHours();
-			long minutes = duration.minusHours(hours).toMinutes();
-			//【メモ】\nで改行して表示させてる
-			formReadQRStartShukaku.setMessage("☆作業完了(100%)で登録しました。\n作業開始：" + startDateTime + "\n作業終了：" + endDateTime + "\n作業時間：" + hours + " 時間 " + minutes + " 分");
+			//// 作業開始日時
+			//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+			//String startDateTime = formatter.format(houseWorkStatusShukaku.getStartDateTime());
+			//String endDateTime = formatter.format(houseWorkStatusShukaku.getEndDateTime());
+			//// 作業時間をｎ時間ｍ分で表示
+			//Duration duration = Duration.between(houseWorkStatusShukaku.getStartDateTime(), houseWorkStatusShukaku.getEndDateTime());
+			//long hours = duration.toHours();
+			//long minutes = duration.minusHours(hours).toMinutes();
+			////【メモ】\nで改行して表示させてる
+			//formReadQRStartShukaku.setMessage("☆作業完了(100%)で登録しました。\n作業開始：" + startDateTime + "\n作業終了：" + endDateTime + "\n作業時間：" + hours + " 時間 " + minutes + " 分");
+			formReadQRStartShukaku.setMessage("☆作業完了(100%)で登録しました。");
 			
 		}
 		

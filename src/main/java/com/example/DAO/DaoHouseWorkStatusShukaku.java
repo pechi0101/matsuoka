@@ -30,10 +30,10 @@ public class DaoHouseWorkStatusShukaku {
 	
 	
 	// 最新の作業状況を取得
-	public HouseWorkStatusShukaku getLatestWorkStatus(String workId,String houseId,String colNo) {
+	public HouseWorkStatusShukaku getLatestWorkStatus(String workId,String houseId,String startEmployeeId) {
 		
 		String pgmId = classId + ".getLatestWorkStatus";
-		log.info("【INF】" + pgmId + ":処理開始 作業ID=[" + workId + "]、ハウスID=[" + houseId + "]、列№=[" + colNo + "]");
+		log.info("【INF】" + pgmId + ":処理開始 作業ID=[" + workId + "]、ハウスID=[" + houseId + "]、作業開始社員ID=[" + startEmployeeId + "]");
 		
 		
 		// 返却値
@@ -60,9 +60,9 @@ public class DaoHouseWorkStatusShukaku {
 			sql  = sql + "     from";
 			sql  = sql + "         TT_HOUSE_WORKSTATUS_SHUKAKU";
 			sql  = sql + "     where";
-			sql  = sql + "         WORKID  = ?";
-			sql  = sql + "     and HOUSEID = ?";
-			sql  = sql + "     and COLNO   = ?";
+			sql  = sql + "         WORKID          = ?";
+			sql  = sql + "     and HOUSEID         = ?";
+			sql  = sql + "     and STARTEMPLOYEEID = ?";
 			sql  = sql + "     group by";
 			sql  = sql + "         WORKID";
 			sql  = sql + "        ,HOUSEID";
@@ -101,7 +101,7 @@ public class DaoHouseWorkStatusShukaku {
 			
 			
 			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
-			List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(sql,workId,houseId,colNo);
+			List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(sql,workId,houseId,startEmployeeId);
 			
 			
 			// 【重要】この変数に作業開始、終了日時を文字列でセットし、作業状況の判定に使用する。
@@ -113,7 +113,7 @@ public class DaoHouseWorkStatusShukaku {
 				
 				houseWorkStatusShukaku.setWorkId(workId);
 				houseWorkStatusShukaku.setHouseId(houseId);
-				houseWorkStatusShukaku.setColNo(colNo);
+				houseWorkStatusShukaku.setColNo("XX");
 				
 				
 				// 年月日時分秒までの日時フォーマットを準備
@@ -450,6 +450,7 @@ public class DaoHouseWorkStatusShukaku {
 			sql  = sql + "    ,STARTEMPLOYEEID";
 			sql  = sql + "    ,ENDDATETIME";
 			sql  = sql + "    ,ENDEMPLOYEEID";
+			sql  = sql + "    ,PERCENT_START";
 			sql  = sql + "    ,PERCENT";
 			sql  = sql + "    ,DELETEFLG";
 			sql  = sql + "    ,DELETEYMDHMS";
@@ -469,7 +470,8 @@ public class DaoHouseWorkStatusShukaku {
 			sql  = sql + "    ,?";
 			sql  = sql + "    ,null"; // 登録時は作業終了日時はnull
 			sql  = sql + "    ,null"; // 登録時は作業終了社員はnull
-			sql  = sql + "    ,0";    // 登録時は進捗率は０％
+			sql  = sql + "    ,0";    // 登録時は進捗率_開始は０％
+			sql  = sql + "    ,0";    // 登録時は進捗率_終了は０％
 			sql  = sql + "    ,0";    // 削除フラグ falseで初期化
 			sql  = sql + "    ,null"; // 削除日時
 			sql  = sql + "    ,?";    // 備考

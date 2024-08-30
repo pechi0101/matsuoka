@@ -27,6 +27,7 @@ public class HouseWorkStatusShukaku {
 	private String endEmployeeId;
 	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
 	private LocalDateTime endDateTime;
+	private int percentStart;
 	private int percent;
 	private String biko;
 	private int boxCount;
@@ -48,9 +49,10 @@ public class HouseWorkStatusShukaku {
 	
 	public HouseWorkStatusShukaku() {
 		//作業状況は「エラー」、新著率「０％」で初期化
-		this.workStatus = DaoHouseWorkStatus.STATUS_ERROR;
-		this.percent    = 0;
-		this.biko       = "";
+		this.workStatus   = DaoHouseWorkStatus.STATUS_ERROR;
+		this.percentStart = 0;
+		this.percent      = 0;
+		this.biko         = "";
 	}
 	
 }
