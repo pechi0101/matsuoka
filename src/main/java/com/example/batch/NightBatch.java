@@ -117,6 +117,7 @@ public class NightBatch {
 		
 		// 月初日でない場合はココで日次処理終了。以降は月次バッチ(１日の午前１時頃実行される＝月末日の夜中２５時頃実行される)
 		if (nowDateTime.getDayOfMonth() != 1) {
+			log.info("☆月初日ではないため月次処理葉実施しない☆");
 			return;
 		}
 		
@@ -230,14 +231,14 @@ public class NightBatch {
 			//■以下を「ハウス／作業」毎に調査しリセット処理を実施。
 			//
 			//  ハウス    列     終了日時 
-			// ハウス１  列01   20XX/XX/XX
+			// ハウス１  列01   20XX/XX/XX 100%
 			// ハウス１  列02   
 			// ハウス１  列03   
-			// ハウス１  列04   20XX/XX/XX
+			// ハウス１  列04   20XX/XX/XX  80%
 			//		        ▼
 			// ハウス→列→作業進捗と結合して
 			// どれか１つでも作業終了日時が
-			// 入ってない列があったら
+			// 入ってない、又は進捗率100%でない列があったら
 			// リセット対象"外"とする
 			//		        ▼
 			// リセット対象である場合、列の中で作業終了日時
@@ -352,12 +353,20 @@ public class NightBatch {
 		log.info("【INF】" + pgmId + ":処理開始");
 		
 		try {
+			//
+			// 指定のハウス・作業に対して列ごとに作業開始日が最終(MAX)の作業状況を検索
+			//
+			
+			//【注意】
+			// isResetExecメソッドとgetEndDateTimeStringメソッドはSQLの条件が同じであるため片方を直したらもう片方も直すこと！
+			
 			
 			String sql = " select";
 			sql  = sql + "     HOUSE.HOUSEID";
 			sql  = sql + "    ,HOUSE.HOUSENAME";
 			sql  = sql + "    ,COL.COLNO";
 			sql  = sql + "    ,DATE_FORMAT(WORK.ENDDATETIME,'%Y%m%d%H%i%S') ENDDATETIME_STRING";
+			sql  = sql + "    ,WORK.PERCENT"; //進捗率_終了
 			sql  = sql + " from";
 			sql  = sql + "     TM_HOUSE HOUSE";
 			sql  = sql + " inner join";
@@ -388,8 +397,13 @@ public class NightBatch {
 				log.info("【INF】" + pgmId + "□作業終了日時=[" + rs.get("ENDDATETIME_STRING") + "]");
 				
 				
-				// 作業終了日時が１つでのセットさせてない場合はリセット対象外
+				// 指定のハウス、作業において作業終了日時が１列でもセットさせてない場合はリセット対象外( 「作業中」の作業があるため )
 				if (rs.get("ENDDATETIME_STRING") == null) {
+					return false;
+				}
+				
+				// 指定のハウス、作業において進捗率_終了が１列でも100%でない場合はリセット対象外( 「作業を中断」して100%完了してない作業があるため )
+				if (Integer.parseInt(rs.get("PERCENT").toString()) != 100) {
 					return false;
 				}
 			}
@@ -422,9 +436,12 @@ public class NightBatch {
 			//       ・テストユーザが開始したデータ
 			
 			//【注意】
-			// isResetExecとgetEndDateTimeStringのメソッドはSQLの条件が同じであるため片方を直したらもう片方も直すこと！
+			// isResetExecメソッドとgetEndDateTimeStringメソッドはSQLの条件が同じであるため片方を直したらもう片方も直すこと！
 			
-			
+			//
+			// 指定のハウス・作業に対して全ての列の中で MAX の作業終了日時を取得
+			//                                 ▼
+			//                                 ▼
 			String sql = " select";
 			sql  = sql + "     DATE_FORMAT(   MAX(WORK.ENDDATETIME)  ,'%Y%m%d%H%i%S') ENDDATETIME_STRING";
 			sql  = sql + " from";
@@ -501,6 +518,7 @@ public class NightBatch {
 			sql  = sql + "    ,STARTEMPLOYEEID";
 			sql  = sql + "    ,ENDDATETIME";
 			sql  = sql + "    ,ENDEMPLOYEEID";
+			sql  = sql + "    ,PERCENT_START";
 			sql  = sql + "    ,PERCENT";
 			sql  = sql + "    ,RESETYMDHMS";
 			sql  = sql + "    ,BIKO";
@@ -519,8 +537,9 @@ public class NightBatch {
 			sql  = sql + "    ,STARTEMPLOYEEID";
 			sql  = sql + "    ,ENDDATETIME";
 			sql  = sql + "    ,ENDEMPLOYEEID";
+			sql  = sql + "    ,PERCENT_START";
 			sql  = sql + "    ,PERCENT";
-			sql  = sql + "    ,?";
+			sql  = sql + "    ,?";             // RESETYMDHMS
 			sql  = sql + "    ,BIKO";
 			sql  = sql + "    ,SYSREGUSERID";
 			sql  = sql + "    ,SYSREGPGMID";
@@ -634,6 +653,7 @@ public class NightBatch {
 			sql  = sql + "    ,STARTEMPLOYEEID";
 			sql  = sql + "    ,ENDDATETIME";
 			sql  = sql + "    ,ENDEMPLOYEEID";
+			sql  = sql + "    ,PERCENT_START";
 			sql  = sql + "    ,PERCENT";
 			sql  = sql + "    ,RESETYMDHMS";
 			sql  = sql + "    ,BACKUPYMDHMS";
@@ -653,6 +673,7 @@ public class NightBatch {
 			sql  = sql + "    ,STARTEMPLOYEEID";
 			sql  = sql + "    ,ENDDATETIME";
 			sql  = sql + "    ,ENDEMPLOYEEID";
+			sql  = sql + "    ,PERCENT_START";
 			sql  = sql + "    ,PERCENT";
 			sql  = sql + "    ,RESETYMDHMS";
 			sql  = sql + "    ,?";

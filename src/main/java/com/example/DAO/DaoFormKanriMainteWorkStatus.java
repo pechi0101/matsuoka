@@ -29,7 +29,7 @@ public class DaoFormKanriMainteWorkStatus {
 	
 	
 	// リストを取得
-	public FormKanriMainteWorkStatusList getWorkStatusList(String houseId,String colNo,String workId,LocalDateTime startDateTimeFr,LocalDateTime startDateTimeTo) {
+	public FormKanriMainteWorkStatusList getDispWorkStatusList(String houseId,String colNo,String workId,LocalDateTime startDateTimeFr,LocalDateTime startDateTimeTo) {
 		
 		// 年月日時分秒までの日時フォーマットを準備
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -66,6 +66,7 @@ public class DaoFormKanriMainteWorkStatus {
 			sql  = sql + "    ,DATE_FORMAT(TT_HOUSE_WORKSTATUS.ENDDATETIME,'%Y%m%d%H%i%S') ENDDATETIME_STRING";// YYYYMMDDHHMMSS形式で取得（時間は24時間制）
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS.ENDEMPLOYEEID";
 			sql  = sql + "    ,TM_EMPLOYEE_END.EMPLOYEENAME ENDEMPLOYEENAME";
+			sql  = sql + "    ,TT_HOUSE_WORKSTATUS.PERCENT_START";
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS.PERCENT";
 			sql  = sql + "    ,ifnull(TT_HOUSE_WORKSTATUS.DELETEFLG,'0') DELETEFLG";
 			sql  = sql + "    ,DATE_FORMAT(TT_HOUSE_WORKSTATUS.DELETEYMDHMS,'%Y%m%d%H%i%S') DELETEYMDHMS_STRING";// YYYYMMDDHHMMSS形式で取得（時間は24時間制）
@@ -113,6 +114,7 @@ public class DaoFormKanriMainteWorkStatus {
 			sql  = sql + "    ,DATE_FORMAT(TT_HOUSE_WORKSTATUS_SHUKAKU.ENDDATETIME,'%Y%m%d%H%i%S') ENDDATETIME_STRING";// YYYYMMDDHHMMSS形式で取得（時間は24時間制）
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS_SHUKAKU.ENDEMPLOYEEID";
 			sql  = sql + "    ,TM_EMPLOYEE_END.EMPLOYEENAME ENDEMPLOYEENAME";
+			sql  = sql + "    ,TT_HOUSE_WORKSTATUS_SHUKAKU.PERCENT_START";
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS_SHUKAKU.PERCENT";
 			sql  = sql + "    ,ifnull(TT_HOUSE_WORKSTATUS_SHUKAKU.DELETEFLG,'0') DELETEFLG";
 			sql  = sql + "    ,DATE_FORMAT(TT_HOUSE_WORKSTATUS_SHUKAKU.DELETEYMDHMS,'%Y%m%d%H%i%S') DELETEYMDHMS_STRING";// YYYYMMDDHHMMSS形式で取得（時間は24時間制）
@@ -268,7 +270,10 @@ public class DaoFormKanriMainteWorkStatus {
 					detail.setEndEmployeeName(rs.get("ENDEMPLOYEENAME").toString());
 				}
 				
-				// 進捗率
+				// 進捗率_開始
+				detail.setPercentStart(rs.get("PERCENT_START").toString());
+				
+				// 進捗率_終了
 				detail.setPercent(rs.get("PERCENT").toString());
 				
 				// 削除フラグ
@@ -312,7 +317,7 @@ public class DaoFormKanriMainteWorkStatus {
 	
 	
 	// 詳細を取得(ハウスID、列No、作業ID、作業開始日時指定)
-	public FormKanriMainteWorkStatusDetail getWorkStatusDatail(String houseId,String colNo,String workId,LocalDateTime startDateTime) {
+	public FormKanriMainteWorkStatusDetail getDispWorkStatusDatail(String houseId,String colNo,String workId,LocalDateTime startDateTime) {
 		
 		// 年月日時分秒までの日時フォーマットを準備
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -341,6 +346,7 @@ public class DaoFormKanriMainteWorkStatus {
 			sql  = sql + "    ,DATE_FORMAT(TT_HOUSE_WORKSTATUS.ENDDATETIME,'%Y%m%d%H%i%S') ENDDATETIME_STRING";// YYYYMMDDHHMMSS形式で取得（時間は24時間制）
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS.ENDEMPLOYEEID";
 			sql  = sql + "    ,TM_EMPLOYEE_END.EMPLOYEENAME ENDEMPLOYEENAME";
+			sql  = sql + "    ,TT_HOUSE_WORKSTATUS.PERCENT_START";
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS.PERCENT";
 			sql  = sql + "    ,ifnull(TT_HOUSE_WORKSTATUS.DELETEFLG,'0') DELETEFLG";
 			sql  = sql + "    ,DATE_FORMAT(TT_HOUSE_WORKSTATUS.DELETEYMDHMS,'%Y%m%d%H%i%S') DELETEYMDHMS_STRING";// YYYYMMDDHHMMSS形式で取得（時間は24時間制）
@@ -377,6 +383,7 @@ public class DaoFormKanriMainteWorkStatus {
 			sql  = sql + "    ,DATE_FORMAT(TT_HOUSE_WORKSTATUS_SHUKAKU.ENDDATETIME,'%Y%m%d%H%i%S') ENDDATETIME_STRING";// YYYYMMDDHHMMSS形式で取得（時間は24時間制）
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS_SHUKAKU.ENDEMPLOYEEID";
 			sql  = sql + "    ,TM_EMPLOYEE_END.EMPLOYEENAME ENDEMPLOYEENAME";
+			sql  = sql + "    ,TT_HOUSE_WORKSTATUS_SHUKAKU.PERCENT_START";
 			sql  = sql + "    ,TT_HOUSE_WORKSTATUS_SHUKAKU.PERCENT";
 			sql  = sql + "    ,ifnull(TT_HOUSE_WORKSTATUS_SHUKAKU.DELETEFLG,'0') DELETEFLG";
 			sql  = sql + "    ,DATE_FORMAT(TT_HOUSE_WORKSTATUS_SHUKAKU.DELETEYMDHMS,'%Y%m%d%H%i%S') DELETEYMDHMS_STRING";// YYYYMMDDHHMMSS形式で取得（時間は24時間制）
@@ -548,7 +555,10 @@ public class DaoFormKanriMainteWorkStatus {
 					retForm.setEndEmployeeName(rs.get("ENDEMPLOYEENAME").toString());
 				}
 				
-				// 進捗率
+				// 進捗率_開始
+				retForm.setPercentStart(rs.get("PERCENT_START").toString());
+				
+				// 進捗率_終了
 				retForm.setPercent(rs.get("PERCENT").toString());
 				
 				// 削除フラグ
@@ -692,6 +702,7 @@ public class DaoFormKanriMainteWorkStatus {
 					sql  = sql + "    ,STARTEMPLOYEEID";
 					sql  = sql + "    ,ENDDATETIME";
 					sql  = sql + "    ,ENDEMPLOYEEID";
+					sql  = sql + "    ,PERCENT_START";
 					sql  = sql + "    ,PERCENT";
 					sql  = sql + "    ,DELETEFLG";
 					sql  = sql + "    ,DELETEYMDHMS";
@@ -711,6 +722,7 @@ public class DaoFormKanriMainteWorkStatus {
 					sql  = sql + "    ,?";     //STARTEMPLOYEEID
 					sql  = sql + "    ,?";     //ENDDATETIME
 					sql  = sql + "    ,?";     //ENDEMPLOYEEID
+					sql  = sql + "    ,?";     //PERCENT_START
 					sql  = sql + "    ,?";     //PERCENT
 					sql  = sql + "    ,0";     //DELETEFLG
 					sql  = sql + "    ,null";  //DELETEYMDHMS
@@ -731,6 +743,7 @@ public class DaoFormKanriMainteWorkStatus {
 							,detail.getStartEmployeeId()
 							,formatter.format(detail.getEndDateTime())
 							,detail.getEndEmployeeId()
+							,detail.getPercentStart()
 							,detail.getPercent()
 							,detail.getBiko()
 							,detail.getBoxCount()
@@ -765,6 +778,7 @@ public class DaoFormKanriMainteWorkStatus {
 					sql  = sql + "    ,STARTEMPLOYEEID";
 					sql  = sql + "    ,ENDDATETIME";
 					sql  = sql + "    ,ENDEMPLOYEEID";
+					sql  = sql + "    ,PERCENT_START";
 					sql  = sql + "    ,PERCENT";
 					sql  = sql + "    ,DELETEFLG";
 					sql  = sql + "    ,DELETEYMDHMS";
@@ -783,6 +797,7 @@ public class DaoFormKanriMainteWorkStatus {
 					sql  = sql + "    ,?";      //STARTEMPLOYEEID
 					sql  = sql + "    ,?";      //ENDDATETIME
 					sql  = sql + "    ,?";      //ENDEMPLOYEEID
+					sql  = sql + "    ,?";      //PERCENT_START
 					sql  = sql + "    ,?";      //PERCENT
 					sql  = sql + "    ,0";      //DELETEFLG
 					sql  = sql + "    ,null";   //DELETEYMDHMS
@@ -803,6 +818,7 @@ public class DaoFormKanriMainteWorkStatus {
 							,detail.getStartEmployeeId()
 							,formatter.format(detail.getEndDateTime())
 							,detail.getEndEmployeeId()
+							,detail.getPercentStart()
 							,detail.getPercent()
 							,detail.getBiko()
 							,userName
@@ -825,6 +841,7 @@ public class DaoFormKanriMainteWorkStatus {
 					sql  = sql + "    ,STARTEMPLOYEEID";
 					sql  = sql + "    ,ENDDATETIME";
 					sql  = sql + "    ,ENDEMPLOYEEID";
+					sql  = sql + "    ,PERCENT_START";
 					sql  = sql + "    ,PERCENT";
 					sql  = sql + "    ,DELETEFLG";
 					sql  = sql + "    ,DELETEYMDHMS";
@@ -843,6 +860,7 @@ public class DaoFormKanriMainteWorkStatus {
 					sql  = sql + "    ,?";       //STARTEMPLOYEEID
 					sql  = sql + "    ,?";       //ENDDATETIME
 					sql  = sql + "    ,?";       //ENDEMPLOYEEID
+					sql  = sql + "    ,?";       //PERCENT_START
 					sql  = sql + "    ,?";       //PERCENT
 					sql  = sql + "    ,0";       //DELETEFLG
 					sql  = sql + "    ,null";    //DELETEYMDHMS
@@ -863,6 +881,7 @@ public class DaoFormKanriMainteWorkStatus {
 							,detail.getStartEmployeeId()
 							,formatter.format(detail.getEndDateTime())
 							,detail.getEndEmployeeId()
+							,detail.getPercentStart()
 							,detail.getPercent()
 							,detail.getBiko()
 							,userName
@@ -955,6 +974,7 @@ public class DaoFormKanriMainteWorkStatus {
 				sql  = sql + "    ,STARTEMPLOYEEID  = ?";
 				sql  = sql + "    ,ENDDATETIME      = ?";
 				sql  = sql + "    ,ENDEMPLOYEEID    = ?";
+				sql  = sql + "    ,PERCENT_START    = ?";
 				sql  = sql + "    ,PERCENT          = ?";
 				//sql  = sql + "    ,DELETEFLG        = ?";
 				//sql  = sql + "    ,DELETEYMDHMS     = ?";
@@ -986,6 +1006,7 @@ public class DaoFormKanriMainteWorkStatus {
 						,detail.getStartEmployeeId()
 						,endDateTimeString
 						,detail.getEndEmployeeId()
+						,detail.getPercentStart()
 						,detail.getPercent()
 						,detail.getBiko()
 						,detail.getBoxCount()
@@ -1015,6 +1036,7 @@ public class DaoFormKanriMainteWorkStatus {
 				sql  = sql + "    ,STARTEMPLOYEEID  = ?";
 				sql  = sql + "    ,ENDDATETIME      = ?";
 				sql  = sql + "    ,ENDEMPLOYEEID    = ?";
+				sql  = sql + "    ,PERCENT_START    = ?";
 				sql  = sql + "    ,PERCENT          = ?";
 				//sql  = sql + "    ,DELETEFLG        = ?";
 				//sql  = sql + "    ,DELETEYMDHMS     = ?";
@@ -1046,6 +1068,7 @@ public class DaoFormKanriMainteWorkStatus {
 						,detail.getStartEmployeeId()
 						,endDateTimeString
 						,detail.getEndEmployeeId()
+						,detail.getPercentStart()
 						,detail.getPercent()
 						,detail.getBiko()
 						,userName
@@ -1204,14 +1227,14 @@ public class DaoFormKanriMainteWorkStatus {
 				
 				
 				//------------------------------------------------
-				// ハウス作業(収穫)進捗テーブルの登録
+				// ハウス作業(収穫)進捗テーブルの更新（復旧）
 				
 				
 				
 				String sql = " update TT_HOUSE_WORKSTATUS_SHUKAKU";
 				sql  = sql + " set";
-				sql  = sql + "     DELETEFLG        = 0";
-				sql  = sql + "    ,DELETEYMDHMS     = null";
+				sql  = sql + "     DELETEFLG        = 0";    // 削除フラグをOFF
+				sql  = sql + "    ,DELETEYMDHMS     = null"; // 削除日時をクリア
 				sql  = sql + "    ,BIKO             = ?";
 				sql  = sql + "    ,SYSUPDUSERID     = ?";
 				sql  = sql + "    ,SYSUPDPGMID      = ?";
@@ -1236,13 +1259,13 @@ public class DaoFormKanriMainteWorkStatus {
 			}else{
 				
 				//------------------------------------------------
-				// ハウス作業進捗テーブルの登録
+				// ハウス作業進捗テーブルの更新（復旧）
 				
 				
 				String sql = " update TT_HOUSE_WORKSTATUS";
 				sql  = sql + " set";
-				sql  = sql + "     DELETEFLG        = 0";
-				sql  = sql + "    ,DELETEYMDHMS     = null";
+				sql  = sql + "     DELETEFLG        = 0";    // 削除フラグをOFF
+				sql  = sql + "    ,DELETEYMDHMS     = null"; // 削除日時をクリア
 				sql  = sql + "    ,BIKO             = ?";
 				sql  = sql + "    ,SYSUPDUSERID     = ?";
 				sql  = sql + "    ,SYSUPDPGMID      = ?";

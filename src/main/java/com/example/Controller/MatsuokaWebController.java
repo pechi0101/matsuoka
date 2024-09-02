@@ -2341,7 +2341,7 @@ public class MatsuokaWebController {
 		FormKanriMainteWorkStatusList formKanriMainteWorkStatusList;
 		
 		// ※最初は検索条件なしで全て一覧表示するため引数は全て空白かnull
-		formKanriMainteWorkStatusList = dao.getWorkStatusList("", "", "", null,null);
+		formKanriMainteWorkStatusList = dao.getDispWorkStatusList("", "", "", null,null);
 		
 		if (formKanriMainteWorkStatusList == null) {
 			
@@ -2416,7 +2416,7 @@ public class MatsuokaWebController {
 			//ハウスIDが指定されている  場合(更新削除)：ハウス情報を検索して次画面に表示
 			
 			DaoFormKanriMainteWorkStatus dao = new DaoFormKanriMainteWorkStatus(jdbcTemplate);
-			formKanriMainteWorkStatusDetail = dao.getWorkStatusDatail(targetHouseId, targetColNo, targetWorkId, targetStartDateTime);
+			formKanriMainteWorkStatusDetail = dao.getDispWorkStatusDatail(targetHouseId, targetColNo, targetWorkId, targetStartDateTime);
 		}
 		
 		
@@ -2467,7 +2467,8 @@ public class MatsuokaWebController {
 		log.info("【INF】" + pgmId + " :作業終了社員=[" + formKanriMainteWorkStatusDetail.getEndEmployeeId() + "]");
 		log.info("【INF】" + pgmId + " :作業終了日時=[" + formKanriMainteWorkStatusDetail.getEndDateTime() + "]");
 		log.info("【INF】" + pgmId + " :ケース数    =[" + formKanriMainteWorkStatusDetail.getBoxCount() + "]");
-		log.info("【INF】" + pgmId + " :進捗        =[" + formKanriMainteWorkStatusDetail.getPercent() + "]");
+		log.info("【INF】" + pgmId + " :進捗_開始   =[" + formKanriMainteWorkStatusDetail.getPercentStart() + "]");
+		log.info("【INF】" + pgmId + " :進捗_終了   =[" + formKanriMainteWorkStatusDetail.getPercent() + "]");
 		log.info("【INF】" + pgmId + " :備考        =[" + formKanriMainteWorkStatusDetail.getBiko() + "]");
 		log.info("【INF】" + pgmId + " :▼フィルタリング条件------------------------------------------------");
 		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteWorkStatusDetail.getFilterHouseId() + "]");
@@ -2520,7 +2521,7 @@ public class MatsuokaWebController {
 		// 一覧表示用にデータを取得
 		FormKanriMainteWorkStatusList formKanriMainteWorkStatusList;
 		
-		formKanriMainteWorkStatusList = dao.getWorkStatusList("", "", "", null,null);
+		formKanriMainteWorkStatusList = dao.getDispWorkStatusList("", "", "", null,null);
 		
 		if (formKanriMainteWorkStatusList == null) {
 			
@@ -2533,7 +2534,7 @@ public class MatsuokaWebController {
 			formKanriMainteWorkStatusList.setMessage("データが0件でした。");
 			log.info("【INF】" + pgmId + ":データが0件でした。");
 		}
-
+		
 		
 		
 		// ------------------------------------------------
@@ -2595,7 +2596,7 @@ public class MatsuokaWebController {
 		// 一覧表示用にデータを取得
 		FormKanriMainteWorkStatusList formKanriMainteWorkStatusList;
 		
-		formKanriMainteWorkStatusList = dao.getWorkStatusList("", "", "", null,null);
+		formKanriMainteWorkStatusList = dao.getDispWorkStatusList("", "", "", null,null);
 		
 		if (formKanriMainteWorkStatusList == null) {
 			
@@ -2656,7 +2657,6 @@ public class MatsuokaWebController {
 	
 	
 	
-	//システムの初期処理→作業者一覧画面の表示
 	@RequestMapping(value ="/matsuoka/TransitionKanriDispWorkStatus",method = RequestMethod.GET)
 	public ModelAndView transition_KanriDispWorkStatus(ModelAndView mav) {
 		

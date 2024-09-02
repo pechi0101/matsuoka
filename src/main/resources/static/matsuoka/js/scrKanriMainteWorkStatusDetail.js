@@ -263,12 +263,48 @@ $(function() {
 	
 	
 	
+	$('input[name$="percentStart"]').on("input", function() {
+		// ここに変更時の処理を記述します
+		console.log("入力が変更されました。新しい値は: " + $(this).val());
+		
+		//------------------------------------------------
+		// 進捗_開始の入力チェック
+		//------------------------------------------------
+		
+		let inputVal = document.getElementById("percentStart");
+		let msgArea  = document.getElementById("percentStartMsg");
+		
+		// 半角数字の正規表現
+		var regex = /^[0-9]+$/;
+				
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			return;
+			
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			return;
+			
+		} else if (inputVal.value > 300) {
+			//範囲チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】0～300の範囲内で入力してください</p>';
+			return;
+			
+		}else{
+			msgArea.innerHTML = '';
+		}
+	});
+	
+	
+	
 	$('input[name$="percent"]').on("input", function() {
 		// ここに変更時の処理を記述します
 		console.log("入力が変更されました。新しい値は: " + $(this).val());
 		
 		//------------------------------------------------
-		// 進捗の入力チェック
+		// 進捗_終了の入力チェック
 		//------------------------------------------------
 		
 		let inputVal = document.getElementById("percent");
@@ -548,7 +584,37 @@ $(function() {
 		
 		
 		//------------------------------------------------
-		// 進捗の入力チェック
+		// 進捗_開始の入力チェック
+		//------------------------------------------------
+		
+		inputVal = document.getElementById("percentStart");
+		msgArea  = document.getElementById("percentStartMsg");
+		
+		// 半角数字の正規表現
+		var regex = /^[0-9]+$/;
+				
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			checkOKFlg = false;
+			
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			checkOKFlg = false;
+			
+		} else if (inputVal.value > 300) {
+			//範囲チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】0～300の範囲内で入力してください</p>';
+			checkOKFlg = false;
+			
+		}else{
+			msgArea.innerHTML = '';
+		}
+		
+		
+		//------------------------------------------------
+		// 進捗_終了の入力チェック
 		//------------------------------------------------
 		
 		inputVal = document.getElementById("percent");

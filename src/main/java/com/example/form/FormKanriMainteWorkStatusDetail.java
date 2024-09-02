@@ -72,8 +72,9 @@ public class FormKanriMainteWorkStatusDetail {
 	private LocalTime endTime;
 	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
 	private LocalDateTime endDateTime;
-	
-	private String percent; // 進捗率(%)
+
+	private String percentStart;  // 進捗率_開始(%)
+	private String percent;       // 進捗率_終了(%)
 	
 	private boolean deleteFlg;
 	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
@@ -114,6 +115,7 @@ public class FormKanriMainteWorkStatusDetail {
 		this.endEmployeeName    = "";
 		//this.endDate            = "";
 		//this.endTime            = "";
+		this.percentStart       = "";
 		this.percent            = "";
 		this.deleteFlg          = false;
 		//this.deleteymdhms       = "";

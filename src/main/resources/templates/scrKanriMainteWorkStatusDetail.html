@@ -106,19 +106,20 @@
 		
 		<!-- 隠し項目(非表示ID) -->
 		<input type="hidden" id="houseId"               th:field="*{houseId}" />
-		<!--<input type="hidden" id="colNo"             th:field="*{colNo}" />      ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		<!--<input type="hidden" id="colNo"             th:field="*{colNo}" />       ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
 		<input type="hidden" id="workId"                th:field="*{workId}" />
 		<input type="hidden" id="startEmployeeId"       th:field="*{startEmployeeId}" />
-		<!--<input type="hidden" id="startDate"         th:field="*{startDate}" />  ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
-		<!--<input type="hidden" id="startTime"         th:field="*{startTime}" />  ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		<!--<input type="hidden" id="startDate"         th:field="*{startDate}" />   ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		<!--<input type="hidden" id="startTime"         th:field="*{startTime}" />   ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
 		<input type="hidden" id="startDateTime"         th:field="*{startDateTime}" />
 		<input type="hidden" id="endEmployeeId"         th:field="*{endEmployeeId}" />
-		<!--<input type="hidden" id="endDate"           th:field="*{endDate}" />    ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
-		<!--<input type="hidden" id="endTime"           th:field="*{endTime}" />    ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		<!--<input type="hidden" id="endDate"           th:field="*{endDate}" />     ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		<!--<input type="hidden" id="endTime"           th:field="*{endTime}" />     ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
 		<input type="hidden" id="endDateTime"           th:field="*{endDateTime}" />
-		<!--<input type="hidden" id="percent"           th:field="*{percent}" />    ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
-		<!--<input type="hidden" id="boxCount"          th:field="*{boxCount}" />   ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
-		<!--<input type="hidden" id="biko"              th:field="*{biko}" />       ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		<!--<input type="hidden" id="percentStart"      th:field="*{percentStart}" />※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		<!--<input type="hidden" id="percent"           th:field="*{percent}" />     ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		<!--<input type="hidden" id="boxCount"          th:field="*{boxCount}" />    ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
+		<!--<input type="hidden" id="biko"              th:field="*{biko}" />        ※この項目は画面入力項目にあるから非表示項目に持っててはダメ-->
 		
 		<!-- 隠し項目(フィルタリング値) -->
 		<input type="hidden" id="filterHouseId"         th:field="*{filterHouseId}" />
@@ -237,15 +238,25 @@
 			
 			
 			
-			<!-- ************【 進捗 】*************** -->
+			<!-- ************【 進捗_開始 】*************** -->
 			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
-			    <div class="ymd-label"     style="width: 180px;">※進捗(%)</div>
+			    <div class="ymd-label"     style="width: 180px;">※進捗率_開始(%)</div>
+			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{percentStart}" placeholder="例：30" /></div>
+			</div>
+			<div class="ymd-container" style="width: 100%;">
+				<div class="ymd-container" style="width: 180px;"><span></span></div>
+				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="percentStartMsg"></div>
+			</div>
+			<!-- ************【 進捗_終了 】*************** -->
+			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+			    <div class="ymd-label"     style="width: 180px;">※進捗率_終了(%)</div>
 			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{percent}" placeholder="例：30" /></div>
 			</div>
 			<div class="ymd-container" style="width: 100%;">
 				<div class="ymd-container" style="width: 180px;"><span></span></div>
 				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="percentMsg"></div>
 			</div>
+			
 			<!-- ************【 収穫ケース数 】*************** -->
 			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
 			    <div class="ymd-label"     style="width: 180px;">収穫ケース数</div>

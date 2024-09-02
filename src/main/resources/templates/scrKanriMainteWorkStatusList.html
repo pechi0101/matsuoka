@@ -157,9 +157,10 @@
 			    <div class="ymd-list-header-text" style="width: 160px;">開始日時</div>
 			    <div class="ymd-list-header-text" style="width: 120px;">終了社員</div>
 			    <div class="ymd-list-header-text" style="width: 160px;">終了日時</div>
-			    <div class="ymd-list-header-text" style="width: 100px;">進捗(%)</div>
+			    <div class="ymd-list-header-text" style="width: 100px;">進捗_開始</div>
+			    <div class="ymd-list-header-text" style="width: 100px;">進捗_終了</div>
 			    <div class="ymd-list-header-text" style="width: 100px;">ケース数</div>
-			    <div class="ymd-list-header-text" style="width: calc(100% - 1030px);">備考</div>
+			    <div class="ymd-list-header-text" style="width: calc(100% - 1130px);">備考</div>
 			</div>
 		</div>
 		
@@ -195,9 +196,10 @@
 			    <div class="ymd-list-detail-data" style="width: 160px;"><span th:text="*{#temporals.format(workStatusList[__${stat.index}__].startDateTime, 'yyyy/MM/dd HH:mm')}" /></div>
 			    <div class="ymd-list-detail-data" style="width: 120px;"><span th:text="*{workStatusList[__${stat.index}__].endEmployeeName}" /></div>
 			    <div class="ymd-list-detail-data" style="width: 160px;"><span th:text="*{#temporals.format(workStatusList[__${stat.index}__].endDateTime, 'yyyy/MM/dd HH:mm')}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 100px;"><span th:text="*{workStatusList[__${stat.index}__].percentStart}" /></div>
 			    <div class="ymd-list-detail-data" style="width: 100px;"><span th:text="*{workStatusList[__${stat.index}__].percent}" /></div>
 			    <div class="ymd-list-detail-data" style="width: 100px;"><span th:text="*{workStatusList[__${stat.index}__].boxCount}" /></div>
-			    <div class="ymd-list-detail-data" style="width: calc(100% - 1030px);"><span th:text="*{workStatusList[__${stat.index}__].biko}" /></div>
+			    <div class="ymd-list-detail-data" style="width: calc(100% - 1130px);"><span th:text="*{workStatusList[__${stat.index}__].biko}" /></div>
 			</div>
 			</div>
 		</div>
