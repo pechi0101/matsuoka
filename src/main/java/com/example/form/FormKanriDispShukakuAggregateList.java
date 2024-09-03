@@ -11,7 +11,16 @@ public class FormKanriDispShukakuAggregateList implements Serializable {
 	
 	private String message;
 	
-	private ArrayList<FormKanriDispShukakuAggregateDetail> detailList = new ArrayList<FormKanriDispShukakuAggregateDetail>();
+	//全ハウスの合計をグラフ表示するデータ
+	private ArrayList<FormKanriDispShukakuAggregateDetail> detailList_All   = new ArrayList<FormKanriDispShukakuAggregateDetail>();
+	
+	//ハウス毎の表示データ
+	private ArrayList<FormKanriDispShukakuAggregateDetail> detailList_10001 = new ArrayList<FormKanriDispShukakuAggregateDetail>();
+	private ArrayList<FormKanriDispShukakuAggregateDetail> detailList_10002 = new ArrayList<FormKanriDispShukakuAggregateDetail>();
+	private ArrayList<FormKanriDispShukakuAggregateDetail> detailList_10003 = new ArrayList<FormKanriDispShukakuAggregateDetail>();
+	private ArrayList<FormKanriDispShukakuAggregateDetail> detailList_10004 = new ArrayList<FormKanriDispShukakuAggregateDetail>();
+	private ArrayList<FormKanriDispShukakuAggregateDetail> detailList_10005 = new ArrayList<FormKanriDispShukakuAggregateDetail>();
+	private ArrayList<FormKanriDispShukakuAggregateDetail> detailList_10006 = new ArrayList<FormKanriDispShukakuAggregateDetail>();
 	
 	public FormKanriDispShukakuAggregateList() {
 		

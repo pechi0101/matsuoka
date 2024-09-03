@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 public class AggregateTable {
 	
-	private ArrayList<AggregateDetail> list = null;
+	public ArrayList<AggregateDetail> list = null;
 	
 	
 	private JdbcTemplate  jdbcTemplate;

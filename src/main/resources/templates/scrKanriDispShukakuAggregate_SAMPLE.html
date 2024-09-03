@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head style="height: 100%;">
+<meta charset="UTF-8">
+<title>ログイン</title>
+<!--リセットＣＳＳ-->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/destyle.css@4.0.0/destyle.min.css">
+<!--Font Awesome(無償版)のアイコン-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<!-- ★グラフ表示用のchart.js読込み  -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- jQueryがレスポンシブに対応するため必要になるコード...らしい-->
+<!-- 参考：https://job-support.ne.jp/blog/javascript/howto-jquery-->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- ▽や△のアイコンをCSSで使うためにリンクを貼る -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+<!--オリジナルＣＳＳ(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<link href="/matsuoka/css/style.css?ver='+ new Date().getTime() +'" rel="stylesheet" type="text/css">');
+//-->
+</script>
+<!--オリジナルJavaScript(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<script src="/matsuoka/js/scrKanriDispShukakuAggregate.js?ver='+ new Date().getTime() +'"></script>');
+//-->
+</script>
+
+
+<!-- 
+	サーバでデプロイする場合、CSS,JavaScript,画像などはドキュメントルート（※）内に配置すること
+	※例
+	  ＣＳＳ	：/var/www/html/css
+	  JavaScript：/var/www/html/js
+	  画像	  ：/var/www/html/images
+ -->
+
+
+ 
+</head>
+<body>
+
+<header class="ymd-header">
+   作業状況確認
+</header>
+<div class="ymd-navigation">
+	<ul class="gnav">
+	<li><a th:href="@{/matsuoka/indexKanri}"}>ＴＯＰ</a></li>
+	<li><a href="">マスタメンテナンス</a>
+		<ul>
+			<li><a th:href="@{/matsuoka/TransitionKanriMainteEmployeeList}">社員情報ﾒﾝﾃﾅﾝｽ</a></li>
+			<li><a th:href="@{/matsuoka/TransitionKanriMainteHouseList}">ハウス情報ﾒﾝﾃﾅﾝｽ</a></li>
+			<li><a th:href="@{/matsuoka/TransitionKanriMainteWorkList}">作業情報ﾒﾝﾃﾅﾝｽ</a></li>
+		</ul>
+	</li>
+	<li><a href="">分析・集計</a>
+		<ul>
+			<li><a th:href="@{/matsuoka/TransitionKanriMainteWorkStatusList}">作業内容修正</a></li>
+			<li><a th:href="@{/matsuoka/TransitionKanriDispWorkStatus}">作業状況確認</a></li>
+			<li><a th:href="@{/matsuoka/TransitionKanriMainteShukakuSumList}">収穫情報確認</a></li>
+			<li><a th:href="@{/matsuoka/TransitionKanriDispShukakuAggregate}">収穫状況表示</a></li>
+			<li><a th:href="@{/matsuoka/TransitionKanriDummy}">社員能力分析</a></li>
+		</ul>
+	</li>
+	</ul>
+</div>
+
+<center>
+<div class="ymd-base-container">
+	
+	<br>
+	<!-- 文言表示エリア -->
+	<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
+		<span>■収穫ケース数合計：月毎／全ハウス合計</span>
+	</div>
+		
+	<br>
+	<canvas id="aggregateChart1" style="width: 90%; height: 300px"></canvas>
+	<br>
+	<br>
+	<!-- 文言表示エリア -->
+	<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
+		<span>■収穫ケース数合計：月毎／ハウス毎（横並びグラフ）</span>
+	</div>
+	<br>
+	<canvas id="aggregateChart2" style="width: 90%; height: 300px"></canvas>
+	<br>
+	<br>
+	<!-- 文言表示エリア -->
+	<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
+		<span>■収穫ケース数合計：月毎／ハウス毎（積み上げグラフ）</span>
+	</div>
+	<br>
+	<canvas id="aggregateChart3" style="width: 90%; height: 300px"></canvas>
+	<br>
+	<br>
+	
+</div>
+</center>
+
+
+
+<!--       グラフ描画１       -->
+
+
+<script type="text/javascript" th:inline="javascript">
+	
+	
+
+	//  【メモ】
+	//  以下のようなグラフを描画したい場合、①と②の配列を準備して
+	//  それをグラフにブチ込むカンジ
+	//  
+	//                   □□□：全ハウスの収穫ケース数の合計
+	//  
+	//          |                      □
+	//          |                      □
+	//      150 |   □                 □
+	//          |   □       □        □  
+	//          |   □       □        □                 □  
+	//      100 |   □       □        □                 □   ←②データ配列
+	//          |   □       □        □                 □  
+	//          |   □       □        □                 □  
+	//       50 |   □       □        □                 □  
+	//          |   □       □        □                 □  
+	//          |   □       □        □                 □  
+	//          +----------------------------------------------
+	//            2024-01  2024-02   2024-03       …   2024-12 ←①ラベル配列
+	//  
+	//  
+	//  ①labels ラベル配列(テキスト配列)
+	//  +----------------------------------------------------------+
+	//  |2024-01                                                   |
+	//  +----------------------------------------------------------+
+	//  |2024-02                                                   |
+	//  +----------------------------------------------------------+
+	//  |2024-03                                                   |
+	//                      …中略…
+	//  |2024-12                                                   |
+	//  +----------------------------------------------------------+
+	//  
+	//  ②data データ配列(数値配列)
+	//  +----------------------------------------------------------+
+	//  |1050                                                      |←2024-01の分
+	//  +----------------------------------------------------------+
+	//  |2200                                                      |←2024-02の分
+	//  +----------------------------------------------------------+
+	//  |1450                                                      |←2024-03の分
+	//                      …中略…
+	//  |1650                                                      |←2024-12の分
+	//  +----------------------------------------------------------+
+	
+	
+	
+	// Thymeleafで渡されたデータをJavaScriptに変換
+	var aggregateData = /*[[${formKanriDispShukakuAggregateList.detailList}]]*/ [];
+	
+	// データ処理
+	var labels = [];
+	var data   = [];
+
+	aggregateData.forEach(item => {
+		var label = `${item.aggregateYear}-${item.aggregateMonth}`;
+		if (!labels.includes(label)) {
+			labels.push(label);
+		}
+		// ラベルの要素位置を取得
+		var index   = labels.indexOf(label);
+		// そのラベルの位置に表示する収穫ケース数合計を「全ハウス分」加算
+		// 【メモ】data[index] || 0は「data[index] が undefined、null、または 0 の場合、この部分は 0 を返す」という意味
+		data[index] = (data[index] || 0) + parseInt(item.boxSum);
+	});
+
+	//console.log(labels); // デバッグ用: ラベルを確認
+	//console.log(data);   // デバッグ用: データを確認
+
+	// グラフの描画
+	var ctx = document.getElementById('aggregateChart1').getContext('2d');
+	new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: labels,
+			datasets: [{
+				label: 'Box Sum',
+				data: data,
+				backgroundColor: 'rgba(75, 192, 192, 0.2)',
+				borderColor: 'rgba(75, 192, 192, 1)',
+				borderWidth: 1
+			}]
+		},
+		options: {
+			scales: {
+				x: {
+					beginAtZero: true
+				},
+				y: {
+					beginAtZero: true
+				}
+			}
+		}
+	});
+</script>
+
+
+
+<!--       グラフ描画２       -->
+
+
+<script type="text/javascript" th:inline="javascript">
+
+	//  【メモ】
+	//  以下のようなグラフを描画したい場合、①と②の配列を準備して
+	//  それをグラフにブチ込むカンジ
+	//  
+	//                   □□□：３号隔離   ■■■：４号隔離
+	//  
+	//          |              ■      □
+	//          |              ■      □
+	//       15 |   □         ■      □
+	//          |   □       □■      □■
+	//          |   □■     □■      □■               □■
+	//       10 |   □■     □■      □■               □■ ←②データセット配列
+	//          |   □■     □■      □■               □■
+	//          |   □■     □■      □■               □■
+	//        5 |   □■     □■      □■               □■
+	//          |   □■     □■      □■               □■
+	//          |   □■     □■      □■               □■
+	//          +----------------------------------------------
+	//            2024-01  2024-02   2024-03       …   2024-12 ←①ラベル配列
+	//  
+	//  
+	//  ①labels ラベル配列(テキスト配列)
+	//  +----------------------------------------------------------+
+	//  |2024-01                                                   |
+	//  +----------------------------------------------------------+
+	//  |2024-02                                                   |
+	//  +----------------------------------------------------------+
+	//  |2024-03                                                   |
+	//
+	//                      …中略…
+	//
+	//  |2024-12                                                   |
+	//  +----------------------------------------------------------+
+	//  
+	//  ②datasets データセット配列(オブジェクト配列)
+	//  +----------------------------------------------------------+
+	//  |ハウスID：10001(キー値)                                   |
+	//  |----------------------------------------------------------|
+	//  |ラベル  ：３号隔離                                        |
+	//  |データ  ：[0][0][0][0][0][0][0][0][0][0][0][0]            |
+	//  |        ※３号隔離のデータを入れる配列を作って0で初期化   |
+	//  |          配列の要素数はラベル[2024-01]～[2024-12] の分   |
+	//  |          作っといて...                                   |
+	//  |                       ▼                                 |
+	//  |          後で収穫ケース数合計(boxSum)を入れる            |
+	//  |          [20][50][20][15][13][17][25][31][11][9][8][1]   |
+	//  |                                                          |
+	//  |背景色  ：#FFFFFFF形式で色を指定                          |
+	//  |枠線の色：#FFFFFFF形式で色を指定                          |
+	//  |                                                          |
+	//  +----------------------------------------------------------+
+	//  |ハウスID：10002(キー値)                                   |
+	//  |----------------------------------------------------------|
+	//  |ラベル  ：４号隔離                                        |
+	//  |データ  ：[X][X][X][X][X][X][X][X][X][X][X][X]            |
+	//  |背景色  ：#FFFFFFF                                        |
+	//  |枠線の色：#FFFFFFF                                        |
+	//  +----------------------------------------------------------+
+
+
+
+	/*<![CDATA[*/
+	// Thymeleafで渡されたデータをJavaScriptに変換
+	var aggregateData = /*[[${formKanriDispShukakuAggregateList.detailList}]]*/ [];
+
+	// データ構造を確認するためにコンソールに出力
+	//console.log('データ:', aggregateData);
+	
+	// 年月ごと、houseIdごとにデータを整理する
+	var labels   = [];
+	var datasets = {};
+
+	aggregateData.forEach(function(item) {
+		var label = item.aggregateYear + '-' + item.aggregateMonth; // 年月をラベルとして使用
+		
+		if (!labels.includes(label)) {
+			labels.push(label);
+		}
+		
+		//ハウスIDをキーにしたdatasets要素が存在しない場合、追加作成する。
+		if (!datasets[item.houseId]) {
+			datasets[item.houseId] = {
+				label: item.houseName,
+				data: Array(labels.length).fill(0),  //ラベルの要素数分の配列を作成して0で初期化
+				backgroundColor: getRandomColor(),
+				borderColor: getRandomColor(),
+				borderWidth: 1
+			};
+		}
+		
+		var index = labels.indexOf(label);
+		datasets[item.houseId].data[index] = parseFloat(item.boxSum);
+	});
+
+	// ラベルとデータセットを整理
+	var chartLabels   = labels;
+	var chartDatasets = Object.values(datasets);
+
+	// グラフの描画
+	var ctx = document.getElementById('aggregateChart2').getContext('2d');
+	var myChart = new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: chartLabels,
+			datasets: chartDatasets
+		},
+		options: {
+			//responsive:グラフが画面サイズやウィンドウのリサイズに応じて自動的に調整される場合true
+			responsive: true,
+			//凡例(legendレジェンド)の表示＝true
+			//グラフにマウスカーソルをあてた際に表示されるツールチップの表示内＝ラベル(ハウス名): 収穫ケース数合計
+			plugins: {
+				legend: {
+					display: true
+				},
+				tooltip: {
+					callbacks: {
+						label: function(context) {
+							return context.dataset.label + ': ' + context.raw;
+						}
+					}
+				}
+			}
+		}
+	});
+
+	// ランダムな色を生成する関数
+	function getRandomColor() {
+		var letters = '0123456789ABCDEF';
+		var color = '#';
+		for (var i = 0; i < 6; i++) {
+			color += letters[Math.floor(Math.random() * 16)];
+		}
+		return color;
+	}
+	/*]]>*/
+</script>
+
+
+
+
+
+
+<!--       グラフ描画３       -->
+
+
+<script type="text/javascript" th:inline="javascript">
+
+	//  【メモ】
+	//  以下のようなグラフ(積み上げ棒グラフというらしい)を描画したい場合
+	//  ①と②の配列を準備してそれをグラフにブチ込むカンジ
+	//  基本は「グラフ描画２」と同じ、グラフのOption設定が異なるのみ
+	//  
+	//                   □□□：３号隔離   ■■■：４号隔離
+	//  
+	//          |                      ■
+	//          |                      ■
+	//       15 |   ■                 ■
+	//          |   ■       ■        ■  
+	//          |   ■       ■        ■                 ■  
+	//       10 |   □       ■        □                 ■   ←②データセット配列
+	//          |   □       ■        □                 ■  
+	//          |   □       □        □                 □  
+	//        5 |   □       □        □                 □  
+	//          |   □       □        □                 □  
+	//          |   □       □        □                 □  
+	//          +----------------------------------------------
+	//            2024-01  2024-02   2024-03       …   2024-12 ←①ラベル配列
+	//  
+	//  
+	//  ①labels ラベル配列(テキスト配列)
+	//  +----------------------------------------------------------+
+	//  |2024-01                                                   |
+	//  +----------------------------------------------------------+
+	//  |2024-02                                                   |
+	//  +----------------------------------------------------------+
+	//  |2024-03                                                   |
+	//                      …中略…
+	//  |2024-12                                                   |
+	//  +----------------------------------------------------------+
+	//  
+	//  ②datasets データセット配列(オブジェクト配列)
+	//  +----------------------------------------------------------+
+	//  |ハウスID：10001(キー値)                                   |
+	//  |----------------------------------------------------------|
+	//  |ラベル  ：３号隔離                                        |
+	//  |データ  ：[X][X][X][X][X][X][X][X][X][X][X][X]            |
+	//  |背景色  ：#FFFFFFF                                        |
+	//  |枠線の色：#FFFFFFF                                        |
+	//  |                                                          |
+	//  +----------------------------------------------------------+
+	//  |ハウスID：10002(キー値)                                   |
+	//  |----------------------------------------------------------|
+	//  |ラベル  ：４号隔離                                        |
+	//  |データ  ：[X][X][X][X][X][X][X][X][X][X][X][X]            |
+	//  |背景色  ：#FFFFFFF                                        |
+	//  |枠線の色：#FFFFFFF                                        |
+	//  +----------------------------------------------------------+
+
+
+
+	/*<![CDATA[*/
+	// Thymeleafで渡されたデータをJavaScriptに変換
+	var aggregateData = /*[[${formKanriDispShukakuAggregateList.detailList}]]*/ [];
+
+	// データ構造を確認するためにコンソールに出力
+	//console.log('データ:', aggregateData);
+	
+	// 年月ごと、houseIdごとにデータを整理する
+	var labels   = [];
+	var datasets = {};
+
+	aggregateData.forEach(function(item) {
+		var label = item.aggregateYear + '-' + item.aggregateMonth; // 年月をラベルとして使用
+		
+		if (!labels.includes(label)) {
+			labels.push(label);
+		}
+		
+		//ハウスIDをキーにしたdatasets要素が存在しない場合、追加作成する。
+		if (!datasets[item.houseId]) {
+			datasets[item.houseId] = {
+				label: item.houseName,
+				data: Array(labels.length).fill(0),  //ラベルの要素数分の配列を作成して0で初期化
+				backgroundColor: getRandomColor(),
+				borderColor: getRandomColor(),
+				borderWidth: 1
+			};
+		}
+		
+		var index = labels.indexOf(label);
+		datasets[item.houseId].data[index] = parseFloat(item.boxSum);
+	});
+
+	// ラベルとデータセットを整理
+	var chartLabels   = labels;
+	var chartDatasets = Object.values(datasets);
+
+	// グラフの描画
+	var ctx = document.getElementById('aggregateChart3').getContext('2d');
+	var myChart = new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: chartLabels,
+			datasets: chartDatasets
+		},
+		options: {
+			//responsive:グラフが画面サイズやウィンドウのリサイズに応じて自動的に調整される場合true
+			responsive: true,
+			//凡例(legendレジェンド)の表示＝true
+			//グラフにマウスカーソルをあてた際に表示されるツールチップの表示内＝ラベル(ハウス名): 収穫ケース数合計
+			plugins: {
+				legend: {
+					display: true
+				},
+				tooltip: {
+					callbacks: {
+						label: function(context) {
+							return context.dataset.label + ': ' + context.raw;
+						}
+					}
+				}
+			},
+			//★★★★★  ココのOptionで「積み上げ棒グラフ」にしてる ★★★★★★★
+			//options.scales.x.stacked: X軸の積み上げ設定。true にすることで積み上げ棒グラフになります。
+			//options.scales.y.stacked: Y軸の積み上げ設定。true にすることで積み上げ棒グラフになります。
+			//→積み上げ棒グラフにするには両方ともtrueにする
+			scales: {
+				x: {
+					stacked: true
+				},
+				y: {
+					stacked: true
+				}
+			}
+		}
+	});
+
+	// ランダムな色を生成する関数
+	function getRandomColor() {
+		var letters = '0123456789ABCDEF';
+		var color = '#';
+		for (var i = 0; i < 6; i++) {
+			color += letters[Math.floor(Math.random() * 16)];
+		}
+		return color;
+	}
+	/*]]>*/
+</script>
+
+</body>
+</html>

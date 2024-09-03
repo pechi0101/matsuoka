@@ -3052,22 +3052,21 @@ public class MatsuokaWebController {
 			formKanriDispShukakuAggregateList.setMessage("検索処理で異常が発生しました。システム管理者にご連絡ください。");
 			log.info("【ERR】" + pgmId + ":検索処理で異常終了");
 		
-		} else if (formKanriDispShukakuAggregateList.getDetailList().size() == 0) {
-		
-			formKanriDispShukakuAggregateList.setMessage("データが0件でした。");
-			log.info("【INF】" + pgmId + ":データが0件でした。");
 		}
 		
+		
+		
 		/*
-		ArrayList<FormKanriDispShukakuAggregateDetail> itemList = formKanriDispShukakuAggregateList.getDetailList();
+		//------------------------------------------------
+		// 検証用にログ出力
+		ArrayList<FormKanriDispShukakuAggregateDetail> itemList = formKanriDispShukakuAggregateList.getDetailList_10001();
 		for (int index = 0; index < itemList.size();index++) {
 			FormKanriDispShukakuAggregateDetail detail = itemList.get(index); 
 			log.info("□--------------------------------------");
-			log.info("□ハウスID   =[" + detail.getHouseId() + "]"); 
-			log.info("□ハウス名   =[" + detail.getHouseName() + "]");
-			log.info("□集計年     =[" + detail.getAggregateYear() + "]");
-			log.info("□集計月     =[" + detail.getAggregateMonth() + "]");
-			log.info("□ケース数   =[" + detail.getBoxSum() + "]");
+			log.info("□データタイプ=[" + detail.getDataType() + "]");
+			log.info("□集計年      =[" + detail.getAggregateYear() + "]");
+			log.info("□集計月      =[" + detail.getAggregateMonth() + "]");
+			log.info("□ケース数    =[" + detail.getBoxSum() + "]");
 		}
 		*/
 		

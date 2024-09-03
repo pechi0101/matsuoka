@@ -75,142 +75,67 @@
 <center>
 <div class="ymd-base-container">
 	
+	
 	<br>
 	<!-- 文言表示エリア -->
 	<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
-		<span>■収穫ケース数合計：月毎／全ハウス合計</span>
+		<span>■収穫ケース数合計：全ハウス合計</span>
 	</div>
-		
 	<br>
-	<canvas id="aggregateChart1" style="width: 90%; height: 300px"></canvas>
+	<canvas id="aggregateChart_All" style="width: 90%; height: 200px"></canvas>
 	<br>
+	<br>
+	<br>
+	
 	<br>
 	<!-- 文言表示エリア -->
 	<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
-		<span>■収穫ケース数合計：月毎／ハウス毎（横並びグラフ）</span>
+		<span>■収穫ケース数合計：３号隔離</span>
 	</div>
 	<br>
-	<canvas id="aggregateChart2" style="width: 90%; height: 300px"></canvas>
-	<br>
+	<canvas id="aggregateChart_10001" style="width: 90%; height: 200px"></canvas>
 	<br>
 	<!-- 文言表示エリア -->
 	<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
-		<span>■収穫ケース数合計：月毎／ハウス毎（積み上げグラフ）</span>
+		<span>■収穫ケース数合計：４号隔離</span>
 	</div>
 	<br>
-	<canvas id="aggregateChart3" style="width: 90%; height: 300px"></canvas>
+	<canvas id="aggregateChart_10002" style="width: 90%; height: 200px"></canvas>
 	<br>
+	<!-- 文言表示エリア -->
+	<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
+		<span>■収穫ケース数合計：11号隔離</span>
+	</div>
+	<br>
+	<canvas id="aggregateChart_10003" style="width: 90%; height: 200px"></canvas>
+	<br>
+	<!-- 文言表示エリア -->
+	<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
+		<span>■収穫ケース数合計：８号土耕</span>
+	</div>
+	<br>
+	<canvas id="aggregateChart_10004" style="width: 90%; height: 200px"></canvas>
+	<br>
+	<!-- 文言表示エリア -->
+	<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
+		<span>■収穫ケース数合計：大土耕</span>
+	</div>
+	<br>
+	<canvas id="aggregateChart_10005" style="width: 90%; height: 200px"></canvas>
+	<br>
+	<!-- 文言表示エリア -->
+	<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
+		<span>■収穫ケース数合計：西土耕</span>
+	</div>
+	<br>
+	<canvas id="aggregateChart_10006" style="width: 90%; height: 200px"></canvas>
 	<br>
 	
 </div>
 </center>
 
 
-
-<!--       グラフ描画１       -->
-
-
-<script type="text/javascript" th:inline="javascript">
-	
-	
-
-	//  【メモ】
-	//  以下のようなグラフを描画したい場合、①と②の配列を準備して
-	//  それをグラフにブチ込むカンジ
-	//  
-	//                   □□□：全ハウスの収穫ケース数の合計
-	//  
-	//          |                      □
-	//          |                      □
-	//      150 |   □                 □
-	//          |   □       □        □  
-	//          |   □       □        □                 □  
-	//      100 |   □       □        □                 □   ←②データ配列
-	//          |   □       □        □                 □  
-	//          |   □       □        □                 □  
-	//       50 |   □       □        □                 □  
-	//          |   □       □        □                 □  
-	//          |   □       □        □                 □  
-	//          +----------------------------------------------
-	//            2024-01  2024-02   2024-03       …   2024-12 ←①ラベル配列
-	//  
-	//  
-	//  ①labels ラベル配列(テキスト配列)
-	//  +----------------------------------------------------------+
-	//  |2024-01                                                   |
-	//  +----------------------------------------------------------+
-	//  |2024-02                                                   |
-	//  +----------------------------------------------------------+
-	//  |2024-03                                                   |
-	//                      …中略…
-	//  |2024-12                                                   |
-	//  +----------------------------------------------------------+
-	//  
-	//  ②data データ配列(数値配列)
-	//  +----------------------------------------------------------+
-	//  |1050                                                      |←2024-01の分
-	//  +----------------------------------------------------------+
-	//  |2200                                                      |←2024-02の分
-	//  +----------------------------------------------------------+
-	//  |1450                                                      |←2024-03の分
-	//                      …中略…
-	//  |1650                                                      |←2024-12の分
-	//  +----------------------------------------------------------+
-	
-	
-	
-	// Thymeleafで渡されたデータをJavaScriptに変換
-	var aggregateData = /*[[${formKanriDispShukakuAggregateList.detailList}]]*/ [];
-	
-	// データ処理
-	var labels = [];
-	var data   = [];
-
-	aggregateData.forEach(item => {
-		var label = `${item.aggregateYear}-${item.aggregateMonth}`;
-		if (!labels.includes(label)) {
-			labels.push(label);
-		}
-		// ラベルの要素位置を取得
-		var index   = labels.indexOf(label);
-		// そのラベルの位置に表示する収穫ケース数合計を「全ハウス分」加算
-		// 【メモ】data[index] || 0は「data[index] が undefined、null、または 0 の場合、この部分は 0 を返す」という意味
-		data[index] = (data[index] || 0) + parseInt(item.boxSum);
-	});
-
-	//console.log(labels); // デバッグ用: ラベルを確認
-	//console.log(data);   // デバッグ用: データを確認
-
-	// グラフの描画
-	var ctx = document.getElementById('aggregateChart1').getContext('2d');
-	new Chart(ctx, {
-		type: 'bar',
-		data: {
-			labels: labels,
-			datasets: [{
-				label: 'Box Sum',
-				data: data,
-				backgroundColor: 'rgba(75, 192, 192, 0.2)',
-				borderColor: 'rgba(75, 192, 192, 1)',
-				borderWidth: 1
-			}]
-		},
-		options: {
-			scales: {
-				x: {
-					beginAtZero: true
-				},
-				y: {
-					beginAtZero: true
-				}
-			}
-		}
-	});
-</script>
-
-
-
-<!--       グラフ描画２       -->
+<!--       グラフ描画       -->
 
 
 <script type="text/javascript" th:inline="javascript">
@@ -273,225 +198,135 @@
 	//  |背景色  ：#FFFFFFF                                        |
 	//  |枠線の色：#FFFFFFF                                        |
 	//  +----------------------------------------------------------+
-
-
-
+	
+	
+	
 	/*<![CDATA[*/
 	// Thymeleafで渡されたデータをJavaScriptに変換
-	var aggregateData = /*[[${formKanriDispShukakuAggregateList.detailList}]]*/ [];
-
-	// データ構造を確認するためにコンソールに出力
-	//console.log('データ:', aggregateData);
+	var aggregateData     = /*[[${formKanriDispShukakuAggregateList.detailList_All}]]*/ [];
+	var chartDispAreaName = 'aggregateChart_All';
+	drowChart(aggregateData, chartDispAreaName);
 	
-	// 年月ごと、houseIdごとにデータを整理する
-	var labels   = [];
-	var datasets = {};
-
-	aggregateData.forEach(function(item) {
-		var label = item.aggregateYear + '-' + item.aggregateMonth; // 年月をラベルとして使用
-		
-		if (!labels.includes(label)) {
-			labels.push(label);
-		}
-		
-		//ハウスIDをキーにしたdatasets要素が存在しない場合、追加作成する。
-		if (!datasets[item.houseId]) {
-			datasets[item.houseId] = {
-				label: item.houseName,
-				data: Array(labels.length).fill(0),  //ラベルの要素数分の配列を作成して0で初期化
-				backgroundColor: getRandomColor(),
-				borderColor: getRandomColor(),
-				borderWidth: 1
-			};
-		}
-		
-		var index = labels.indexOf(label);
-		datasets[item.houseId].data[index] = parseFloat(item.boxSum);
-	});
-
-	// ラベルとデータセットを整理
-	var chartLabels   = labels;
-	var chartDatasets = Object.values(datasets);
-
-	// グラフの描画
-	var ctx = document.getElementById('aggregateChart2').getContext('2d');
-	var myChart = new Chart(ctx, {
-		type: 'bar',
-		data: {
-			labels: chartLabels,
-			datasets: chartDatasets
-		},
-		options: {
-			//responsive:グラフが画面サイズやウィンドウのリサイズに応じて自動的に調整される場合true
-			responsive: true,
-			//凡例(legendレジェンド)の表示＝true
-			//グラフにマウスカーソルをあてた際に表示されるツールチップの表示内＝ラベル(ハウス名): 収穫ケース数合計
-			plugins: {
-				legend: {
-					display: true
-				},
-				tooltip: {
-					callbacks: {
-						label: function(context) {
-							return context.dataset.label + ': ' + context.raw;
-						}
-					}
-				}
-			}
-		}
-	});
-
-	// ランダムな色を生成する関数
-	function getRandomColor() {
-		var letters = '0123456789ABCDEF';
-		var color = '#';
-		for (var i = 0; i < 6; i++) {
-			color += letters[Math.floor(Math.random() * 16)];
-		}
-		return color;
-	}
+	
+	aggregateData         = /*[[${formKanriDispShukakuAggregateList.detailList_10001}]]*/ [];
+	chartDispAreaName     = 'aggregateChart_10001';
+	drowChart(aggregateData, chartDispAreaName);
+	
+	
+	aggregateData         = /*[[${formKanriDispShukakuAggregateList.detailList_10002}]]*/ [];
+	chartDispAreaName     = 'aggregateChart_10002';
+	drowChart(aggregateData, chartDispAreaName);
+	
+	
+	aggregateData         = /*[[${formKanriDispShukakuAggregateList.detailList_10003}]]*/ [];
+	chartDispAreaName     = 'aggregateChart_10003';
+	drowChart(aggregateData, chartDispAreaName);
+	
+	
+	aggregateData         = /*[[${formKanriDispShukakuAggregateList.detailList_10004}]]*/ [];
+	chartDispAreaName     = 'aggregateChart_10004';
+	drowChart(aggregateData, chartDispAreaName);
+	
+	
+	aggregateData         = /*[[${formKanriDispShukakuAggregateList.detailList_10005}]]*/ [];
+	chartDispAreaName     = 'aggregateChart_10005';
+	drowChart(aggregateData, chartDispAreaName);
+	
+	
+	aggregateData         = /*[[${formKanriDispShukakuAggregateList.detailList_10006}]]*/ [];
+	chartDispAreaName     = 'aggregateChart_10006';
+	drowChart(aggregateData, chartDispAreaName);
+	
+	
+	
 	/*]]>*/
-</script>
-
-
-
-
-
-
-<!--       グラフ描画３       -->
-
-
-<script type="text/javascript" th:inline="javascript">
-
-	//  【メモ】
-	//  以下のようなグラフ(積み上げ棒グラフというらしい)を描画したい場合
-	//  ①と②の配列を準備してそれをグラフにブチ込むカンジ
-	//  基本は「グラフ描画２」と同じ、グラフのOption設定が異なるのみ
-	//  
-	//                   □□□：３号隔離   ■■■：４号隔離
-	//  
-	//          |                      ■
-	//          |                      ■
-	//       15 |   ■                 ■
-	//          |   ■       ■        ■  
-	//          |   ■       ■        ■                 ■  
-	//       10 |   □       ■        □                 ■   ←②データセット配列
-	//          |   □       ■        □                 ■  
-	//          |   □       □        □                 □  
-	//        5 |   □       □        □                 □  
-	//          |   □       □        □                 □  
-	//          |   □       □        □                 □  
-	//          +----------------------------------------------
-	//            2024-01  2024-02   2024-03       …   2024-12 ←①ラベル配列
-	//  
-	//  
-	//  ①labels ラベル配列(テキスト配列)
-	//  +----------------------------------------------------------+
-	//  |2024-01                                                   |
-	//  +----------------------------------------------------------+
-	//  |2024-02                                                   |
-	//  +----------------------------------------------------------+
-	//  |2024-03                                                   |
-	//                      …中略…
-	//  |2024-12                                                   |
-	//  +----------------------------------------------------------+
-	//  
-	//  ②datasets データセット配列(オブジェクト配列)
-	//  +----------------------------------------------------------+
-	//  |ハウスID：10001(キー値)                                   |
-	//  |----------------------------------------------------------|
-	//  |ラベル  ：３号隔離                                        |
-	//  |データ  ：[X][X][X][X][X][X][X][X][X][X][X][X]            |
-	//  |背景色  ：#FFFFFFF                                        |
-	//  |枠線の色：#FFFFFFF                                        |
-	//  |                                                          |
-	//  +----------------------------------------------------------+
-	//  |ハウスID：10002(キー値)                                   |
-	//  |----------------------------------------------------------|
-	//  |ラベル  ：４号隔離                                        |
-	//  |データ  ：[X][X][X][X][X][X][X][X][X][X][X][X]            |
-	//  |背景色  ：#FFFFFFF                                        |
-	//  |枠線の色：#FFFFFFF                                        |
-	//  +----------------------------------------------------------+
-
-
-
-	/*<![CDATA[*/
-	// Thymeleafで渡されたデータをJavaScriptに変換
-	var aggregateData = /*[[${formKanriDispShukakuAggregateList.detailList}]]*/ [];
-
-	// データ構造を確認するためにコンソールに出力
-	//console.log('データ:', aggregateData);
 	
-	// 年月ごと、houseIdごとにデータを整理する
-	var labels   = [];
-	var datasets = {};
-
-	aggregateData.forEach(function(item) {
-		var label = item.aggregateYear + '-' + item.aggregateMonth; // 年月をラベルとして使用
+	
+	
+	function drowChart(aggregateData, chartDispAreaName) {
+	
+	
+		// データ構造を確認するためにコンソールに出力
+		console.log('データ:', aggregateData);
 		
-		if (!labels.includes(label)) {
-			labels.push(label);
-		}
-		
-		//ハウスIDをキーにしたdatasets要素が存在しない場合、追加作成する。
-		if (!datasets[item.houseId]) {
-			datasets[item.houseId] = {
-				label: item.houseName,
-				data: Array(labels.length).fill(0),  //ラベルの要素数分の配列を作成して0で初期化
-				backgroundColor: getRandomColor(),
-				borderColor: getRandomColor(),
-				borderWidth: 1
-			};
-		}
-		
-		var index = labels.indexOf(label);
-		datasets[item.houseId].data[index] = parseFloat(item.boxSum);
-	});
-
-	// ラベルとデータセットを整理
-	var chartLabels   = labels;
-	var chartDatasets = Object.values(datasets);
-
-	// グラフの描画
-	var ctx = document.getElementById('aggregateChart3').getContext('2d');
-	var myChart = new Chart(ctx, {
-		type: 'bar',
-		data: {
-			labels: chartLabels,
-			datasets: chartDatasets
-		},
-		options: {
-			//responsive:グラフが画面サイズやウィンドウのリサイズに応じて自動的に調整される場合true
-			responsive: true,
-			//凡例(legendレジェンド)の表示＝true
-			//グラフにマウスカーソルをあてた際に表示されるツールチップの表示内＝ラベル(ハウス名): 収穫ケース数合計
-			plugins: {
-				legend: {
-					display: true
-				},
-				tooltip: {
-					callbacks: {
-						label: function(context) {
-							return context.dataset.label + ': ' + context.raw;
-						}
-					}
-				}
+		// 集計月、データタイプ（「前年度実績」「本年度予定」「本年度実績」）ごとにデータを整理する
+		var labels   = [];
+		var datasets = {};
+	
+		aggregateData.forEach(function(item) {
+			var label = item.aggregateMonth + '月'; // 月をラベルとして使用
+			
+			if (!labels.includes(label)) {
+				labels.push(label);
+			}
+			
+			// 背景色をセット
+			var bgcolor = '';
+			
+			if (item.dataType === '前年度実績') {
+				
+				bgcolor = '#f4a460'; //茶色っぽい色
+				
+			} else if (item.dataType === '本年度予定') {
+				
+				bgcolor = '#3cb371'; //緑っぽい色
+				
+			} else if (item.dataType === '本年度実績') {
+				
+				bgcolor = '#ff0000'; // 赤やオレンジっぽい色
+				
+			}
+			
+			//データタイプをキーにしたdatasets要素が存在しない場合、追加作成する。
+			if (!datasets[item.dataType]) {
+				datasets[item.dataType] = {
+					label: item.dataType,
+					data: Array(labels.length).fill(0),  //ラベルの要素数分の配列を作成して0で初期化
+					backgroundColor: bgcolor,  // 背景色はデータタイプによって異なる
+					borderColor:'#FFFFFF',     // 枠線は白
+					borderWidth: 1
+				};
+			}
+			
+			var index = labels.indexOf(label);
+			datasets[item.dataType].data[index] = parseFloat(item.boxSum);
+		});
+	
+		// ラベルとデータセットを整理
+		var chartLabels   = labels;
+		var chartDatasets = Object.values(datasets);
+	
+		// グラフの描画
+		var ctx = document.getElementById(chartDispAreaName).getContext('2d');
+		var myChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: chartLabels,
+				datasets: chartDatasets
 			},
-			//★★★★★  ココのOptionで「積み上げ棒グラフ」にしてる ★★★★★★★
-			//options.scales.x.stacked: X軸の積み上げ設定。true にすることで積み上げ棒グラフになります。
-			//options.scales.y.stacked: Y軸の積み上げ設定。true にすることで積み上げ棒グラフになります。
-			//→積み上げ棒グラフにするには両方ともtrueにする
-			scales: {
-				x: {
-					stacked: true
-				},
-				y: {
-					stacked: true
+			options: {
+				//responsive:グラフが画面サイズやウィンドウのリサイズに応じて自動的に調整される場合true
+				responsive: true,
+				//凡例(legendレジェンド)の表示＝true
+				//グラフにマウスカーソルをあてた際に表示されるツールチップの表示内＝ラベル(ハウス名): 収穫ケース数合計
+				plugins: {
+					legend: {
+						display: true
+					},
+					tooltip: {
+						callbacks: {
+							label: function(context) {
+								return context.dataset.label + ': ' + context.raw;
+							}
+						}
+					}
 				}
 			}
-		}
-	});
+		});
+
+	}
+	
+	
 
 	// ランダムな色を生成する関数
 	function getRandomColor() {
@@ -502,7 +337,6 @@
 		}
 		return color;
 	}
-	/*]]>*/
 </script>
 
 </body>
