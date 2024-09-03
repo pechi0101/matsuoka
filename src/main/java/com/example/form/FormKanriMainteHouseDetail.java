@@ -18,6 +18,21 @@ public class FormKanriMainteHouseDetail {
 	//テーブルに存在する項目
 	private String houseId;
 	private String houseName;
+	
+	//予定収穫ケース数(01月～12月)
+	private int boxSumYTI01 = 0;
+	private int boxSumYTI02 = 0;
+	private int boxSumYTI03 = 0;
+	private int boxSumYTI04 = 0;
+	private int boxSumYTI05 = 0;
+	private int boxSumYTI06 = 0;
+	private int boxSumYTI07 = 0;
+	private int boxSumYTI08 = 0;
+	private int boxSumYTI09 = 0;
+	private int boxSumYTI10 = 0;
+	private int boxSumYTI11 = 0;
+	private int boxSumYTI12 = 0;
+	
 	private String biko;
 	private boolean deleteFlg;
 	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")

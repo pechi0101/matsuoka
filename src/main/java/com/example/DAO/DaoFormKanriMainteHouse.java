@@ -39,6 +39,18 @@ public class DaoFormKanriMainteHouse {
 			sql  = sql + "     TM_HOUSE.HOUSEID";
 			sql  = sql + "    ,TM_HOUSE.HOUSENAME";
 			sql  = sql + "    ,ifnull(TM_HOUSECOL.CNT,0) CNT";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_01";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_02";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_03";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_04";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_05";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_06";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_07";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_08";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_09";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_10";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_11";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_12";
 			sql  = sql + "    ,TM_HOUSE.BIKO";
 			sql  = sql + " from";
 			sql  = sql + "     TM_HOUSE";
@@ -91,6 +103,21 @@ public class DaoFormKanriMainteHouse {
 				
 				// 列数
 				detail.setColCount(rs.get("CNT").toString());
+				
+				// 収穫予定ケース数
+				detail.setBoxSumYTI01(Integer.parseInt(rs.get("BOXSUM_YTI_01").toString()));
+				detail.setBoxSumYTI02(Integer.parseInt(rs.get("BOXSUM_YTI_02").toString()));
+				detail.setBoxSumYTI03(Integer.parseInt(rs.get("BOXSUM_YTI_03").toString()));
+				detail.setBoxSumYTI04(Integer.parseInt(rs.get("BOXSUM_YTI_04").toString()));
+				detail.setBoxSumYTI05(Integer.parseInt(rs.get("BOXSUM_YTI_05").toString()));
+				detail.setBoxSumYTI06(Integer.parseInt(rs.get("BOXSUM_YTI_06").toString()));
+				detail.setBoxSumYTI07(Integer.parseInt(rs.get("BOXSUM_YTI_07").toString()));
+				detail.setBoxSumYTI08(Integer.parseInt(rs.get("BOXSUM_YTI_08").toString()));
+				detail.setBoxSumYTI09(Integer.parseInt(rs.get("BOXSUM_YTI_09").toString()));
+				detail.setBoxSumYTI10(Integer.parseInt(rs.get("BOXSUM_YTI_10").toString()));
+				detail.setBoxSumYTI11(Integer.parseInt(rs.get("BOXSUM_YTI_11").toString()));
+				detail.setBoxSumYTI12(Integer.parseInt(rs.get("BOXSUM_YTI_12").toString()));
+				
 				
 				// 備考
 				if (rs.get("BIKO") != null) {
@@ -164,6 +191,18 @@ public class DaoFormKanriMainteHouse {
 			sql  = sql + "     TM_HOUSE.HOUSEID";
 			sql  = sql + "    ,TM_HOUSE.HOUSENAME";
 			sql  = sql + "    ,ifnull(TM_HOUSECOL.CNT,0) CNT";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_01";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_02";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_03";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_04";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_05";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_06";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_07";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_08";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_09";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_10";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_11";
+			sql  = sql + "    ,TM_HOUSE.BOXSUM_YTI_12";
 			sql  = sql + "    ,TM_HOUSE.BIKO";
 			sql  = sql + " from";
 			sql  = sql + "     TM_HOUSE";
@@ -217,6 +256,21 @@ public class DaoFormKanriMainteHouse {
 				
 				// 列数
 				retForm.setColCount(rs.get("CNT").toString());
+				
+				// 収穫予定ケース数
+				retForm.setBoxSumYTI01(Integer.parseInt(rs.get("BOXSUM_YTI_01").toString()));
+				retForm.setBoxSumYTI02(Integer.parseInt(rs.get("BOXSUM_YTI_02").toString()));
+				retForm.setBoxSumYTI03(Integer.parseInt(rs.get("BOXSUM_YTI_03").toString()));
+				retForm.setBoxSumYTI04(Integer.parseInt(rs.get("BOXSUM_YTI_04").toString()));
+				retForm.setBoxSumYTI05(Integer.parseInt(rs.get("BOXSUM_YTI_05").toString()));
+				retForm.setBoxSumYTI06(Integer.parseInt(rs.get("BOXSUM_YTI_06").toString()));
+				retForm.setBoxSumYTI07(Integer.parseInt(rs.get("BOXSUM_YTI_07").toString()));
+				retForm.setBoxSumYTI08(Integer.parseInt(rs.get("BOXSUM_YTI_08").toString()));
+				retForm.setBoxSumYTI09(Integer.parseInt(rs.get("BOXSUM_YTI_09").toString()));
+				retForm.setBoxSumYTI10(Integer.parseInt(rs.get("BOXSUM_YTI_10").toString()));
+				retForm.setBoxSumYTI11(Integer.parseInt(rs.get("BOXSUM_YTI_11").toString()));
+				retForm.setBoxSumYTI12(Integer.parseInt(rs.get("BOXSUM_YTI_12").toString()));
+				
 				
 				// 備考
 				if (rs.get("BIKO") != null) {
@@ -317,6 +371,18 @@ public class DaoFormKanriMainteHouse {
 			String sql = " insert into TM_HOUSE (";
 			sql  = sql + "     HOUSEID";
 			sql  = sql + "    ,HOUSENAME";
+			sql  = sql + "    ,BOXSUM_YTI_01";
+			sql  = sql + "    ,BOXSUM_YTI_02";
+			sql  = sql + "    ,BOXSUM_YTI_03";
+			sql  = sql + "    ,BOXSUM_YTI_04";
+			sql  = sql + "    ,BOXSUM_YTI_05";
+			sql  = sql + "    ,BOXSUM_YTI_06";
+			sql  = sql + "    ,BOXSUM_YTI_07";
+			sql  = sql + "    ,BOXSUM_YTI_08";
+			sql  = sql + "    ,BOXSUM_YTI_09";
+			sql  = sql + "    ,BOXSUM_YTI_10";
+			sql  = sql + "    ,BOXSUM_YTI_11";
+			sql  = sql + "    ,BOXSUM_YTI_12";
 			sql  = sql + "    ,BIKO";
 			sql  = sql + "    ,DELETEFLG";
 			sql  = sql + "    ,DELETEYMDHMS";
@@ -329,7 +395,19 @@ public class DaoFormKanriMainteHouse {
 			sql  = sql + " )values(";
 			sql  = sql + "     ?";
 			sql  = sql + "    ,?";
-			sql  = sql + "    ,?";
+			sql  = sql + "    ,?";    //収穫予定ケース数01
+			sql  = sql + "    ,?";    //収穫予定ケース数02
+			sql  = sql + "    ,?";    //収穫予定ケース数03
+			sql  = sql + "    ,?";    //収穫予定ケース数04
+			sql  = sql + "    ,?";    //収穫予定ケース数05
+			sql  = sql + "    ,?";    //収穫予定ケース数06
+			sql  = sql + "    ,?";    //収穫予定ケース数07
+			sql  = sql + "    ,?";    //収穫予定ケース数08
+			sql  = sql + "    ,?";    //収穫予定ケース数09
+			sql  = sql + "    ,?";    //収穫予定ケース数10
+			sql  = sql + "    ,?";    //収穫予定ケース数11
+			sql  = sql + "    ,?";    //収穫予定ケース数12
+			sql  = sql + "    ,?";    //備考
 			sql  = sql + "    ,0";    //削除フラグは0(false)で登録
 			sql  = sql + "    ,null"; //削除日時はnull
 			sql  = sql + "    ,?";
@@ -343,6 +421,18 @@ public class DaoFormKanriMainteHouse {
 			int ret = this.jdbcTemplate.update(sql
 					,houseDetail.getHouseId()
 					,houseDetail.getHouseName()
+					,houseDetail.getBoxSumYTI01()
+					,houseDetail.getBoxSumYTI02()
+					,houseDetail.getBoxSumYTI03()
+					,houseDetail.getBoxSumYTI04()
+					,houseDetail.getBoxSumYTI05()
+					,houseDetail.getBoxSumYTI06()
+					,houseDetail.getBoxSumYTI07()
+					,houseDetail.getBoxSumYTI08()
+					,houseDetail.getBoxSumYTI09()
+					,houseDetail.getBoxSumYTI10()
+					,houseDetail.getBoxSumYTI11()
+					,houseDetail.getBoxSumYTI12()
 					,houseDetail.getBiko()
 					,userName
 					,registPgmId
@@ -437,6 +527,18 @@ public class DaoFormKanriMainteHouse {
 			String sql = " update TM_HOUSE";
 			sql  = sql + " set";
 			sql  = sql + "     HOUSENAME        = ?";
+			sql  = sql + "    ,BOXSUM_YTI_01    = ?";
+			sql  = sql + "    ,BOXSUM_YTI_02    = ?";
+			sql  = sql + "    ,BOXSUM_YTI_03    = ?";
+			sql  = sql + "    ,BOXSUM_YTI_04    = ?";
+			sql  = sql + "    ,BOXSUM_YTI_05    = ?";
+			sql  = sql + "    ,BOXSUM_YTI_06    = ?";
+			sql  = sql + "    ,BOXSUM_YTI_07    = ?";
+			sql  = sql + "    ,BOXSUM_YTI_08    = ?";
+			sql  = sql + "    ,BOXSUM_YTI_09    = ?";
+			sql  = sql + "    ,BOXSUM_YTI_10    = ?";
+			sql  = sql + "    ,BOXSUM_YTI_11    = ?";
+			sql  = sql + "    ,BOXSUM_YTI_12    = ?";
 			sql  = sql + "    ,BIKO             = ?";
 			sql  = sql + "    ,SYSUPDUSERID     = ?";
 			sql  = sql + "    ,SYSUPDPGMID      = ?";
@@ -446,6 +548,18 @@ public class DaoFormKanriMainteHouse {
 			
 			int ret = this.jdbcTemplate.update(sql
 					,houseDetail.getHouseName()
+					,houseDetail.getBoxSumYTI01()
+					,houseDetail.getBoxSumYTI02()
+					,houseDetail.getBoxSumYTI03()
+					,houseDetail.getBoxSumYTI04()
+					,houseDetail.getBoxSumYTI05()
+					,houseDetail.getBoxSumYTI06()
+					,houseDetail.getBoxSumYTI07()
+					,houseDetail.getBoxSumYTI08()
+					,houseDetail.getBoxSumYTI09()
+					,houseDetail.getBoxSumYTI10()
+					,houseDetail.getBoxSumYTI11()
+					,houseDetail.getBoxSumYTI12()
 					,houseDetail.getBiko()
 					,userName
 					,registPgmId

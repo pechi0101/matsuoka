@@ -52,23 +52,443 @@ $(function() {
 		// 半角数字の正規表現
 		var regex = /^[0-9]+$/;
 		
-		if (inputVal.value.length > 0) {
-				
-			if (regex.test(inputVal.value) == false) {
-				//半角数字チェック
-				msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-				return;
-				
-			} else if (inputVal.value.length > 2) {
-				//桁数チェック
-				msgArea.innerHTML = '<p class="msg-ng">【NG】2ケタ以内で入力してください</p>';
-				return;
-				
-			}else{
-				msgArea.innerHTML = '';
-			}
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			return;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			return;
+			
+		} else if (inputVal.value.length > 2) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】2ケタ以内で入力してください</p>';
+			return;
+			
+		}else{
+			msgArea.innerHTML = '';
 		}
 	});
+	
+	
+	
+	
+	
+	
+	$('input[name$="boxSumYTI01"]').on("input", function() {
+		// ここに変更時の処理を記述します
+		console.log("入力が変更されました。新しい値は: " + $(this).val());
+		
+		//------------------------------------------------
+		// 収穫予定ケース数の入力チェック
+		//------------------------------------------------
+		
+		let inputVal = document.getElementById("boxSumYTI01");
+		let msgArea  = document.getElementById("boxSumYTIMsg");
+		
+		// 半角数字の正規表現
+		var regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			return;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			return;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			return;
+			
+		}else{
+			msgArea.innerHTML = '';
+		}
+	});
+	
+	$('input[name$="boxSumYTI02"]').on("input", function() {
+		// ここに変更時の処理を記述します
+		console.log("入力が変更されました。新しい値は: " + $(this).val());
+		
+		//------------------------------------------------
+		// 収穫予定ケース数の入力チェック
+		//------------------------------------------------
+		
+		let inputVal = document.getElementById("boxSumYTI02");
+		let msgArea  = document.getElementById("boxSumYTIMsg");
+		
+		// 半角数字の正規表現
+		var regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			return;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			return;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			return;
+			
+		}else{
+			msgArea.innerHTML = '';
+		}
+	});
+	
+	$('input[name$="boxSumYTI03"]').on("input", function() {
+		// ここに変更時の処理を記述します
+		console.log("入力が変更されました。新しい値は: " + $(this).val());
+		
+		//------------------------------------------------
+		// 収穫予定ケース数の入力チェック
+		//------------------------------------------------
+		
+		let inputVal = document.getElementById("boxSumYTI03");
+		let msgArea  = document.getElementById("boxSumYTIMsg");
+		
+		// 半角数字の正規表現
+		var regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			return;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			return;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			return;
+			
+		}else{
+			msgArea.innerHTML = '';
+		}
+	});
+	
+	$('input[name$="boxSumYTI04"]').on("input", function() {
+		// ここに変更時の処理を記述します
+		console.log("入力が変更されました。新しい値は: " + $(this).val());
+		
+		//------------------------------------------------
+		// 収穫予定ケース数の入力チェック
+		//------------------------------------------------
+		
+		let inputVal = document.getElementById("boxSumYTI04");
+		let msgArea  = document.getElementById("boxSumYTIMsg");
+		
+		// 半角数字の正規表現
+		var regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			return;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			return;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			return;
+			
+		}else{
+			msgArea.innerHTML = '';
+		}
+	});
+	
+	$('input[name$="boxSumYTI05"]').on("input", function() {
+		// ここに変更時の処理を記述します
+		console.log("入力が変更されました。新しい値は: " + $(this).val());
+		
+		//------------------------------------------------
+		// 収穫予定ケース数の入力チェック
+		//------------------------------------------------
+		
+		let inputVal = document.getElementById("boxSumYTI05");
+		let msgArea  = document.getElementById("boxSumYTIMsg");
+		
+		// 半角数字の正規表現
+		var regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			return;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			return;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			return;
+			
+		}else{
+			msgArea.innerHTML = '';
+		}
+	});
+	
+	$('input[name$="boxSumYTI06"]').on("input", function() {
+		// ここに変更時の処理を記述します
+		console.log("入力が変更されました。新しい値は: " + $(this).val());
+		
+		//------------------------------------------------
+		// 収穫予定ケース数の入力チェック
+		//------------------------------------------------
+		
+		let inputVal = document.getElementById("boxSumYTI06");
+		let msgArea  = document.getElementById("boxSumYTIMsg");
+		
+		// 半角数字の正規表現
+		var regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			return;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			return;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			return;
+			
+		}else{
+			msgArea.innerHTML = '';
+		}
+	});
+	
+	$('input[name$="boxSumYTI07"]').on("input", function() {
+		// ここに変更時の処理を記述します
+		console.log("入力が変更されました。新しい値は: " + $(this).val());
+		
+		//------------------------------------------------
+		// 収穫予定ケース数の入力チェック
+		//------------------------------------------------
+		
+		let inputVal = document.getElementById("boxSumYTI07");
+		let msgArea  = document.getElementById("boxSumYTIMsg");
+		
+		// 半角数字の正規表現
+		var regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			return;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			return;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			return;
+			
+		}else{
+			msgArea.innerHTML = '';
+		}
+	});
+	
+	$('input[name$="boxSumYTI08"]').on("input", function() {
+		// ここに変更時の処理を記述します
+		console.log("入力が変更されました。新しい値は: " + $(this).val());
+		
+		//------------------------------------------------
+		// 収穫予定ケース数の入力チェック
+		//------------------------------------------------
+		
+		let inputVal = document.getElementById("boxSumYTI08");
+		let msgArea  = document.getElementById("boxSumYTIMsg");
+		
+		// 半角数字の正規表現
+		var regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			return;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			return;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			return;
+			
+		}else{
+			msgArea.innerHTML = '';
+		}
+	});
+	
+	$('input[name$="boxSumYTI09"]').on("input", function() {
+		// ここに変更時の処理を記述します
+		console.log("入力が変更されました。新しい値は: " + $(this).val());
+		
+		//------------------------------------------------
+		// 収穫予定ケース数の入力チェック
+		//------------------------------------------------
+		
+		let inputVal = document.getElementById("boxSumYTI09");
+		let msgArea  = document.getElementById("boxSumYTIMsg");
+		
+		// 半角数字の正規表現
+		var regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			return;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			return;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			return;
+			
+		}else{
+			msgArea.innerHTML = '';
+		}
+	});
+	
+	$('input[name$="boxSumYTI10"]').on("input", function() {
+		// ここに変更時の処理を記述します
+		console.log("入力が変更されました。新しい値は: " + $(this).val());
+		
+		//------------------------------------------------
+		// 収穫予定ケース数の入力チェック
+		//------------------------------------------------
+		
+		let inputVal = document.getElementById("boxSumYTI10");
+		let msgArea  = document.getElementById("boxSumYTIMsg");
+		
+		// 半角数字の正規表現
+		var regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			return;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			return;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			return;
+			
+		}else{
+			msgArea.innerHTML = '';
+		}
+	});
+	
+	$('input[name$="boxSumYTI11"]').on("input", function() {
+		// ここに変更時の処理を記述します
+		console.log("入力が変更されました。新しい値は: " + $(this).val());
+		
+		//------------------------------------------------
+		// 収穫予定ケース数の入力チェック
+		//------------------------------------------------
+		
+		let inputVal = document.getElementById("boxSumYTI11");
+		let msgArea  = document.getElementById("boxSumYTIMsg");
+		
+		// 半角数字の正規表現
+		var regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			return;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			return;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			return;
+			
+		}else{
+			msgArea.innerHTML = '';
+		}
+	});
+	
+	$('input[name$="boxSumYTI12"]').on("input", function() {
+		// ここに変更時の処理を記述します
+		console.log("入力が変更されました。新しい値は: " + $(this).val());
+		
+		//------------------------------------------------
+		// 収穫予定ケース数の入力チェック
+		//------------------------------------------------
+		
+		let inputVal = document.getElementById("boxSumYTI12");
+		let msgArea  = document.getElementById("boxSumYTIMsg");
+		
+		// 半角数字の正規表現
+		var regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			return;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			return;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			return;
+			
+		}else{
+			msgArea.innerHTML = '';
+		}
+	});
+	
+	
+	
+	
+	
 	
 	$('input[name$="biko"]').on("input", function() {
 		// ここに変更時の処理を記述します
@@ -142,19 +562,303 @@ $(function() {
 		// 半角数字の正規表現
 		var regex = /^[0-9]+$/;
 		
-		if (inputVal.value.length > 0) {
-				
-			if (regex.test(inputVal.value) == false) {
-				//半角数字チェック
-				msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-				checkOKFlg = false;
-				
-			} else if (inputVal.value.length > 2) {
-				//桁数チェック
-				msgArea.innerHTML = '<p class="msg-ng">【NG】2ケタ以内で入力してください</p>';
-				checkOKFlg = false;
-			}
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			checkOKFlg = false;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			checkOKFlg = false;
+			
+		} else if (inputVal.value.length > 2) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】2ケタ以内で入力してください</p>';
+			checkOKFlg = false;
 		}
+		
+		
+		//------------------------------------------------
+		// 収穫予定ケース数の入力チェック
+		//------------------------------------------------
+		
+		inputVal = document.getElementById("boxSumYTI01");
+		msgArea  = document.getElementById("boxSumYTIMsg");
+		msgArea.innerHTML = '';
+		
+		// 半角数字の正規表現
+		regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			checkOKFlg = false;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			checkOKFlg = false;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			checkOKFlg = false;
+		}
+		
+		inputVal = document.getElementById("boxSumYTI02");
+		msgArea  = document.getElementById("boxSumYTIMsg");
+		msgArea.innerHTML = '';
+		
+		// 半角数字の正規表現
+		regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			checkOKFlg = false;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			checkOKFlg = false;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			checkOKFlg = false;
+		}
+		
+		inputVal = document.getElementById("boxSumYTI03");
+		msgArea  = document.getElementById("boxSumYTIMsg");
+		msgArea.innerHTML = '';
+		
+		// 半角数字の正規表現
+		regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			checkOKFlg = false;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			checkOKFlg = false;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			checkOKFlg = false;
+		}
+		
+		inputVal = document.getElementById("boxSumYTI04");
+		msgArea  = document.getElementById("boxSumYTIMsg");
+		msgArea.innerHTML = '';
+		
+		// 半角数字の正規表現
+		regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			checkOKFlg = false;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			checkOKFlg = false;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			checkOKFlg = false;
+		}
+		
+		inputVal = document.getElementById("boxSumYTI05");
+		msgArea  = document.getElementById("boxSumYTIMsg");
+		msgArea.innerHTML = '';
+		
+		// 半角数字の正規表現
+		regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			checkOKFlg = false;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			checkOKFlg = false;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			checkOKFlg = false;
+		}
+		
+		inputVal = document.getElementById("boxSumYTI06");
+		msgArea  = document.getElementById("boxSumYTIMsg");
+		msgArea.innerHTML = '';
+		
+		// 半角数字の正規表現
+		regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			checkOKFlg = false;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			checkOKFlg = false;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			checkOKFlg = false;
+		}
+		
+		inputVal = document.getElementById("boxSumYTI07");
+		msgArea  = document.getElementById("boxSumYTIMsg");
+		msgArea.innerHTML = '';
+		
+		// 半角数字の正規表現
+		regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			checkOKFlg = false;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			checkOKFlg = false;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			checkOKFlg = false;
+		}
+		
+		inputVal = document.getElementById("boxSumYTI08");
+		msgArea  = document.getElementById("boxSumYTIMsg");
+		msgArea.innerHTML = '';
+		
+		// 半角数字の正規表現
+		regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			checkOKFlg = false;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			checkOKFlg = false;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			checkOKFlg = false;
+		}
+		
+		inputVal = document.getElementById("boxSumYTI09");
+		msgArea  = document.getElementById("boxSumYTIMsg");
+		msgArea.innerHTML = '';
+		
+		// 半角数字の正規表現
+		regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			checkOKFlg = false;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			checkOKFlg = false;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			checkOKFlg = false;
+		}
+		
+		inputVal = document.getElementById("boxSumYTI10");
+		msgArea  = document.getElementById("boxSumYTIMsg");
+		msgArea.innerHTML = '';
+		
+		// 半角数字の正規表現
+		regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			checkOKFlg = false;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			checkOKFlg = false;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			checkOKFlg = false;
+		}
+		
+		inputVal = document.getElementById("boxSumYTI11");
+		msgArea  = document.getElementById("boxSumYTIMsg");
+		msgArea.innerHTML = '';
+		
+		// 半角数字の正規表現
+		regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			checkOKFlg = false;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			checkOKFlg = false;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			checkOKFlg = false;
+		}
+		
+		inputVal = document.getElementById("boxSumYTI12");
+		msgArea  = document.getElementById("boxSumYTIMsg");
+		msgArea.innerHTML = '';
+		
+		// 半角数字の正規表現
+		regex = /^[0-9]+$/;
+		
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			checkOKFlg = false;
+		
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			checkOKFlg = false;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			checkOKFlg = false;
+		}
+		
 		
 		
 		//------------------------------------------------

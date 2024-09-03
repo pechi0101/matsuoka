@@ -36,6 +36,8 @@ import com.example.DAO.DaoHouseWorkStatus;
 import com.example.DAO.DaoHouseWorkStatusShukaku;
 import com.example.DAO.DaoShukakuBoxSum;
 import com.example.DAO.DaoWork;
+import com.example.common.AggregateRecordCreator;
+import com.example.common.AggregateTable;
 import com.example.counst.ButtonKbn;
 import com.example.counst.IntegerErrorCode;
 import com.example.counst.SpecialUser;
@@ -2115,6 +2117,25 @@ public class MatsuokaWebController {
 			
 			
 		}
+		
+		
+		//------------------------------------------------
+		// 収穫ケース数集計テーブルの登録・更新（本年度のデータ）
+		AggregateRecordCreator aggregateRecordCreator = new AggregateRecordCreator(jdbcTemplate);
+		
+		LocalDate nowDate = LocalDate.now();
+		AggregateTable aggregateTableNowYear = new AggregateTable(jdbcTemplate, nowDate);
+		aggregateRecordCreator.createOrUpdate(formKanriMainteHouseDetail.getHouseId(), aggregateTableNowYear, SpecialUser.KANRI_USER, "scrKanriMainteHouseDetail");
+		
+		
+		//------------------------------------------------
+		// 収穫ケース数集計テーブルの登録・更新（前年度のデータ）
+		
+		LocalDate prvDate = LocalDate.now().minusYears(1);
+		AggregateTable aggregateTablePrvYear = new AggregateTable(jdbcTemplate, prvDate);
+		aggregateRecordCreator.create(formKanriMainteHouseDetail.getHouseId(), aggregateTablePrvYear, SpecialUser.KANRI_USER, "scrKanriMainteHouseDetail");
+		
+		
 		
 		
 		//------------------------------------------------

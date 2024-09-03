@@ -113,8 +113,20 @@
 			<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
 			<div class="ymd-list-headre-container" style="width: 100%; display:flex">
 			    <div class="ymd-list-header-text" style="width: 120px;">ハウス名</div>
-			    <div class="ymd-list-header-text" style="width: 130px;">列数</div>
-			    <div class="ymd-list-header-text" style="width: calc(100% - 250px);">備考</div>
+			    <div class="ymd-list-header-text" style="width: 100px;">列数</div>
+			    <div class="ymd-list-header-text" style="width:  50px;">09月</div>
+			    <div class="ymd-list-header-text" style="width:  50px;">10月</div>
+			    <div class="ymd-list-header-text" style="width:  50px;">11月</div>
+			    <div class="ymd-list-header-text" style="width:  50px;">12月</div>
+			    <div class="ymd-list-header-text" style="width:  50px;">01月</div>
+			    <div class="ymd-list-header-text" style="width:  50px;">02月</div>
+			    <div class="ymd-list-header-text" style="width:  50px;">03月</div>
+			    <div class="ymd-list-header-text" style="width:  50px;">04月</div>
+			    <div class="ymd-list-header-text" style="width:  50px;">05月</div>
+			    <div class="ymd-list-header-text" style="width:  50px;">06月</div>
+			    <div class="ymd-list-header-text" style="width:  50px;">07月</div>
+			    <div class="ymd-list-header-text" style="width:  50px;">08月</div>
+			    <div class="ymd-list-header-text" style="width: calc(100% - 820px);">備考</div>
 			</div>
 		</div>
 		
@@ -131,8 +143,20 @@
 			<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
 			<div class="ymd-list-detail-container" name="detail-row" style="width: 100%; display:flex">
 			    <div class="ymd-list-detail-data" style="width: 120px;"><span th:text="*{houseList[__${stat.index}__].houseName}" /></div>
-			    <div class="ymd-list-detail-data" style="width: 130px;"><span th:text="*{houseList[__${stat.index}__].colCount}" /></div>
-			    <div class="ymd-list-detail-data" style="width: calc(100% - 250px);"><span th:text="*{houseList[__${stat.index}__].biko}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 100px;"><span th:text="*{houseList[__${stat.index}__].colCount}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  50px;"><span th:text="*{houseList[__${stat.index}__].boxSumYTI09}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  50px;"><span th:text="*{houseList[__${stat.index}__].boxSumYTI10}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  50px;"><span th:text="*{houseList[__${stat.index}__].boxSumYTI11}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  50px;"><span th:text="*{houseList[__${stat.index}__].boxSumYTI12}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  50px;"><span th:text="*{houseList[__${stat.index}__].boxSumYTI01}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  50px;"><span th:text="*{houseList[__${stat.index}__].boxSumYTI02}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  50px;"><span th:text="*{houseList[__${stat.index}__].boxSumYTI03}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  50px;"><span th:text="*{houseList[__${stat.index}__].boxSumYTI04}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  50px;"><span th:text="*{houseList[__${stat.index}__].boxSumYTI05}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  50px;"><span th:text="*{houseList[__${stat.index}__].boxSumYTI06}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  50px;"><span th:text="*{houseList[__${stat.index}__].boxSumYTI07}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  50px;"><span th:text="*{houseList[__${stat.index}__].boxSumYTI08}" /></div>
+			    <div class="ymd-list-detail-data" style="width: calc(100% - 820px);"><span th:text="*{houseList[__${stat.index}__].biko}" /></div>
 			</div>
 		</div>
 	</form>
