@@ -1,7 +1,13 @@
 package com.example.Controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URLEncoder;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,10 +15,15 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,6 +37,7 @@ import com.example.DAO.DaoFormDispQRInfoButton;
 import com.example.DAO.DaoFormIndexQR;
 import com.example.DAO.DaoFormKanriDispShukakuAggregate;
 import com.example.DAO.DaoFormKanriDispWorkStatus;
+import com.example.DAO.DaoFormKanriMainteClockInOut;
 import com.example.DAO.DaoFormKanriMainteEmployee;
 import com.example.DAO.DaoFormKanriMainteHouse;
 import com.example.DAO.DaoFormKanriMainteWork;
@@ -54,6 +66,8 @@ import com.example.form.FormIndexKanri;
 import com.example.form.FormIndexQR;
 import com.example.form.FormKanriDispShukakuAggregateList;
 import com.example.form.FormKanriDispWorkStatus;
+import com.example.form.FormKanriMainteClockInOutDetail;
+import com.example.form.FormKanriMainteClockInOutList;
 import com.example.form.FormKanriMainteEmployeeDetail;
 import com.example.form.FormKanriMainteEmployeeList;
 import com.example.form.FormKanriMainteHouseDetail;
@@ -71,6 +85,7 @@ import com.example.form.FormReadQRStartShukaku;
 import com.example.form.FormReadQRStartShukakuSum;
 import com.example.form.FormSelectQRReadDevice;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -3075,6 +3090,385 @@ public class MatsuokaWebController {
 		log.info("【INF】" + pgmId + ":処理終了");
 		mav.setViewName("scrKanriDispShukakuAggregate.html");
 		return mav;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+	//
+	//  出退勤情報修正
+	//
+	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+	
+	
+	// 一覧画面への遷移
+	@RequestMapping(value ="/matsuoka/TransitionKanriMainteClockInOutList",method = RequestMethod.GET)
+	public ModelAndView trunsition_KanriMainteClockInOutList(ModelAndView mav) {
+
+		String pgmId = classId + ".trunsition_KanriMainteClockInOutList";
+		
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		DaoFormKanriMainteClockInOut dao = new DaoFormKanriMainteClockInOut(jdbcTemplate);
+		
+		//------------------------------------------------
+		// 一覧表示用にデータを取得
+		FormKanriMainteClockInOutList formKanriMainteClockInOutList;
+		
+		// ※最初は検索条件なしで全て一覧表示するため引数は全て空白かnull
+		formKanriMainteClockInOutList = dao.getDispClockInOutList("", null,null);
+		
+		if (formKanriMainteClockInOutList == null) {
+			
+			formKanriMainteClockInOutList = new FormKanriMainteClockInOutList();
+			formKanriMainteClockInOutList.setMessage("検索処理で異常が発生しました。システム管理者にご連絡ください。");
+			log.info("【ERR】" + pgmId + ":検索処理で異常終了");
+		
+		} else if (formKanriMainteClockInOutList.getClockInOutList().size() == 0) {
+		
+			formKanriMainteClockInOutList.setMessage("データが0件でした。");
+			log.info("【INF】" + pgmId + ":データが0件でした。");
+		}
+		
+		
+		// ------------------------------------------------
+		// 絞込み条件欄の年月にセットする値をセット（現在年月をYYYY-MM形式で）
+		
+		formKanriMainteClockInOutList.setFilterTargetYM(
+				LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")) + "-" + 
+				LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM"))
+				);
+		
+		
+		// ------------------------------------------------
+		// 絞込み条件欄のドロップダウンリストにセットする値を検索しセット
+		
+		DaoDropDownList daoDropDown = new DaoDropDownList(jdbcTemplate);
+		
+		formKanriMainteClockInOutList.setDropDownEmployeeList(daoDropDown.getEmployeeList());
+		
+		
+		
+		mav.addObject("formKanriMainteClockInOutList",formKanriMainteClockInOutList);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrKanriMainteClockInOutList.html");
+		return mav;
+	}
+	
+	
+	//詳細画面への遷移
+	@RequestMapping(value ="/matsuoka/TransitionKanriMainteClockInOutDetail",method = RequestMethod.POST)
+	public ModelAndView trunsition_KanriMainteClockInOutDetail(@ModelAttribute FormKanriMainteClockInOutList formKanriMainteClockInOutList, ModelAndView mav) {
+		
+		String pgmId = classId + ".trunsition_KanriMainteClockInOutDetail";
+		
+		
+		log.info("【INF】" + pgmId + " :処理開始");
+		log.info("【INF】" + pgmId + " :社員ID      =[" + formKanriMainteClockInOutList.getSelectEmployeeId() + "]");;
+		log.info("【INF】" + pgmId + " :出勤日時    =[" + formKanriMainteClockInOutList.getSelectStartDateTime() + "]");
+		log.info("【INF】" + pgmId + " :▼フィルタリング条件------------------------------------------------");
+		log.info("【INF】" + pgmId + " :表示年月    =[" + formKanriMainteClockInOutList.getFilterTargetYM() + "]");
+		log.info("【INF】" + pgmId + " :社員ID      =[" + formKanriMainteClockInOutList.getFilterEmployeeId() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日Fr=[" + formKanriMainteClockInOutList.getFilterDateFr() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日To=[" + formKanriMainteClockInOutList.getFilterDateTo() + "]");
+		log.info("【INF】" + pgmId + " :▲フィルタリング条件------------------------------------------------");
+		
+		
+		String targetEmployeeId           = formKanriMainteClockInOutList.getSelectEmployeeId();
+		LocalDateTime targetStartDateTime = formKanriMainteClockInOutList.getSelectStartDateTime();
+		
+		
+		FormKanriMainteClockInOutDetail formKanriMainteClockInOutDetail = new FormKanriMainteClockInOutDetail();
+		
+		if (targetEmployeeId.equals("") == true) {
+			
+			//------------------------------------------------
+			//社員IDが指定されていない場合(新規登録)：次画面を空表示
+			
+			// 処理なし
+			
+		}else{
+			//------------------------------------------------
+			//ハウスIDが指定されている  場合(更新削除)：出退勤情報を検索して次画面に表示
+			
+			DaoFormKanriMainteClockInOut dao = new DaoFormKanriMainteClockInOut(jdbcTemplate);
+			formKanriMainteClockInOutDetail = dao.getDispClockInOutDatail(targetEmployeeId, targetStartDateTime);
+		}
+		
+		
+		// ------------------------------------------------
+		// 一覧画面で選択・入力したフィルタリング条件を引継ぎ
+		
+		formKanriMainteClockInOutDetail.setFilterTargetYM(     formKanriMainteClockInOutList.getFilterTargetYM());
+		formKanriMainteClockInOutDetail.setFilterEmployeeId(   formKanriMainteClockInOutList.getFilterEmployeeId());
+		formKanriMainteClockInOutDetail.setFilterDateFr(       formKanriMainteClockInOutList.getFilterDateFr());
+		formKanriMainteClockInOutDetail.setFilterDateTo(       formKanriMainteClockInOutList.getFilterDateTo());
+		
+		
+		// ------------------------------------------------
+		// 入力欄のドロップダウンリストにセットする値を検索しセット
+		
+		DaoDropDownList daoDropDown = new DaoDropDownList(jdbcTemplate);
+		
+		formKanriMainteClockInOutDetail.setDropDownEmployeeList(daoDropDown.getEmployeeList());
+		
+		
+		
+		mav.addObject("formKanriMainteClockInOutDetail",formKanriMainteClockInOutDetail);
+		
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrKanriMainteClockInOutDetail.html");
+		return mav;
+	}
+	
+	
+	
+	//登録処理
+	@RequestMapping(value ="/matsuoka/EditKanriClockInOut",method = RequestMethod.POST)
+	public ModelAndView editKanriClockInOut(@ModelAttribute FormKanriMainteClockInOutDetail formKanriMainteClockInOutDetail, ModelAndView mav) {
+		
+		String pgmId = classId + ".editKanriClockInOut";
+		
+		
+		log.info("【INF】" + pgmId + " :処理開始");
+		log.info("【INF】" + pgmId + " :ﾎﾞﾀﾝ区分    =[" + formKanriMainteClockInOutDetail.getButtonKbn() + "]");
+		log.info("【INF】" + pgmId + " :社員        =[" + formKanriMainteClockInOutDetail.getEmployeeId() + "]");
+		log.info("【INF】" + pgmId + " :出勤日時    =[" + formKanriMainteClockInOutDetail.getStartDateTime() + "]");
+		log.info("【INF】" + pgmId + " :退勤日時    =[" + formKanriMainteClockInOutDetail.getEndDateTime() + "]");
+		log.info("【INF】" + pgmId + " :備考        =[" + formKanriMainteClockInOutDetail.getBiko() + "]");
+		log.info("【INF】" + pgmId + " :▼フィルタリング条件------------------------------------------------");
+		log.info("【INF】" + pgmId + " :表示年月    =[" + formKanriMainteClockInOutDetail.getFilterTargetYM() + "]");
+		log.info("【INF】" + pgmId + " :社員ID      =[" + formKanriMainteClockInOutDetail.getFilterEmployeeId() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日Fr=[" + formKanriMainteClockInOutDetail.getFilterDateFr() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日To=[" + formKanriMainteClockInOutDetail.getFilterDateTo() + "]");
+		log.info("【INF】" + pgmId + " :▲フィルタリング条件------------------------------------------------");
+		
+		
+		DaoFormKanriMainteClockInOut dao = new DaoFormKanriMainteClockInOut(jdbcTemplate);
+		
+		
+		//------------------------------------------------
+		// 登録・更新・削除
+		
+		
+		if (formKanriMainteClockInOutDetail.getButtonKbn().equals("regist") == true) {
+			
+			//------------------------------------------------
+			//登録処理を実施
+			dao.registClockInOut(formKanriMainteClockInOutDetail, SpecialUser.KANRI_USER, "scrKanriMainteClockInOutDetail");
+			
+			
+		} else if (formKanriMainteClockInOutDetail.getButtonKbn().equals("update") == true) {
+			
+			//------------------------------------------------
+			//更新処理を実施
+			dao.updateClockInOut(formKanriMainteClockInOutDetail, SpecialUser.KANRI_USER, "scrKanriMainteClockInOutDetail");
+			
+			
+		} else if (formKanriMainteClockInOutDetail.getButtonKbn().equals("delete") == true) {
+			
+			//------------------------------------------------
+			//削除処理を実施
+			dao.deleteClockInOut(formKanriMainteClockInOutDetail, SpecialUser.KANRI_USER, "scrKanriMainteClockInOutDetail");
+			
+			
+		} else if (formKanriMainteClockInOutDetail.getButtonKbn().equals("revival") == true) {
+			
+			//------------------------------------------------
+			//復旧処理を実施
+			dao.revivalClockInOut(formKanriMainteClockInOutDetail, SpecialUser.KANRI_USER, "scrKanriMainteClockInOutDetail");
+			
+			
+		}
+		
+		
+		//------------------------------------------------
+		// 一覧表示用にデータを取得
+		FormKanriMainteClockInOutList formKanriMainteClockInOutList;
+		
+		formKanriMainteClockInOutList = dao.getDispClockInOutList("", null,null);
+		
+		if (formKanriMainteClockInOutList == null) {
+			
+			formKanriMainteClockInOutList = new FormKanriMainteClockInOutList();
+			formKanriMainteClockInOutList.setMessage("検索処理で異常が発生しました。システム管理者にご連絡ください。");
+			log.info("【ERR】" + pgmId + ":検索処理で異常終了");
+		
+		} else if (formKanriMainteClockInOutList.getClockInOutList().size() == 0) {
+		
+			formKanriMainteClockInOutList.setMessage("データが0件でした。");
+			log.info("【INF】" + pgmId + ":データが0件でした。");
+		}
+		
+		
+		
+		// ------------------------------------------------
+		// 一覧画面で選択・入力したフィルタリング条件を引継ぎ
+		
+		formKanriMainteClockInOutList.setFilterTargetYM(    formKanriMainteClockInOutDetail.getFilterTargetYM());
+		formKanriMainteClockInOutList.setFilterEmployeeId(  formKanriMainteClockInOutDetail.getFilterEmployeeId());
+		formKanriMainteClockInOutList.setFilterDateFr(      formKanriMainteClockInOutDetail.getFilterDateFr());
+		formKanriMainteClockInOutList.setFilterDateTo(      formKanriMainteClockInOutDetail.getFilterDateTo());
+		
+		
+		// ------------------------------------------------
+		// 絞込み条件欄のドロップダウンリストにセットする値を検索しセット
+		
+		DaoDropDownList daoDropDown = new DaoDropDownList(jdbcTemplate);
+		
+		formKanriMainteClockInOutList.setDropDownEmployeeList(daoDropDown.getEmployeeList());
+		
+		
+		mav.addObject("formKanriMainteClockInOutList",formKanriMainteClockInOutList);
+		
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrKanriMainteClockInOutList.html");
+		return mav;
+	}
+	
+	
+	
+	
+	//戻るボタン押下処理
+	@RequestMapping(value ="/matsuoka/TransitionKanriMainteClockInOutListSearch",method = RequestMethod.POST)
+	public ModelAndView transition_KanriMainteClockInOutListSearch(@ModelAttribute FormKanriMainteClockInOutDetail formKanriMainteClockInOutDetail, ModelAndView mav) {
+		
+		String pgmId = classId + ".transition_KanriMainteClockInOutListSearch";
+		
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		log.info("【INF】" + pgmId + " :処理開始");
+		log.info("【INF】" + pgmId + " :ﾎﾞﾀﾝ区分    =[" + formKanriMainteClockInOutDetail.getButtonKbn() + "]");
+		log.info("【INF】" + pgmId + " :社員        =[" + formKanriMainteClockInOutDetail.getEmployeeId() + "]");
+		log.info("【INF】" + pgmId + " :出勤日時    =[" + formKanriMainteClockInOutDetail.getStartDateTime() + "]");
+		log.info("【INF】" + pgmId + " :退勤日時    =[" + formKanriMainteClockInOutDetail.getEndDateTime() + "]");
+		log.info("【INF】" + pgmId + " :備考        =[" + formKanriMainteClockInOutDetail.getBiko() + "]");
+		log.info("【INF】" + pgmId + " :▼フィルタリング条件------------------------------------------------");
+		log.info("【INF】" + pgmId + " :表示年月    =[" + formKanriMainteClockInOutDetail.getFilterTargetYM() + "]");
+		log.info("【INF】" + pgmId + " :社員ID      =[" + formKanriMainteClockInOutDetail.getFilterEmployeeId() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日Fr=[" + formKanriMainteClockInOutDetail.getFilterDateFr() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日To=[" + formKanriMainteClockInOutDetail.getFilterDateTo() + "]");
+		log.info("【INF】" + pgmId + " :▲フィルタリング条件------------------------------------------------");
+		
+		
+		DaoFormKanriMainteClockInOut dao = new DaoFormKanriMainteClockInOut(jdbcTemplate);
+		
+		
+		//------------------------------------------------
+		// 一覧表示用にデータを取得
+		FormKanriMainteClockInOutList formKanriMainteClockInOutList;
+		
+		formKanriMainteClockInOutList = dao.getDispClockInOutList("", null,null);
+		
+		if (formKanriMainteClockInOutList == null) {
+			
+			formKanriMainteClockInOutList = new FormKanriMainteClockInOutList();
+			formKanriMainteClockInOutList.setMessage("検索処理で異常が発生しました。システム管理者にご連絡ください。");
+			log.info("【ERR】" + pgmId + ":検索処理で異常終了");
+		
+		} else if (formKanriMainteClockInOutList.getClockInOutList().size() == 0) {
+		
+			formKanriMainteClockInOutList.setMessage("データが0件でした。");
+			log.info("【INF】" + pgmId + ":データが0件でした。");
+		}
+		
+		
+		
+		// ------------------------------------------------
+		// 一覧画面で選択・入力したフィルタリング条件を引継ぎ
+		
+		formKanriMainteClockInOutList.setFilterTargetYM(    formKanriMainteClockInOutDetail.getFilterTargetYM());
+		formKanriMainteClockInOutList.setFilterEmployeeId(  formKanriMainteClockInOutDetail.getFilterEmployeeId());
+		formKanriMainteClockInOutList.setFilterDateFr(      formKanriMainteClockInOutDetail.getFilterDateFr());
+		formKanriMainteClockInOutList.setFilterDateTo(      formKanriMainteClockInOutDetail.getFilterDateTo());
+		
+		
+		// ------------------------------------------------
+		// 絞込み条件欄のドロップダウンリストにセットする値を検索しセット
+		
+		DaoDropDownList daoDropDown = new DaoDropDownList(jdbcTemplate);
+		
+		formKanriMainteClockInOutList.setDropDownEmployeeList(daoDropDown.getEmployeeList());
+		
+		
+		
+		mav.addObject("formKanriMainteClockInOutList",formKanriMainteClockInOutList);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrKanriMainteClockInOutList.html");
+		return mav;
+	}
+	
+	
+	
+	
+	//Excelダウンロード
+	@RequestMapping(value ="/matsuoka/DownloadClockInOutExcel",method = RequestMethod.GET)
+	public ResponseEntity<InputStreamResource> download_ClockInOutExcel(@ModelAttribute FormKanriMainteClockInOutList formKanriMainteClockInOutList,HttpServletResponse response) throws IOException {
+		
+		String pgmId = classId + ".transition_KanriMainteClockInOutListSearch";
+		
+		log.info("【INF】" + pgmId + ":処理開始");
+
+		log.info("【INF】" + pgmId + " :処理開始");
+		log.info("【INF】" + pgmId + " :▼フィルタリング条件------------------------------------------------");
+		log.info("【INF】" + pgmId + " :表示年月    =[" + formKanriMainteClockInOutList.getFilterTargetYM() + "]");
+		log.info("【INF】" + pgmId + " :社員ID      =[" + formKanriMainteClockInOutList.getFilterEmployeeId() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日Fr=[" + formKanriMainteClockInOutList.getFilterDateFr() + "]");
+		log.info("【INF】" + pgmId + " :作業開始日To=[" + formKanriMainteClockInOutList.getFilterDateTo() + "]");
+		
+		// クラスパスからファイルを読み込む
+		InputStream is = getClass().getClassLoader().getResourceAsStream("templates/excelClockInOutTemplate.xlsx");
+		
+		if (is == null) {
+			throw new FileNotFoundException("File not found in classpath: templates/excelClockInOutTemplate.xlsx");
+		}
+		
+		
+		try (
+			ByteArrayInputStream bais  = new ByteArrayInputStream(is.readAllBytes());
+			XSSFWorkbook workbook      = new XSSFWorkbook(bais);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream()
+		) {
+			boolean ret = false;
+			
+			DaoClockInOut dao = new DaoClockInOut(jdbcTemplate);
+			ret = dao.createPaySlipExcel(formKanriMainteClockInOutList.getFilterTargetYM(), workbook);
+			
+			if (ret == false) {
+				log.info("【ERR】" + pgmId + ":処理終了：給与明細Exclファイルの出力で異常が発生しました。");
+				return null;
+			}
+			
+			
+			// Excelファイルをストリームに書き込む
+			workbook.write(baos);
+			baos.flush();
+			
+			// レスポンスにセット
+			HttpHeaders headers = new HttpHeaders();
+			
+			String dowloadFileName = "給与明細_" + formKanriMainteClockInOutList.getFilterTargetYM().replace("-", "") + ".xlsx";
+			//log.info("【DBG】" + pgmId + ":ダウンロード設定①");
+			//headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=modified_excel.xlsx");
+			headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(dowloadFileName, "UTF-8") + "\"");
+			//log.info("【DBG】" + pgmId + ":ダウンロード設定②");
+			InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
+			//log.info("【DBG】" + pgmId + ":ダウンロード設定③");
+			log.info("【INF】" + pgmId + ":処理終了");
+			
+			return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+		}
 	}
 	
 }

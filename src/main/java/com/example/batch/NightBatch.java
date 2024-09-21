@@ -1,7 +1,9 @@
 package com.example.batch;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.common.AggregateRecordCreator;
+import com.example.common.AggregateTable;
 import com.example.counst.SpecialUser;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +29,7 @@ public class NightBatch {
 	
 	private String classId = "NightBatch";
 	
-	@Scheduled(cron = "01 59 00 * * *") // 毎日00時59分01秒に実行
+	@Scheduled(cron = "45 59 00 * * *") // 毎日00時59分45秒に実行
 	@Transactional(rollbackFor = {Exception.class, SQLException.class})
 	public void runNightBatch() {
 		
@@ -78,6 +82,17 @@ public class NightBatch {
 		
 		
 		//------------------------------------------------
+		//削除済みの出退勤情報を物理削除
+		ret = deleteDeletedClockInOut();
+		
+		// 処理異常の際はバッチ処理を終了する
+		if (ret == false) {
+			return;
+		}
+		
+		
+		
+		//------------------------------------------------
 		//リセット済みの作業進捗情報を移行
 		ret = resetWorkStatus(nowDateTime);
 		
@@ -103,11 +118,54 @@ public class NightBatch {
 		//リセット済み作業でリセットから１年経過したデータをバックアップに移行する
 		ret = backUpReset(nowDateTime);
 		
+		// 処理異常の際はバッチ処理を終了する
+		if (ret == false) {
+			return;
+		}
+		
+		
+		
+		
+		
+		//------------------------------------------------
+		// 収穫ケース数集計用年月テーブル作成（本年度のデータ）
+		LocalDate nowDate = LocalDate.now();
+		AggregateTable aggregateTableNowYear = new AggregateTable(jdbcTemplate, nowDate);
+		
+		
+		
+		//------------------------------------------------
+		// 収穫ケース数集計用年月テーブル作成（前年度のデータ）
+		
+		LocalDate prvDate = LocalDate.now().minusYears(1);
+		AggregateTable aggregateTablePrvYear = new AggregateTable(jdbcTemplate, prvDate);
+		
+		
+		
+		//------------------------------------------------
+		// 前年度・前年度収穫ケース数集計データ作成  ※集計用のレコードを作成するだけ。収穫ケース数合計は0で登録される。
+		ret = createAggregateData(aggregateTableNowYear,aggregateTablePrvYear);
 		
 		// 処理異常の際はバッチ処理を終了する
 		if (ret == false) {
 			return;
 		}
+		
+		
+		
+		//------------------------------------------------
+		// 前年度・前年度収穫ケース数集計
+		ret = aggregate(aggregateTableNowYear,aggregateTablePrvYear);
+		
+		// 処理異常の際はバッチ処理を終了する
+		if (ret == false) {
+			return;
+		}
+		
+		
+		
+		
+		
 		
 		
 		log.info("★★★★★★日次バッチ起動終了[" + nowDateTime +"]分★★★★★★★★");
@@ -196,6 +254,42 @@ public class NightBatch {
 			// 作業進捗情報を削除
 			
 			String sql = " delete from TT_HOUSE_WORKSTATUS";
+			sql  = sql + " where";
+			sql  = sql + "     DELETEFLG = 1";
+			
+			
+			int ret = this.jdbcTemplate.update(sql);
+			
+			// メモ：commitはjdbcTemplateが自動で行ってくれる
+			
+			log.info("【INF】" + pgmId + ":処理終了 削除件数=[" + ret + "]");
+			
+			return true;
+			
+			
+		}catch(Exception e){
+			
+			log.error("【ERR】" + pgmId + ":異常終了");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
+			return false;
+		}
+	}
+	
+	
+	
+	private boolean deleteDeletedClockInOut() {
+		
+		String pgmId = classId + ".deleteDeletedClockInOut";
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		try {
+			
+			// ------------------------------------------------
+			// 出退勤情報を削除
+			
+			String sql = " delete from TT_CLOCKINOUT";
 			sql  = sql + " where";
 			sql  = sql + "     DELETEFLG = 1";
 			
@@ -724,5 +818,196 @@ public class NightBatch {
 			return false;
 		}
 	}
+	
+	
+	
+	private boolean createAggregateData(AggregateTable aggregateTableNowYear,AggregateTable aggregateTablePrvYear) {
+		
+		String pgmId = classId + ".createAggregateData";
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		try {
+			String sql = " select";
+			sql  = sql + "     HOUSEID";
+			sql  = sql + " from";
+			sql  = sql + "     TM_HOUSE";
+			
+			
+			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
+			List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(sql);
+			
+			AggregateRecordCreator aggregateRecordCreator = new AggregateRecordCreator(jdbcTemplate);
+			
+			for (Map<String, Object> rs: rsList) {
+				
+				String houseId = rs.get("HOUSEID").toString();
+				
+				aggregateRecordCreator.createOrUpdate(houseId, aggregateTableNowYear, SpecialUser.KANRI_USER, "NightBatch");
+				aggregateRecordCreator.create(        houseId, aggregateTablePrvYear, SpecialUser.KANRI_USER, "NightBatch");
+			}
+			
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			
+			return true;
+			
+			
+		}catch(Exception e){
+			
+			log.error("【ERR】" + pgmId + ":異常終了");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
+			return false;
+		}
+		
+	}
+	
+	
+	private boolean aggregate(AggregateTable aggregateTableNowYear,AggregateTable aggregateTablePrvYear) {
+		
+		String pgmId = classId + ".aggregate";
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		try {
+			
+			// 昨年度の最初の年月
+			String firtYM  =  aggregateTablePrvYear.getList().get(0).getYear()
+							+ aggregateTablePrvYear.getList().get(0).getMonth();
+			// 今年度の最後の年月
+			String lastYM  =  aggregateTableNowYear.getList().get(aggregateTableNowYear.getList().size() - 1).getYear()
+							+ aggregateTableNowYear.getList().get(aggregateTableNowYear.getList().size() - 1).getMonth();
+			
+			
+			// ハウスマスタを検索
+			String sql = " select";
+			sql  = sql + "     HOUSE.HOUSEID";
+			sql  = sql + "    ,AGGRE.AGGREGATEYEAR";
+			sql  = sql + "    ,AGGRE.AGGREGATEMONTH";
+			sql  = sql + " from";
+			sql  = sql + "     TM_HOUSE HOUSE";
+			sql  = sql + " inner join";
+			sql  = sql + "     TT_SHUKAKU_AGGREGATE AGGRE";
+			sql  = sql + "     on";
+			sql  = sql + "         AGGRE.HOUSEID = HOUSE.HOUSEID";
+			sql  = sql + "     and concat(AGGRE.AGGREGATEYEAR, AGGRE.AGGREGATEMONTH) >= ?";
+			sql  = sql + "     and concat(AGGRE.AGGREGATEYEAR, AGGRE.AGGREGATEMONTH) <= ?";
+			sql  = sql + " order by";
+			sql  = sql + "     HOUSE.HOUSEID";
+			sql  = sql + "    ,AGGRE.AGGREGATEYEAR";
+			sql  = sql + "    ,AGGRE.AGGREGATEMONTH";
+			
+			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
+			List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(sql, firtYM, lastYM);
+			
+			for (Map<String, Object> rs: rsList) {
+				
+				log.info("【INF】" + pgmId + "■------------------------------------------------");
+				log.info("【INF】" + pgmId + "■ハウスID    =[" + rs.get("HOUSEID").toString() + "]");
+				log.info("【INF】" + pgmId + "■集計年      =[" + rs.get("AGGREGATEYEAR").toString() + "]年");
+				log.info("【INF】" + pgmId + "■集計月      =[" + rs.get("AGGREGATEMONTH").toString() + "]月");
+				
+				String houseId     = rs.get("HOUSEID").toString();
+				String targetYear  = rs.get("AGGREGATEYEAR").toString();
+				String targetMonth = rs.get("AGGREGATEMONTH").toString();
+				
+				//------------------------------------------------
+				// 集計・更新を実施
+				Boolean ret  = updateAggregate(houseId ,targetYear, targetMonth ,SpecialUser.KANRI_USER,"NightBatch");
+				
+				// 集計・更新が異常終了した場合は処理終了
+				if (ret == false) {
+					return false;
+				}
+			}
+			
+			
+			return true;
+			
+			
+		}catch(Exception e){
+			
+			log.error("【ERR】" + pgmId + ":異常終了");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
+			return false;
+		}
+	}
+	
+	
+	
+	// データ更新
+	public boolean updateAggregate(String houseId ,String targetYear, String targetMonth ,String userName,String registPgmId) {
+		
+		String pgmId = classId + ".updateAggregate";
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		try {
+			
+			// 最初の日を取得
+			LocalDate firstDay  = LocalDate.of(Integer.parseInt(targetYear), Integer.parseInt(targetMonth), 1);
+			
+			// 最後の日を取得
+			YearMonth yearMonth = YearMonth.of(Integer.parseInt(targetYear), Integer.parseInt(targetMonth));
+			LocalDate lastDay   = yearMonth.atEndOfMonth();
+			
+			
+			// 集計した結果で更新を行う
+			String sql = " update TT_SHUKAKU_AGGREGATE";
+			sql  = sql + "     set";
+			sql  = sql + "     BOXSUM =(select COALESCE(SUM(BOXSUM),0)";  //集計データが存在しない場合は収穫ケース数合計を 0 で更新
+			sql  = sql + "              from   TT_SHUKAKU_BOXSUM";
+			sql  = sql + "              where  HOUSEID      = ?";
+			sql  = sql + "              and    SHUKAKUDATE >= ?";
+			sql  = sql + "              and    SHUKAKUDATE <= ?";
+			sql  = sql + "              and    DELETEFLG    = false"; //削除された情報は集計対象外
+			sql  = sql + "             )";
+			sql  = sql + "    ,SYSUPDUSERID  = ?";
+			sql  = sql + "    ,SYSUPDPGMID   = ?";
+			sql  = sql + "    ,SYSUPDYMDHMS  = current_timestamp(3)";
+			sql  = sql + " where";
+			sql  = sql + "     HOUSEID        = ?";
+			sql  = sql + " and AGGREGATEYEAR  = ?";
+			sql  = sql + " and AGGREGATEMONTH = ?";
+			
+			
+			// 年月日での日付フォーマットを準備
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			
+			
+			int ret = this.jdbcTemplate.update(sql
+					,houseId
+					,formatter.format(firstDay)
+					,formatter.format(lastDay)
+					,userName
+					,registPgmId
+					,houseId
+					,targetYear
+					,targetMonth
+					);
+			
+			
+			// メモ：commitはjdbcTemplateが自動で行ってくれる
+			
+			log.info("【INF】" + pgmId + ":処理終了 ret=[" + ret + "]");
+			
+			// 更新件数０件である場合はNGを返却
+			if (ret == 0) {
+				return false;
+			}
+			return true;
+			
+			
+		}catch(Exception e){
+			
+			log.error("【ERR】" + pgmId + ":異常終了");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
+			return false;
+		}
+	}
+	
 	
 }
