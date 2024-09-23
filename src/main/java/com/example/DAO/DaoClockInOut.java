@@ -1,5 +1,6 @@
 package com.example.DAO;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -17,10 +18,12 @@ import org.apache.poi.ss.usermodel.PrintSetup;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.counst.SpecialUser;
+import com.example.counst.SpecialWork;
 import com.example.form.FormDispQRInfoClockInOut;
 
 import lombok.Data;
@@ -688,6 +691,10 @@ public class DaoClockInOut {
 														,SpecialUser.TEST_USER
 														);
 			
+			//------------------------------------------------
+			// 出退勤記録のExcel作成
+			//------------------------------------------------
+			
 			// 社員マスタの件数分LOOP
 			for (Map<String, Object> rs: rsListEmpt) {
 				
@@ -695,7 +702,7 @@ public class DaoClockInOut {
 				String employeeName = rs.get("EMPLOYEENAME").toString();
 				boolean ret = false;
 				
-				log.info("【INFO】" + pgmId + ":■------社員名=[" + employeeName + "]の給与明細出力処理 開始---------");
+				log.info("【INFO】" + pgmId + ":■------社員名=[" + employeeName + "]の出退勤記録出力処理 開始---------");
 				
 				//------------------------------------------------
 				// シートをコピーして対象社員のシートを作成
@@ -741,17 +748,21 @@ public class DaoClockInOut {
 				
 				//------------------------------------------------
 				// 出退勤の情報(タイムカードの情報)を取得
-				
+				ExcelClockInOut timeCardDataData =  this.getTimeCardData(employeeId, filterTargetYM);
+				if (timeCardDataData == null) {
+					log.info("【ERR】" + pgmId + ":処理終了：給与明細Exclファイルの出力(タイムカード情報の取得)で異常が発生しました。");
+					return false;
+				}
 				
 				
 				
 				//------------------------------------------------
 				// 出退勤の情報(タイムカードの情報)をExcelに転記
-				
-				
-				
-				
-				
+				ret = this.outputExcelTimeCardData(timeCardDataData ,newSheet);
+				if (ret == false) {
+					log.info("【ERR】" + pgmId + ":処理終了：給与明細Exclファイルの出力(タイムカード情報のExcel出力)で異常が発生しました。");
+					return false;
+				}
 				
 				
 				
@@ -760,7 +771,7 @@ public class DaoClockInOut {
 				// 出退勤の情報(登録データそのまま)を取得
 				ExcelClockInOut clockInOutData =  this.getClockInOutData(employeeId, filterTargetYM);
 				if (clockInOutData == null) {
-					log.info("【ERR】" + pgmId + ":処理終了：給与明細Exclファイルの出力(出退勤情報のExcel出力で異常が発生しました。");
+					log.info("【ERR】" + pgmId + ":処理終了：給与明細Exclファイルの出力(出退勤情報の取得)で異常が発生しました。");
 					return false;
 				}
 				
@@ -770,28 +781,102 @@ public class DaoClockInOut {
 				// 出退勤の情報(登録データそのまま)をExcelに転記
 				ret = this.outputExcelClockInOutData(clockInOutData ,newSheet);
 				if (ret == false) {
-					log.info("【ERR】" + pgmId + ":処理終了：給与明細Exclファイルの出力(出退勤情報のExcel出力で異常が発生しました。");
+					log.info("【ERR】" + pgmId + ":処理終了：給与明細Exclファイルの出力(出退勤情報のExcel出力)で異常が発生しました。");
 					return false;
 				}
 				
 				
+				log.info("【INFO】" + pgmId + ":■------社員名=[" + employeeName + "]の出退勤記録出力処理 終了---------");
+				
+			}
+			
+			
+			
+			//------------------------------------------------
+			// 給与明細のExcel作成
+			//------------------------------------------------
+			
+			// 社員マスタの件数分LOOP
+			for (Map<String, Object> rs: rsListEmpt) {
+				
+				String employeeId   = rs.get("EMPLOYEEID").toString();
+				String employeeName = rs.get("EMPLOYEENAME").toString();
+				boolean ret = false;
+				
+				log.info("【INFO】" + pgmId + ":■------社員名=[" + employeeName + "]の給与明細出力処理 開始---------");
+				
+				//------------------------------------------------
+				// シートをコピーして対象社員のシートを作成
+				//
+				
+				// シートを取得してコピー
+				String originalSheetName = "松岡農園 給与明細原本";
+				String newSheetName      = "給与明細_" + employeeName;
+				
+				Sheet newSheet = this.copyExcelSheet(workbook, originalSheetName, newSheetName);
+				if (newSheet == null) {
+					log.info("【ERR】" + pgmId + ":処理終了：給与明細Exclファイルの出力(シートのコピー処理)で異常が発生しました。");
+					return false;
+				}
+				
+				
+				//------------------------------------------------
+				// セル結合を行う
+				
+				// 10行目の2列目から17行目の2列目までを結合
+				newSheet.addMergedRegion(new CellRangeAddress(10-1, 17-1, 2-1, 2-1)); // (startRow, endRow, startColumn, endColumn)
+				// 19行目の2列目から26行目の2列目までを結合
+				newSheet.addMergedRegion(new CellRangeAddress(19-1, 26-1, 2-1, 2-1)); // (startRow, endRow, startColumn, endColumn)
+				// 28行目の2列目から35行目の2列目までを結合
+				newSheet.addMergedRegion(new CellRangeAddress(28-1, 35-1, 2-1, 2-1)); // (startRow, endRow, startColumn, endColumn)
+				// 37行目の2列目から40行目の2列目までを結合
+				newSheet.addMergedRegion(new CellRangeAddress(37-1, 40-1, 2-1, 2-1)); // (startRow, endRow, startColumn, endColumn)
+				// 42行目の2列目から45行目の2列目までを結合
+				newSheet.addMergedRegion(new CellRangeAddress(42-1, 45-1, 2-1, 2-1)); // (startRow, endRow, startColumn, endColumn)
+				// 42行目の3列目から45行目の7列目までを結合
+				newSheet.addMergedRegion(new CellRangeAddress(42-1, 45-1, 3-1, 7-1)); // (startRow, endRow, startColumn, endColumn)
+				
+				//------------------------------------------------
+				// 印刷設定を行う
+				
+				PrintSetup printSetup = workbook.getSheet(newSheetName).getPrintSetup();
+				printSetup.setPaperSize(PrintSetup.A4_PAPERSIZE); // A4サイズに設定
+				printSetup.setLandscape(false);      // false:印刷を縦方向に設定 true:印刷を横方向に設定
+				printSetup.setFitWidth( (short) 1);  // 横1ページに合わせる
+				printSetup.setFitHeight((short) 1);  // 縦1ページに合わせる
+				
+				workbook.getSheet(newSheetName).setFitToPage(true); // 上記の「横1ページに合わせる」を有効にするために必要らしい
+				
+				// ヘッダとフッタの設定
+				Header header = workbook.getSheet(newSheetName).getHeader();
+				Footer footer = workbook.getSheet(newSheetName).getFooter();
+				
+				// 中央ヘッダにシート名を設定
+				header.setCenter(HeaderFooter.tab());
+				
+				// 中央フッタにページ番号と総ページ数を設定
+				footer.setCenter(HeaderFooter.page() + " / " + HeaderFooter.numPages());
 				
 				
 				
 				
 				//------------------------------------------------
 				// 給与明細の情報を取得
-				
+				ExcelPaySlipDetail paySlipData =  getPaySlipData(employeeId, filterTargetYM);
+				if (paySlipData == null) {
+					log.info("【ERR】" + pgmId + ":処理終了：給与明細Exclファイルの出力(給与明細情報の取得)で異常が発生しました。");
+					return false;
+				}
 				
 				
 				
 				//------------------------------------------------
 				// 給与明細の情報をExcelに転記
-				
-				
-				
-				
-				
+				ret = this.outputExcelPaySlipData(paySlipData ,newSheet);
+				if (ret == false) {
+					log.info("【ERR】" + pgmId + ":処理終了：給与明細Exclファイルの出力(給与明細情報のExcel出力)で異常が発生しました。");
+					return false;
+				}
 				
 				
 				log.info("【INFO】" + pgmId + ":■------社員名=[" + employeeName + "]の給与明細出力処理 終了---------");
@@ -921,78 +1006,83 @@ public class DaoClockInOut {
 				break;
 			}
 			
-			
-			
-			// 引数.対象年月(YYYY-MM形式)から年と月を切出し
-			
-			
-			
-			// SQLで指定年月の全日付を取得
-			
-			
-			
-			
-			// 全日付の件数分LOOP
-			
-			
-			
-			// 出退勤情報を検索
-			// 複数レコード取得できる場合、その日付の最初の出勤時間、最後の退勤時間
-			// 合計の勤務時間、休憩時間を取得
-			
-			
 			//------------------------------------------------
 			// 出退勤情報を検索
-			
 			sql        = " select";
-			sql  = sql + "     (CONCAT_WS('-', CLOCKINYEAR, CLOCKINMONTH ,CLOCKINDAY)) CLOCKINDATE";  // YYYY-MM-DD形式で取得
-			sql  = sql + "    ,DATE_FORMAT(CLOCKINDATETIME ,'%Y%m%d%H%i%S') CLOCKINDATETIME_STRING";  // YYYYMMDDHHMMSS形式で取得（時間は24時間制）
-			sql  = sql + "    ,DATE_FORMAT(CLOCKOUTDATETIME,'%Y%m%d%H%i%S') CLOCKOUTDATETIME_STRING"; // YYYYMMDDHHMMSS形式で取得（時間は24時間制）
-			sql  = sql + "    ,HOURLYWAGE";
-			sql  = sql + "    ,WORKING_HOUERS";
+			sql  = sql + "     CAL.DAY CLOCKINDATE";
+			sql  = sql + "    ,DATE_FORMAT(C01.CLOCKINDATETIME ,'%Y%m%d%H%i%S') CLOCKINDATETIME_STRING";  // YYYYMMDDHHMMSS形式で取得（時間は24時間制）;
+			sql  = sql + "    ,DATE_FORMAT(C11.CLOCKOUTDATETIME,'%Y%m%d%H%i%S') CLOCKOUTDATETIME_STRING"; // YYYYMMDDHHMMSS形式で取得（時間は24時間制）
+			sql  = sql + "    ,C21.WORKING_HOUERS";
 			sql  = sql + " from";
-			sql  = sql + "     TT_CLOCKINOUT";
+			sql  = sql + " (";
+			// 対象月のカレンダーテーブルを取得
+			sql  = sql + " select              DATE_ADD(  DATE('" + targetYMDfirstDay + "') ,INTERVAL t.n - 1 DAY  )         AS DAY";
+			sql  = sql + "        ,LPAD(YEAR(  DATE_ADD(  DATE('" + targetYMDfirstDay + "') ,INTERVAL t.n - 1 DAY  )),4,'0') AS YYYY";
+			sql  = sql + "        ,LPAD(MONTH( DATE_ADD(  DATE('" + targetYMDfirstDay + "') ,INTERVAL t.n - 1 DAY  )),2,'0') AS MM";
+			sql  = sql + "        ,LPAD(DAY(   DATE_ADD(  DATE('" + targetYMDfirstDay + "') ,INTERVAL t.n - 1 DAY  )),2,'0') AS DD";
+			sql  = sql + " from (  select @rownum := @rownum + 1 AS n";
+			sql  = sql + "         from (select 1 union all select 2 union all select 3 union all select 4) t1,";
+			sql  = sql + "              (select 1 union all select 2 union all select 3 union all select 4) t2,";
+			sql  = sql + "              (select 1 union all select 2 union all select 3 union all select 4) t3,";
+			sql  = sql + "              (select @rownum := 0) t4";
+			sql  = sql + " ) t";
 			sql  = sql + " where";
-			sql  = sql + "     EMPLOYEEID       = ?";
-			sql  = sql + " and CLOCKINYEAR      = ?";
-			sql  = sql + " and CLOCKINMONTH     = ?";
-			sql  = sql + " order by";
-			sql  = sql + "     CLOCKINDATETIME";
-			
-			
-			
-			/*
-			 * 【メモ】：MySQLの日付フォーマット
-			 * %Y    4 桁の年               例：2024
-			 * %y    2 桁の年               例：24
-			 * %c    月                     例：0 ~ 12
-			 * %m    2 桁の月               例：00 ~ 12
-			 * %e    日                     例：0 ~ 31
-			 * %d    2 桁の日               例：00 ~ 31
-			 * %H    24時制の時間           例：00 ~ 23
-			 * %h    12時制の時間           例：01 ~ 12
-			 * %p    午前・午後             例：AM か PM
-			 * %i    分                     例：00 ~ 59
-			 * %S,%s 秒                     例：00 ~ 59
-			 * %f    ミリ秒                 例：000000 ~ 999999
-			 * %M    月名                   例：January ~ December
-			 * %b    簡略月名               例：Jan ~ Dec
-			 * %W    曜日名                 例：Sunday ~ Saturday
-			 * %b    簡略曜日名             例：Sun ~ Sat
-			 * %a    12時制の時間・分・秒。 例：21:40:13
-			 * %T    24時制の時間・分・秒。 例：21:40:13
-			 */
+			sql  = sql + "         DATE_ADD(DATE('" + targetYMDfirstDay + "'), INTERVAL t.n - 1 DAY) <= LAST_DAY('" + targetYMDfirstDay + "')";
+			sql  = sql + " ) CAL";
+			// カレンダーテーブルの各日付の「最初」の出退勤情報を検索
+			sql  = sql + " left join TT_CLOCKINOUT C01";
+			sql  = sql + " on";
+			sql  = sql + "         C01.EMPLOYEEID        = '" + employeeId + "'";
+			sql  = sql + "     and CAL.YYYY              = C01.CLOCKINYEAR";
+			sql  = sql + "     and CAL.MM                = C01.CLOCKINMONTH";
+			sql  = sql + "     and CAL.DD                = C01.CLOCKINDAY";
+			sql  = sql + "     and C01.CLOCKINDATETIME   = (  select MIN(CLOCKINDATETIME)";
+			sql  = sql + "                                    from   TT_CLOCKINOUT C02";
+			sql  = sql + "                                    where  C02.EMPLOYEEID     = '" + employeeId + "'";
+			sql  = sql + "                                      and  CAL.YYYY           = C02.CLOCKINYEAR";
+			sql  = sql + "                                      and  CAL.MM             = C02.CLOCKINMONTH";
+			sql  = sql + "                                      and  CAL.DD             = C02.CLOCKINDAY";
+			sql  = sql + "                                 )";
+			// カレンダーテーブルの各日付の「最後」の出退勤情報を検索
+			sql  = sql + " left join TT_CLOCKINOUT C11";
+			sql  = sql + " on";
+			sql  = sql + "         C11.EMPLOYEEID        = '" + employeeId + "'";
+			sql  = sql + "     and CAL.YYYY              = C11.CLOCKINYEAR";
+			sql  = sql + "     and CAL.MM                = C11.CLOCKINMONTH";
+			sql  = sql + "     and CAL.DD                = C11.CLOCKINDAY";
+			sql  = sql + "     and C11.CLOCKINDATETIME   = (  select MAX(CLOCKINDATETIME)";
+			sql  = sql + "                                    from   TT_CLOCKINOUT C12";
+			sql  = sql + "                                    where  C12.EMPLOYEEID     = '" + employeeId + "'";
+			sql  = sql + "                                      and  CAL.YYYY           = C12.CLOCKINYEAR";
+			sql  = sql + "                                      and  CAL.MM             = C12.CLOCKINMONTH";
+			sql  = sql + "                                      and  CAL.DD             = C12.CLOCKINDAY";
+			sql  = sql + "                                 )";
+			// カレンダーテーブルの各日付の勤務時間「合計」を検索
+			sql  = sql + " left join (                    select C22.EMPLOYEEID";
+			sql  = sql + "                                      ,C22.CLOCKINYEAR";
+			sql  = sql + "                                      ,C22.CLOCKINMONTH";
+			sql  = sql + "                                      ,C22.CLOCKINDAY";
+			sql  = sql + "                                      ,SUM(C22.WORKING_HOUERS) WORKING_HOUERS";
+			sql  = sql + "                                from   TT_CLOCKINOUT C22";
+			sql  = sql + "                                where  C22.EMPLOYEEID = '" + employeeId + "'";
+			sql  = sql + "                                group by";
+			sql  = sql + "                                       C22.CLOCKINYEAR";
+			sql  = sql + "                                      ,C22.CLOCKINMONTH";
+			sql  = sql + "                                      ,C22.CLOCKINDAY";
+			sql  = sql + "           ) C21";
+			sql  = sql + " on";
+			sql  = sql + "         C21.EMPLOYEEID        = '" + employeeId + "'";
+			sql  = sql + "     and CAL.YYYY              = C21.CLOCKINYEAR";
+			sql  = sql + "     and CAL.MM                = C21.CLOCKINMONTH";
+			sql  = sql + "     and CAL.DD                = C21.CLOCKINDAY";
 			
 			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
 			List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(
 														 sql
-														,employeeId
-														,filterTargetYM.substring(0, 4)
-														,filterTargetYM.substring(5, 7)
 														);
 			
-			
 			for (Map<String, Object> rs: rsList) {
+				
 				
 				ExcelClockInOutDetail detail = new ExcelClockInOutDetail();
 				
@@ -1000,17 +1090,24 @@ public class DaoClockInOut {
 				
 				//出勤日
 				detail.setTargetDate(LocalDate.parse(rs.get("CLOCKINDATE").toString()));
+				
 				//出勤日時
-				String clockInDateString = rs.get("CLOCKINDATETIME_STRING").toString();
-				detail.setClockInDateTime(LocalDateTime.parse(clockInDateString, formatterDateTime));
+				if (rs.get("CLOCKINDATETIME_STRING") != null) {
+					String clockInDateString = rs.get("CLOCKINDATETIME_STRING").toString();
+					detail.setClockInDateTime(LocalDateTime.parse(clockInDateString, formatterDateTime));
+				}
+				
 				//退勤日時
 				if (rs.get("CLOCKOUTDATETIME_STRING") != null) {
 					String clockOutDateString = rs.get("CLOCKOUTDATETIME_STRING").toString();
 					detail.setClockOutDateTime(LocalDateTime.parse(clockOutDateString, formatterDateTime));
 				}
 				
-				detail.setWorkingHouers(Double.parseDouble(rs.get("WORKING_HOUERS").toString()));
-				
+				//勤務時間
+				detail.setWorkingHouers(0);
+				if (rs.get("WORKING_HOUERS") != null) {
+					detail.setWorkingHouers(Double.parseDouble(rs.get("WORKING_HOUERS").toString()));
+				}
 				
 				retObj.getDetails().add(detail);
 				
@@ -1031,6 +1128,65 @@ public class DaoClockInOut {
 			
 			//検索した結果を返却します
 			return null;
+		}
+	}
+	
+	
+	
+	// ------------------------------------------------
+	// 出退勤記録Excel出力
+	private boolean outputExcelTimeCardData(ExcelClockInOut clockInOutData ,Sheet sheet) {
+		
+		String pgmId = classId + ".outputExcelTimeCardData";
+		log.info("【INF】" + pgmId + ":処理開始 社員=[" + clockInOutData.getEmployeeName() + "]");
+		
+		try {
+			
+			
+			// ------------------------------------------------
+			// ヘッダ情報の出力
+			
+			//※Excel4行目、3列名が勤務年月をセットするセルの位置　→セルの位置は0スタートなので位置を-1する
+			this.setCellValue(sheet, 4 - 1, 3 - 1, clockInOutData.getTargetYMfirstDate());  // 勤務年月
+			this.setCellValue(sheet, 5 - 1, 3 - 1, clockInOutData.getEmployeeId());         // 社員ID
+			this.setCellValue(sheet, 6 - 1, 3 - 1, clockInOutData.getEmployeeName());       // 社員名
+			
+			this.setCellValue(sheet, 4 - 1, 5 - 1, clockInOutData.getWorkingHoursSum());    // 勤務時間合計
+			this.setCellValue(sheet, 5 - 1, 5 - 1, clockInOutData.getHourwage());           // 時給
+			
+			
+			// ------------------------------------------------
+			// 明細情報の出力
+			
+			int startRowIndex = 10 - 1; //10行が明細行の１行目
+			int dataIndex     =  0 - 1;
+			
+			for (int rowIndex = startRowIndex; rowIndex < startRowIndex + clockInOutData.getDetails().size(); rowIndex++) {
+				
+				dataIndex = dataIndex + 1;
+				//出勤日
+				this.setCellValue(sheet, rowIndex, 2 - 1, clockInOutData.getDetails().get(dataIndex).getTargetDate());
+				//出勤日時
+				this.setCellValue(sheet, rowIndex, 3 - 1, clockInOutData.getDetails().get(dataIndex).getClockInDateTime());
+				//退勤日時
+				this.setCellValue(sheet, rowIndex, 4 - 1, clockInOutData.getDetails().get(dataIndex).getClockOutDateTime());
+				//勤務時間
+				this.setCellValue(sheet, rowIndex, 5 - 1, clockInOutData.getDetails().get(dataIndex).getWorkingHouers());
+				
+			}
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			return true;
+			
+			
+		}catch(Exception e){
+			
+			log.error("【ERR】" + pgmId + ":異常終了");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
+			//検索した結果を返却します
+			return false;
 		}
 	}
 	
@@ -1082,7 +1238,6 @@ public class DaoClockInOut {
 				// 検索結果は１件のみ
 				break;
 			}
-			
 			
 			
 			
@@ -1256,46 +1411,368 @@ public class DaoClockInOut {
 		// 勤怠項目
 		
 		//社員ID
-		
+		private String employeeId;
 		//社員名
-		
+		private String employeeName;
 		//出勤日数
-		
+		private int worKingDays = 0;
 		//午後出勤日数(基本は0でOK→要望があったら仕様を決めて入れる)
-		
+		private int afternoonWorkingDays = 0;
 		
 		//勤務時間合計(所定労働時間) →勤怠マスタから算出した勤務時間
+		private double workingHoures = 0;
 		
+		//作業生産性
+		private double productivity = 0;
 		
 		//完了列数(収穫以外の作業を行った場合)
-		
+		private double completedCol = 0;
 		
 		//作業時間→ハウス作業進捗、ハウス作業(収穫)進捗テーブルから算出した作業時間
+		private double workingTime = 0;
 		
-		
-		//箱数
-		
+		//箱数(収穫の作業である場合)
+		private int boxSum = 0;
 		
 		//平均作業時間
-		
+		//private double averageWorkingTime;
 		
 		// ------------------------------------------------
 		// 支給項目
 		
 		
 		//時給
+		private int hourwage;
 		
-		
-		//追通勤手当
-		
+		//追通勤手当→基本は0でOK
+		private int commutingAllowance = 0;
 		
 		// ------------------------------------------------
 		// 控除項目
 		
 		//所得税→毎年求め方が変動するためシステムでは求めない
+		private int incomeTax = 0;
 		
 		
+	}
+	
+	
+	
+	// ------------------------------------------------
+	// 給与明細情報取得
+	private ExcelPaySlipDetail getPaySlipData(String employeeId, String filterTargetYM) {
 		
+		String pgmId = classId + ".getPaySlipData";
+		log.info("【INF】" + pgmId + ":処理開始 社員ID=[" + employeeId + "]、対象年月(YYYY-MM形式の文字列)=[" + filterTargetYM + "]");
+		
+		ExcelPaySlipDetail retObj = new ExcelPaySlipDetail();
+		
+		try {
+			
+			//引数の対象年月の最初の日付をYYYY-MM-DD形式で取得
+			String targetYMDfirstDay = filterTargetYM + "-01";
+			
+			//------------------------------------------------
+			// 社員・時給情報を検索
+			String sql = " select";
+			sql  = sql + "     EMP.EMPLOYEENAME";
+			sql  = sql + "    ,WAG.HOURLYWAGE";
+			sql  = sql + " from";
+			sql  = sql + "     TM_EMPLOYEE EMP";
+			sql  = sql + " inner join TM_HOURLYWAGE WAG";
+			sql  = sql + "     on  WAG.EMPLOYEEID      = EMP.EMPLOYEEID";
+			sql  = sql + " where";
+			sql  = sql + "     EMP.EMPLOYEEID      = ?";
+			sql  = sql + " and WAG.STARTDATETIME  <= ?"; //時給は月初日が開始～終了内のものを参照する
+			sql  = sql + " and WAG.ENDDATETIME    >  ?";
+			
+			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
+			List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(
+														 sql
+														,employeeId
+														,targetYMDfirstDay
+														,targetYMDfirstDay
+														);
+			
+			for (Map<String, Object> rs: rsList) {
+				
+				retObj.setTargetYMfirstDate(LocalDate.parse(targetYMDfirstDay)); //対象年月の月初日をセット
+				retObj.setEmployeeId(employeeId);
+				retObj.setEmployeeName(rs.get("EMPLOYEENAME").toString());
+				retObj.setHourwage(Integer.parseInt(rs.get("HOURLYWAGE").toString()));
+				// 検索結果は１件のみ
+				break;
+			}
+			
+			
+			
+			//------------------------------------------------
+			// 出退勤情報を検索
+			sql        = " select";
+			sql  = sql + "     IFNULL(SUM(WORKING_HOUERS),0) WORKING_HOUERS";
+			sql  = sql + " from";
+			sql  = sql + "     TT_CLOCKINOUT CLC";
+			sql  = sql + " where";
+			sql  = sql + "     CLC.EMPLOYEEID   = ?";
+			sql  = sql + " and CLOCKINYEAR      = SUBSTRING(? ,1,4)";
+			sql  = sql + " and CLOCKINMONTH     = SUBSTRING(? ,6,2)";
+			
+			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
+			rsList = this.jdbcTemplate.queryForList(
+														 sql
+														,employeeId
+														,targetYMDfirstDay
+														,targetYMDfirstDay
+														);
+			
+			for (Map<String, Object> rs: rsList) {
+				
+				//勤務時間合計(所定労働時間) →勤怠マスタから算出した勤務時間
+				retObj.setWorkingHoures(Double.parseDouble(rs.get("WORKING_HOUERS").toString()));
+				
+				// 検索結果は１件のみ
+				break;
+			}
+			
+			
+			
+			//------------------------------------------------
+			// 出退勤情報を検索
+			sql        = " select IFNULL(count(1),0) CNT";
+			sql  = sql + " from (";
+			sql  = sql + " select distinct";
+			sql  = sql + "     CLOCKINYEAR";
+			sql  = sql + "    ,CLOCKINMONTH";
+			sql  = sql + "    ,CLOCKINDAY";
+			sql  = sql + " from";
+			sql  = sql + "     TT_CLOCKINOUT";
+			sql  = sql + " where";
+			sql  = sql + "     EMPLOYEEID       = ?";
+			sql  = sql + " and CLOCKINYEAR      = SUBSTRING(? ,1,4)";
+			sql  = sql + " and CLOCKINMONTH     = SUBSTRING(? ,6,2)";
+			sql  = sql + " ) CLC";
+			
+			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
+			rsList = this.jdbcTemplate.queryForList(
+														 sql
+														,employeeId
+														,targetYMDfirstDay
+														,targetYMDfirstDay
+														);
+			
+			for (Map<String, Object> rs: rsList) {
+				
+				//出勤日数
+				retObj.setWorKingDays(Integer.parseInt(rs.get("CNT").toString()));
+				
+				// 検索結果は１件のみ
+				break;
+			}
+			
+			
+			// 作業時間
+			double workingTime = 0;
+			
+			
+			//------------------------------------------------
+			// 作業進捗情報を検索
+			sql        = " select";
+			sql  = sql + "     IFNULL(       SUM(PERCENT)          ,0) PERCENT_SUM";
+			sql  = sql + "    ,IFNULL( ROUND(SUM(PERCENT) / 100,2) ,0) WORKING_COL"; //例：進捗率の合計が1200である場合「何かしらの作業を12列行った実績」とする。その月に複数種類の作業を行った場合も進捗率を合計して算出する
+			sql  = sql + "    ,IFNULL( SUM(WORKING_TIME)           ,0) WORKING_TIME";
+			sql  = sql + " from (";
+			
+			sql  = sql + " select";
+			sql  = sql + "     (PERCENT - PERCENT_START) PERCENT";  //作業開始40% 作業終了100%である場合「60%分の作業を行った」とする
+			sql  = sql + "    ,ROUND(TIMESTAMPDIFF(SECOND, STARTDATETIME, ENDDATETIME) / 60 / 60,2) WORKING_TIME"; //作業時間を秒で求めてそれを時間(小数点以下２まで)にする
+			sql  = sql + " from";
+			sql  = sql + "     TT_HOUSE_WORKSTATUS";
+			sql  = sql + " where";
+			sql  = sql + "     STARTEMPLOYEEID = ?";
+			sql  = sql + " and ENDDATETIME     >= CONCAT(         ? ,' 00:00:00')";
+			sql  = sql + " and ENDDATETIME     <= CONCAT(LAST_DAY(?),' 23:59:59')";
+			sql  = sql + " and ENDDATETIME     is not null";
+			sql  = sql + " and PERCENT_START   < PERCENT";
+			sql  = sql + " and DELETEFLG       = false";
+			sql  = sql + " and WORKID          not in (" + SpecialWork.SHODOKU + "," + SpecialWork.OTHER + ")"; // 消毒、その他(１列の作業登録で全列のデータが登録される作業)の作業は除く
+			
+			// 作業記録がリセットされているケースも考慮してリセット済み作業記録も検索対象にする
+			sql  = sql + "              union all";
+			
+			sql  = sql + " select";
+			sql  = sql + "     (PERCENT - PERCENT_START) PERCENT";  //作業開始40% 作業終了100%である場合「60%分の作業を行った」とする
+			sql  = sql + "    ,ROUND(TIMESTAMPDIFF(SECOND, STARTDATETIME, ENDDATETIME) / 60 / 60,2) WORKING_TIME"; //作業時間を秒で求めてそれを時間(小数点以下２まで)にする
+			sql  = sql + " from";
+			sql  = sql + "     TT_HOUSE_WORKSTATUS_RESET";
+			sql  = sql + " where";
+			sql  = sql + "     STARTEMPLOYEEID = ?";
+			sql  = sql + " and ENDDATETIME     >= CONCAT(         ? ,' 00:00:00')";
+			sql  = sql + " and ENDDATETIME     <= CONCAT(LAST_DAY(?),' 23:59:59')";
+			sql  = sql + " and ENDDATETIME     is not null";
+			sql  = sql + " and PERCENT_START   < PERCENT";
+			sql  = sql + " and WORKID          not in (" + SpecialWork.SHODOKU + "," + SpecialWork.OTHER + ")"; // 消毒、その他(１列の作業登録で全列のデータが登録される作業)の作業は除く
+			sql  = sql + " ) T";
+			
+			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
+			rsList = this.jdbcTemplate.queryForList(
+														 sql
+														,employeeId
+														,targetYMDfirstDay
+														,targetYMDfirstDay
+														,employeeId
+														,targetYMDfirstDay
+														,targetYMDfirstDay
+														);
+			
+			for (Map<String, Object> rs: rsList) {
+				
+				//完了列数(収穫以外の作業を行った場合)
+				retObj.setCompletedCol(Double.parseDouble(rs.get("WORKING_COL").toString()));
+				//作業時間
+				workingTime = workingTime + Double.parseDouble(rs.get("WORKING_TIME").toString());
+				//作業生産性(0除算対策として作業時間が0より大きい場合のみ求める)
+				if (workingTime > 0) {
+					double result = retObj.getCompletedCol() / workingTime;
+					DecimalFormat df = new DecimalFormat("#.00");
+					
+					retObj.setProductivity(Double.parseDouble(df.format(result)));
+				} else {
+					retObj.setProductivity(0);
+				}
+				
+				// 検索結果は１件のみ
+				break;
+			}
+			
+			
+			
+			//------------------------------------------------
+			// 作業進捗情報(収穫)を検索
+			sql        = " select";
+			sql  = sql + "     IFNULL(SUM(BOXCOUNT)    ,0) BOXCOUNT_SUM";
+			sql  = sql + "    ,IFNULL(SUM(WORKING_TIME),0) WORKING_TIME";
+			sql  = sql + " from (";
+			
+			sql  = sql + " select";
+			sql  = sql + "     BOXCOUNT";
+			sql  = sql + "    ,ROUND(TIMESTAMPDIFF(SECOND, STARTDATETIME, ENDDATETIME) / 60 / 60,2) WORKING_TIME"; //作業時間を秒で求めてそれを時間(小数点以下２まで)にする
+			sql  = sql + " from";
+			sql  = sql + "     TT_HOUSE_WORKSTATUS_SHUKAKU";
+			sql  = sql + " where";
+			sql  = sql + "     STARTEMPLOYEEID = ?";
+			sql  = sql + " and ENDDATETIME     >= CONCAT(         ? ,' 00:00:00')";
+			sql  = sql + " and ENDDATETIME     <= CONCAT(LAST_DAY(?),' 23:59:59')";
+			sql  = sql + " and ENDDATETIME     is not null";
+			sql  = sql + " and PERCENT_START   < PERCENT";
+			sql  = sql + " and DELETEFLG       = false";
+			sql  = sql + " ) T";
+			
+			
+			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
+			rsList = this.jdbcTemplate.queryForList(
+														 sql
+														,employeeId
+														,targetYMDfirstDay
+														,targetYMDfirstDay
+														);
+			
+			for (Map<String, Object> rs: rsList) {
+				//箱数
+				retObj.setBoxSum(Integer.parseInt(rs.get("BOXCOUNT_SUM").toString()));
+				//作業時間
+				workingTime = workingTime + Double.parseDouble(rs.get("WORKING_TIME").toString());
+				
+				// 検索結果は１件のみ
+				break;
+			}
+			
+			
+			//作業時間→ハウス作業進捗、ハウス作業(収穫)進捗テーブルから算出した作業時間
+			retObj.setWorkingTime(workingTime);
+			
+			
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			
+			
+			return retObj;
+			
+			
+		}catch(Exception e){
+			
+			log.error("【ERR】" + pgmId + ":異常終了");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
+			//検索した結果を返却します
+			return null;
+		}
+	}
+	
+	
+	
+	// ------------------------------------------------
+	// 給与明細情報Excel出力
+	private boolean outputExcelPaySlipData(ExcelPaySlipDetail paySlipData ,Sheet sheet) {
+		
+		String pgmId = classId + ".outputExcelPaySlipData";
+		log.info("【INF】" + pgmId + ":処理開始 社員=[" + paySlipData.getEmployeeName() + "]");
+		
+		try {
+			
+			
+			// ------------------------------------------------
+			// ヘッダ情報の出力
+			
+			//※Excel2行目、5列名が勤務年月をセットするセルの位置　→セルの位置は0スタートなので位置を-1する
+			this.setCellValue(sheet,  2 - 1, 5 - 1, paySlipData.getTargetYMfirstDate());    // 勤務年月
+			this.setCellValue(sheet,  8 - 1, 4 - 1, paySlipData.getEmployeeName());         // 社員名
+			
+			
+			// ------------------------------------------------
+			// 勤怠項目の出力
+			this.setCellValue(sheet, 11 - 1, 3 - 1, paySlipData.getWorKingDays());          // 出勤日数
+			this.setCellValue(sheet, 11 - 1, 6 - 1, paySlipData.getAfternoonWorkingDays()); // 午後出勤日数
+			this.setCellValue(sheet, 13 - 1, 3 - 1, paySlipData.getWorkingHoures());        // 所定労働時間
+			
+			if (paySlipData.getProductivity() > 0) {
+				this.setCellValue(sheet, 15 - 1, 3 - 1, paySlipData.getProductivity());     // 生産性(0の場合は空白)
+			}else{
+				this.setCellValue(sheet, 15 - 1, 3 - 1, "");                                // 生産性(0の場合は空白)
+			}
+			this.setCellValue(sheet, 15 - 1, 4 - 1, paySlipData.getCompletedCol());         // 完了列数
+			this.setCellValue(sheet, 15 - 1, 5 - 1, paySlipData.getWorkingTime());          // 作業時間
+			this.setCellValue(sheet, 15 - 1, 6 - 1, paySlipData.getBoxSum());               // 箱数
+			
+			// ------------------------------------------------
+			// 支給項目の出力
+			this.setCellValue(sheet, 20 - 1, 3 - 1, paySlipData.getHourwage());             // 時給
+			this.setCellValue(sheet, 24 - 1, 5 - 1, paySlipData.getCommutingAllowance());   // 追通勤手当
+			
+			// ------------------------------------------------
+			// 控除項目の出力
+			this.setCellValue(sheet, 31 - 1, 3 - 1, paySlipData.getIncomeTax());            // 所得税
+			
+			
+			// ------------------------------------------------
+			// 勤怠項目の出力
+			
+			//なし
+			
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			return true;
+			
+			
+		}catch(Exception e){
+			
+			log.error("【ERR】" + pgmId + ":異常終了");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
+			//検索した結果を返却します
+			return false;
+		}
 	}
 	
 	

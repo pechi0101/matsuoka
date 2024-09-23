@@ -61,7 +61,18 @@ public class NightBatch {
 		
 		//------------------------------------------------
 		//テストユーザによる作業進捗情報を物理削除
-		ret = deleteTestUserWorkStatus();
+		ret = this.deleteTestUserWorkStatus();
+		
+		// 処理異常の際はバッチ処理を終了する
+		if (ret == false) {
+			return;
+		}
+		
+		
+		
+		//------------------------------------------------
+		//テストユーザによる作業進捗情報(収穫)を物理削除
+		ret = this.deleteTestUserWorkStatusShukaku();
 		
 		// 処理異常の際はバッチ処理を終了する
 		if (ret == false) {
@@ -72,7 +83,18 @@ public class NightBatch {
 		
 		//------------------------------------------------
 		//削除済みの作業進捗情報を物理削除
-		ret = deleteDeletedWorkStatus();
+		ret = this.deleteDeletedWorkStatus();
+		
+		// 処理異常の際はバッチ処理を終了する
+		if (ret == false) {
+			return;
+		}
+		
+		
+		
+		//------------------------------------------------
+		//削除済みの作業進捗情報(収穫)を物理削除
+		ret = this.deleteDeletedWorkStatusShukaku();
 		
 		// 処理異常の際はバッチ処理を終了する
 		if (ret == false) {
@@ -83,7 +105,7 @@ public class NightBatch {
 		
 		//------------------------------------------------
 		//削除済みの出退勤情報を物理削除
-		ret = deleteDeletedClockInOut();
+		ret = this.deleteDeletedClockInOut();
 		
 		// 処理異常の際はバッチ処理を終了する
 		if (ret == false) {
@@ -94,7 +116,7 @@ public class NightBatch {
 		
 		//------------------------------------------------
 		//リセット済みの作業進捗情報を移行
-		ret = resetWorkStatus(nowDateTime);
+		ret = this.resetWorkStatus(nowDateTime);
 		
 		// 処理異常の際はバッチ処理を終了する
 		if (ret == false) {
@@ -105,7 +127,7 @@ public class NightBatch {
 		
 		//------------------------------------------------
 		//バックアップから１年経過したデータを削除
-		ret = deleteBackUp(nowDateTime);
+		ret = this.deleteBackUp(nowDateTime);
 		
 		// 処理異常の際はバッチ処理を終了する
 		if (ret == false) {
@@ -116,7 +138,7 @@ public class NightBatch {
 		
 		//------------------------------------------------
 		//リセット済み作業でリセットから１年経過したデータをバックアップに移行する
-		ret = backUpReset(nowDateTime);
+		ret = this.backUpReset(nowDateTime);
 		
 		// 処理異常の際はバッチ処理を終了する
 		if (ret == false) {
@@ -144,7 +166,7 @@ public class NightBatch {
 		
 		//------------------------------------------------
 		// 前年度・前年度収穫ケース数集計データ作成  ※集計用のレコードを作成するだけ。収穫ケース数合計は0で登録される。
-		ret = createAggregateData(aggregateTableNowYear,aggregateTablePrvYear);
+		ret = this.createAggregateData(aggregateTableNowYear,aggregateTablePrvYear);
 		
 		// 処理異常の際はバッチ処理を終了する
 		if (ret == false) {
@@ -155,7 +177,7 @@ public class NightBatch {
 		
 		//------------------------------------------------
 		// 前年度・前年度収穫ケース数集計
-		ret = aggregate(aggregateTableNowYear,aggregateTablePrvYear);
+		ret = this.aggregate(aggregateTableNowYear,aggregateTablePrvYear);
 		
 		// 処理異常の際はバッチ処理を終了する
 		if (ret == false) {
@@ -212,10 +234,37 @@ public class NightBatch {
 					,SpecialUser.TEST_USER
 					);
 			
+			// メモ：commitはjdbcTemplateが自動で行ってくれる
+			
+			log.info("【INF】" + pgmId + ":処理終了 削除件数=[" + ret + "]");
+			
+			return true;
+			
+			
+		}catch(Exception e){
+			
+			log.error("【ERR】" + pgmId + ":異常終了");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
+			return false;
+		}
+	}
+	
+	
+	
+	private boolean deleteTestUserWorkStatusShukaku() {
+		
+		String pgmId = classId + ".deleteTestUserWorkStatusShukaku";
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		try {
+			int ret;
+			
 			// ------------------------------------------------
 			// 作業進捗(収穫)情報を削除
 			
-			sql        = " delete from TT_HOUSE_WORKSTATUS_SHUKAKU";
+			String sql = " delete from TT_HOUSE_WORKSTATUS_SHUKAKU";
 			sql  = sql + " where";
 			sql  = sql + "     STARTEMPLOYEEID = ?";
 			
@@ -245,7 +294,7 @@ public class NightBatch {
 	
 	private boolean deleteDeletedWorkStatus() {
 		
-		String pgmId = classId + ".deleteDeletedWork";
+		String pgmId = classId + ".deleteDeletedWorkStatus";
 		log.info("【INF】" + pgmId + ":処理開始");
 		
 		try {
@@ -254,6 +303,42 @@ public class NightBatch {
 			// 作業進捗情報を削除
 			
 			String sql = " delete from TT_HOUSE_WORKSTATUS";
+			sql  = sql + " where";
+			sql  = sql + "     DELETEFLG = 1";
+			
+			
+			int ret = this.jdbcTemplate.update(sql);
+			
+			// メモ：commitはjdbcTemplateが自動で行ってくれる
+			
+			log.info("【INF】" + pgmId + ":処理終了 削除件数=[" + ret + "]");
+			
+			return true;
+			
+			
+		}catch(Exception e){
+			
+			log.error("【ERR】" + pgmId + ":異常終了");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
+			return false;
+		}
+	}
+	
+	
+	
+	private boolean deleteDeletedWorkStatusShukaku() {
+		
+		String pgmId = classId + ".deleteDeletedWorkStatusShukaku";
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		try {
+			
+			// ------------------------------------------------
+			// 作業進捗情報を削除
+			
+			String sql = " delete from TT_HOUSE_WORKSTATUS_SHUKAKU";
 			sql  = sql + " where";
 			sql  = sql + "     DELETEFLG = 1";
 			

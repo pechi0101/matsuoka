@@ -952,13 +952,45 @@ public class DaoFormKanriMainteWorkStatus {
 	public boolean updateWorkStatus(FormKanriMainteWorkStatusDetail detail ,String userName,String registPgmId) {
 		
 		String pgmId = classId + ".updateWorkStatus";
-		log.info("【INF】" + pgmId + ":処理開始");
+		log.info("【INF】" + pgmId + ":処理開始 ハウスID=[" + detail.getBeforeHouseId() + "]列No=[" + detail.getBeforeColNo() + "]作業ID=[" + detail.getBeforeWorkId() + "]、開始日時=[" + detail.getBeforeStartDateTime() + "]");
 		
 		try {
 			
 			int ret = 0;
 			
-			if (detail.getHouseId().equals(SpecialWork.SHUKAKU) == true) {
+			
+			
+			// 変更前後の作業IDが異なり、かつ変更前後のどちらかが収穫である場合は削除・登録する（変更前後でテーブルが異なるため）
+			
+			if (detail.getBeforeWorkId().equals(detail.getWorkId()) == false
+			                            && 
+			   (
+				detail.getWorkId().equals(      SpecialWork.SHUKAKU) == true
+			||  detail.getBeforeWorkId().equals(SpecialWork.SHUKAKU) == true
+				)
+			) {
+				
+				//削除
+				this.deleteWorkStatus(detail, userName, registPgmId);
+				//登録
+				this.registWorkStatus(detail, userName, registPgmId);
+				
+				log.info("【INF】" + pgmId + ":処理終了 ret=[" + ret + "]");
+				
+				// 更新件数０件である場合はNGを返却
+				if (ret == 0) {
+					return false;
+				}
+				return true;
+				
+			}
+			
+			
+			
+			
+			
+			
+			if (detail.getBeforeWorkId().equals(SpecialWork.SHUKAKU) == true) {
 				
 				//------------------------------------------------
 				// ハウス作業(収穫)進捗テーブルの更新
