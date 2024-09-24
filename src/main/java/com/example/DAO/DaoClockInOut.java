@@ -345,6 +345,9 @@ public class DaoClockInOut {
 			sql  = sql + "    ,CLOCKOUTDATETIME";
 			sql  = sql + "    ,HOURLYWAGE";
 			sql  = sql + "    ,WORKING_HOUERS";
+			sql  = sql + "    ,BIKO";
+			sql  = sql + "    ,DELETEFLG";
+			sql  = sql + "    ,DELETEYMDHMS";
 			sql  = sql + "    ,SYSREGUSERID";
 			sql  = sql + "    ,SYSREGPGMID";
 			sql  = sql + "    ,SYSREGYMDHMS";
@@ -360,7 +363,9 @@ public class DaoClockInOut {
 			sql  = sql + "    ,?";//CLOCKOUTDATETIME
 			sql  = sql + "    ,?";
 			sql  = sql + "    ,?";//WORKING_HOUERS
-			
+			sql  = sql + "    ,null"; //BIKO
+			sql  = sql + "    ,false";//DELETEFLG
+			sql  = sql + "    ,null"; //DELETEYMDHMS
 			sql  = sql + "    ,?";
 			sql  = sql + "    ,?";
 			sql  = sql + "    ,current_timestamp(3)";
@@ -434,6 +439,8 @@ public class DaoClockInOut {
 			sql  = sql + "    ,CLOCKOUTDATETIME = ?";
 			sql  = sql + "    ,HOURLYWAGE       = ?";
 			sql  = sql + "    ,WORKING_HOUERS   = ?";
+			sql  = sql + "    ,DELETEFLG        = false";
+			sql  = sql + "    ,DELETEYMDHMS     = null";
 			sql  = sql + "    ,SYSUPDUSERID     = ?";
 			sql  = sql + "    ,SYSUPDPGMID      = ?";
 			sql  = sql + "    ,SYSUPDYMDHMS     = current_timestamp(3)";

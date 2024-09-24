@@ -82,6 +82,17 @@ public class NightBatch {
 		
 		
 		//------------------------------------------------
+		//テストユーザによる出退勤情報を物理削除
+		ret = this.deleteTestUserDeletedClockInOut();
+		
+		// 処理異常の際はバッチ処理を終了する
+		if (ret == false) {
+			return;
+		}
+		
+		
+		
+		//------------------------------------------------
 		//削除済みの作業進捗情報を物理削除
 		ret = this.deleteDeletedWorkStatus();
 		
@@ -272,6 +283,42 @@ public class NightBatch {
 			ret = this.jdbcTemplate.update(sql
 					,SpecialUser.TEST_USER
 					);
+			
+			// メモ：commitはjdbcTemplateが自動で行ってくれる
+			
+			log.info("【INF】" + pgmId + ":処理終了 削除件数=[" + ret + "]");
+			
+			return true;
+			
+			
+		}catch(Exception e){
+			
+			log.error("【ERR】" + pgmId + ":異常終了");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
+			return false;
+		}
+	}
+	
+	
+	
+	private boolean deleteTestUserDeletedClockInOut() {
+		
+		String pgmId = classId + ".deleteTestUserDeletedClockInOut";
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		try {
+			
+			// ------------------------------------------------
+			// 出退勤情報を削除
+			
+			String sql = " delete from TT_CLOCKINOUT";
+			sql  = sql + " where";
+			sql  = sql + "     EMPLOYEEID = ?";
+			
+			
+			int ret = this.jdbcTemplate.update(sql,SpecialUser.TEST_USER);
 			
 			// メモ：commitはjdbcTemplateが自動で行ってくれる
 			
