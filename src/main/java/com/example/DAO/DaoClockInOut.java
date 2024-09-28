@@ -1439,7 +1439,7 @@ public class DaoClockInOut {
 		private double workingTime = 0;
 		
 		//箱数(収穫の作業である場合)
-		private int boxSum = 0;
+		private double boxSum = 0;
 		
 		//平均作業時間
 		//private double averageWorkingTime;
@@ -1685,7 +1685,7 @@ public class DaoClockInOut {
 			
 			for (Map<String, Object> rs: rsList) {
 				//箱数
-				retObj.setBoxSum(Integer.parseInt(rs.get("BOXCOUNT_SUM").toString()));
+				retObj.setBoxSum(Double.parseDouble(rs.get("BOXCOUNT_SUM").toString()));
 				//作業時間
 				workingTime = workingTime + Double.parseDouble(rs.get("WORKING_TIME").toString());
 				

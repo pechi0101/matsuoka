@@ -488,7 +488,7 @@ public class DaoFormKanriDispWorkStatus {
 				// ハウス名
 				row.setHouseName(rs.get("HOUSENAME").toString());
 				//収穫ケース数
-				row.setCaseCount(Integer.parseInt(rs.get("BOXCOUNT_SUM").toString()));
+				row.setCaseCount(Double.parseDouble(rs.get("BOXCOUNT_SUM").toString()));
 				
 				
 				//返却値のリストに追加

@@ -34,7 +34,7 @@ public class FormDispQRInfoShukakuSum implements Serializable {
 	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
 	private LocalDateTime registDatetime;
 	private String biko;
-	private int boxSum;  // 収穫ケース数合計
+	private double boxSum;  // 収穫ケース数合計
 	
 	public FormDispQRInfoShukakuSum() {
 		loginEmployeeId     = "";

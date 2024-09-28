@@ -1610,7 +1610,6 @@ public class MatsuokaWebController {
 		}
 		
 		
-		DaoClockInOut daoClockInOut = new DaoClockInOut(jdbcTemplate);
 		boolean ret = true;
 		
 		
@@ -1825,7 +1824,7 @@ public class MatsuokaWebController {
 		String pgmId = classId + ".trunsition_WorkDummy";
 		
 		log.info("【INF】" + pgmId + ":処理開始");
-
+		
 		// ※ログインユーザはFormIndexKanriのコンストラクタで「管理者ユーザ固定」にしている
 		FormIndexKanri formIndexKanri = new FormIndexKanri();
 		

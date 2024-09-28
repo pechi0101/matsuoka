@@ -105,18 +105,18 @@ public class DaoFormKanriMainteHouse {
 				detail.setColCount(rs.get("CNT").toString());
 				
 				// 収穫予定ケース数
-				detail.setBoxSumYTI01(Integer.parseInt(rs.get("BOXSUM_YTI_01").toString()));
-				detail.setBoxSumYTI02(Integer.parseInt(rs.get("BOXSUM_YTI_02").toString()));
-				detail.setBoxSumYTI03(Integer.parseInt(rs.get("BOXSUM_YTI_03").toString()));
-				detail.setBoxSumYTI04(Integer.parseInt(rs.get("BOXSUM_YTI_04").toString()));
-				detail.setBoxSumYTI05(Integer.parseInt(rs.get("BOXSUM_YTI_05").toString()));
-				detail.setBoxSumYTI06(Integer.parseInt(rs.get("BOXSUM_YTI_06").toString()));
-				detail.setBoxSumYTI07(Integer.parseInt(rs.get("BOXSUM_YTI_07").toString()));
-				detail.setBoxSumYTI08(Integer.parseInt(rs.get("BOXSUM_YTI_08").toString()));
-				detail.setBoxSumYTI09(Integer.parseInt(rs.get("BOXSUM_YTI_09").toString()));
-				detail.setBoxSumYTI10(Integer.parseInt(rs.get("BOXSUM_YTI_10").toString()));
-				detail.setBoxSumYTI11(Integer.parseInt(rs.get("BOXSUM_YTI_11").toString()));
-				detail.setBoxSumYTI12(Integer.parseInt(rs.get("BOXSUM_YTI_12").toString()));
+				detail.setBoxSumYTI01(Double.parseDouble(rs.get("BOXSUM_YTI_01").toString()));
+				detail.setBoxSumYTI02(Double.parseDouble(rs.get("BOXSUM_YTI_02").toString()));
+				detail.setBoxSumYTI03(Double.parseDouble(rs.get("BOXSUM_YTI_03").toString()));
+				detail.setBoxSumYTI04(Double.parseDouble(rs.get("BOXSUM_YTI_04").toString()));
+				detail.setBoxSumYTI05(Double.parseDouble(rs.get("BOXSUM_YTI_05").toString()));
+				detail.setBoxSumYTI06(Double.parseDouble(rs.get("BOXSUM_YTI_06").toString()));
+				detail.setBoxSumYTI07(Double.parseDouble(rs.get("BOXSUM_YTI_07").toString()));
+				detail.setBoxSumYTI08(Double.parseDouble(rs.get("BOXSUM_YTI_08").toString()));
+				detail.setBoxSumYTI09(Double.parseDouble(rs.get("BOXSUM_YTI_09").toString()));
+				detail.setBoxSumYTI10(Double.parseDouble(rs.get("BOXSUM_YTI_10").toString()));
+				detail.setBoxSumYTI11(Double.parseDouble(rs.get("BOXSUM_YTI_11").toString()));
+				detail.setBoxSumYTI12(Double.parseDouble(rs.get("BOXSUM_YTI_12").toString()));
 				
 				
 				// 備考
@@ -258,18 +258,18 @@ public class DaoFormKanriMainteHouse {
 				retForm.setColCount(rs.get("CNT").toString());
 				
 				// 収穫予定ケース数
-				retForm.setBoxSumYTI01(Integer.parseInt(rs.get("BOXSUM_YTI_01").toString()));
-				retForm.setBoxSumYTI02(Integer.parseInt(rs.get("BOXSUM_YTI_02").toString()));
-				retForm.setBoxSumYTI03(Integer.parseInt(rs.get("BOXSUM_YTI_03").toString()));
-				retForm.setBoxSumYTI04(Integer.parseInt(rs.get("BOXSUM_YTI_04").toString()));
-				retForm.setBoxSumYTI05(Integer.parseInt(rs.get("BOXSUM_YTI_05").toString()));
-				retForm.setBoxSumYTI06(Integer.parseInt(rs.get("BOXSUM_YTI_06").toString()));
-				retForm.setBoxSumYTI07(Integer.parseInt(rs.get("BOXSUM_YTI_07").toString()));
-				retForm.setBoxSumYTI08(Integer.parseInt(rs.get("BOXSUM_YTI_08").toString()));
-				retForm.setBoxSumYTI09(Integer.parseInt(rs.get("BOXSUM_YTI_09").toString()));
-				retForm.setBoxSumYTI10(Integer.parseInt(rs.get("BOXSUM_YTI_10").toString()));
-				retForm.setBoxSumYTI11(Integer.parseInt(rs.get("BOXSUM_YTI_11").toString()));
-				retForm.setBoxSumYTI12(Integer.parseInt(rs.get("BOXSUM_YTI_12").toString()));
+				retForm.setBoxSumYTI01(Double.parseDouble(rs.get("BOXSUM_YTI_01").toString()));
+				retForm.setBoxSumYTI02(Double.parseDouble(rs.get("BOXSUM_YTI_02").toString()));
+				retForm.setBoxSumYTI03(Double.parseDouble(rs.get("BOXSUM_YTI_03").toString()));
+				retForm.setBoxSumYTI04(Double.parseDouble(rs.get("BOXSUM_YTI_04").toString()));
+				retForm.setBoxSumYTI05(Double.parseDouble(rs.get("BOXSUM_YTI_05").toString()));
+				retForm.setBoxSumYTI06(Double.parseDouble(rs.get("BOXSUM_YTI_06").toString()));
+				retForm.setBoxSumYTI07(Double.parseDouble(rs.get("BOXSUM_YTI_07").toString()));
+				retForm.setBoxSumYTI08(Double.parseDouble(rs.get("BOXSUM_YTI_08").toString()));
+				retForm.setBoxSumYTI09(Double.parseDouble(rs.get("BOXSUM_YTI_09").toString()));
+				retForm.setBoxSumYTI10(Double.parseDouble(rs.get("BOXSUM_YTI_10").toString()));
+				retForm.setBoxSumYTI11(Double.parseDouble(rs.get("BOXSUM_YTI_11").toString()));
+				retForm.setBoxSumYTI12(Double.parseDouble(rs.get("BOXSUM_YTI_12").toString()));
 				
 				
 				// 備考

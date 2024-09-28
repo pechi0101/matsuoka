@@ -13,7 +13,7 @@ public class FormReadQRStartShukaku implements Serializable {
 	private String selectedDeviceLabel; // 使用するデバイスのラベル
 	
 	private String message;
-	private int boxCount;
+	private double boxCount;
 	
 	public FormReadQRStartShukaku() {
 		this.loginEmployeeId     = "";

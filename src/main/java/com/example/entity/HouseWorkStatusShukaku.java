@@ -30,7 +30,7 @@ public class HouseWorkStatusShukaku {
 	private int percentStart;
 	private int percent;
 	private String biko;
-	private int boxCount;
+	private double boxCount;
 	
 	/*
 	 * 【メモ】

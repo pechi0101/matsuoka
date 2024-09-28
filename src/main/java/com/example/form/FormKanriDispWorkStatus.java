@@ -123,7 +123,7 @@ public class FormKanriDispWorkStatus implements Serializable {
 		
 		private String houseId;
 		private String houseName;
-		private int caseCount;
+		private double caseCount;
 		
 		public ShukakuStatus() {
 			this.houseId = "";

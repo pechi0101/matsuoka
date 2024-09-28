@@ -32,18 +32,15 @@ window.addEventListener('DOMContentLoaded',function() {
 	// 入力変更時に入力チェック
 	inputBoxCount.addEventListener("input",function() {
 		
-		// 半角数字の正規表現
-		var regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (this.value.length == 0) {
 			//未入力チェック
 			document.getElementById("boxCountMsg").innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
 		} else if (regex.test(this.value) == false) {
 			//半角数字チェック
-			document.getElementById("boxCountMsg").innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-		} else if (this.value.length > 2) {
-			//桁数チェック
-			document.getElementById("boxCountMsg").innerHTML = '<p class="msg-ng">【NG】２ケタ以内の数字で入力してください</p>';
+			document.getElementById("boxCountMsg").innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 		} else if (this.value == 0) {
 			//0はNGチェック
 			document.getElementById("boxCountMsg").innerHTML = '<p class="msg-ng">【NG】0以外の数値を入力してください</p>';
@@ -89,8 +86,8 @@ $(function() {
 			let inputBoxCount = document.getElementById("boxCount");
 			
 			
-			// 半角数字の正規表現
-			var regex = /^[0-9]+$/;
+			// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+			var regex = /^\d{1,4}(\.\d{1})?$/;
 			
 			if (inputBoxCount.value.length == 0) {
 				//未入力チェック
@@ -99,12 +96,7 @@ $(function() {
 				
 			} else if (regex.test(inputBoxCount.value) == false) {
 				//半角数字チェック
-				document.getElementById("boxCountMsg").innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-				return;
-				
-			} else if (inputBoxCount.value.length > 2) {
-				//桁数チェック
-				document.getElementById("boxCountMsg").innerHTML = '<p class="msg-ng">【NG】２ケタ以内の数字で入力してください</p>';
+				document.getElementById("boxCountMsg").innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 				return;
 				
 			} else if (inputBoxCount.value == 0) {

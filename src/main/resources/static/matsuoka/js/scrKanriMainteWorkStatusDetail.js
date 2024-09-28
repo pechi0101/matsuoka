@@ -49,40 +49,41 @@ $(function() {
 		// 収穫である場合はチェックしない
 		let inputWork = document.getElementById("dropDownWork");
 		
-		if (inputWork === "1000010") {
+		if (inputWork.value === "1000010") {
 			msgArea.innerHTML = '';
-			return;
+		} else {
+			
+			let inputVal = document.getElementById("colNo");
+			let msgArea  = document.getElementById("colNoMsg");
+			
+			// 半角数字の正規表現
+			var regex = /^[0-9]+$/;
+			
+			if (inputVal.value.length == 0) {
+				//未入力チェック
+				msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+				return;
+				
+			} else if (regex.test(inputVal.value) == false) {
+				//半角数字チェック
+				msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+				return;
+				
+			} else if (inputVal.value.length != 2) {
+				//桁数チェック
+				msgArea.innerHTML = '<p class="msg-ng">【NG】2ケタで入力してください 例：03</p>';
+				return;
+				
+			} else if (inputVal.value == "00") {
+				//桁数チェック
+				msgArea.innerHTML = '<p class="msg-ng">【NG】列00は不正な入力です。入力し直してください 例：03</p>';
+				return;
+				
+			}else{
+				msgArea.innerHTML = '';
+			}
 		}
 		
-		let inputVal = document.getElementById("colNo");
-		let msgArea  = document.getElementById("colNoMsg");
-		
-		// 半角数字の正規表現
-		var regex = /^[0-9]+$/;
-		
-		if (inputVal.value.length == 0) {
-			//未入力チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
-			return;
-			
-		} else if (regex.test(inputVal.value) == false) {
-			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			return;
-			
-		} else if (inputVal.value.length != 2) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】2ケタで入力してください 例：03</p>';
-			return;
-			
-		} else if (inputVal.value == "00") {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】列00は不正な入力です。入力し直してください 例：03</p>';
-			return;
-			
-		}else{
-			msgArea.innerHTML = '';
-		}
 	});
 	
 	$('#dropDownWork').change(function(){
@@ -356,9 +357,9 @@ $(function() {
 		}
 		
 		
-		// 半角数字の正規表現
-		var regex = /^[0-9]+$/;
-				
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
+		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
 			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
@@ -366,7 +367,7 @@ $(function() {
 			
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			return;
 			
 		} else if (inputVal.value > 300) {
@@ -449,39 +450,40 @@ $(function() {
 		// 収穫である場合はチェックしない
 		let inputWork = document.getElementById("dropDownWork");
 		
-		if (inputWork === "1000010") {
+		if (inputWork.value === "1000010") {
 			msgArea.innerHTML = '';
-			return;
-		}
-		
-		inputVal = document.getElementById("colNo");
-		msgArea  = document.getElementById("colNoMsg");
-		
-		// 半角数字の正規表現
-		var regex = /^[0-9]+$/;
-		
-		if (inputVal.value.length == 0) {
-			//未入力チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
-			checkOKFlg = false;
+		} else {
 			
-		} else if (regex.test(inputVal.value) == false) {
-			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			checkOKFlg = false;
+			inputVal = document.getElementById("colNo");
+			msgArea  = document.getElementById("colNoMsg");
 			
-		} else if (inputVal.value.length != 2) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】2ケタで入力してください 例：03</p>';
-			checkOKFlg = false;
+			// 半角数字の正規表現
+			var regex = /^[0-9]+$/;
 			
-		} else if (inputVal.value == "00") {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】列00は不正な入力です。入力し直してください 例：03</p>';
-			checkOKFlg = false;
+			if (inputVal.value.length == 0) {
+				//未入力チェック
+				msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+				checkOKFlg = false;
+				
+			} else if (regex.test(inputVal.value) == false) {
+				//半角数字チェック
+				msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+				checkOKFlg = false;
+				
+			} else if (inputVal.value.length != 2) {
+				//桁数チェック
+				msgArea.innerHTML = '<p class="msg-ng">【NG】2ケタで入力してください 例：03</p>';
+				checkOKFlg = false;
+				
+			} else if (inputVal.value == "00") {
+				//桁数チェック
+				msgArea.innerHTML = '<p class="msg-ng">【NG】列00は不正な入力です。入力し直してください 例：03</p>';
+				checkOKFlg = false;
+				
+			}else{
+				msgArea.innerHTML = '';
+			}
 			
-		}else{
-			msgArea.innerHTML = '';
 		}
 		
 		
@@ -658,9 +660,9 @@ $(function() {
 			
 		}else{
 			
-			// 半角数字の正規表現
-			var regex = /^[0-9]+$/;
-					
+			// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+			var regex = /^\d{1,4}(\.\d{1})?$/;
+			
 			if (inputVal.value.length == 0) {
 				//未入力チェック
 				msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
@@ -668,7 +670,7 @@ $(function() {
 				
 			} else if (regex.test(inputVal.value) == false) {
 				//半角数字チェック
-				msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+				msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 				return;
 				
 			} else if (inputVal.value > 300) {

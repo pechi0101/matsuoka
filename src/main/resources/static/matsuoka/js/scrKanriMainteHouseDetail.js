@@ -88,8 +88,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI01");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字の正規表現
-		var regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -98,12 +98,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			return;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			return;
 			
 		}else{
@@ -122,8 +117,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI02");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字の正規表現
-		var regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -132,12 +127,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			return;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			return;
 			
 		}else{
@@ -156,8 +146,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI03");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字の正規表現
-		var regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -166,12 +156,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			return;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			return;
 			
 		}else{
@@ -190,8 +175,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI04");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字の正規表現
-		var regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -200,12 +185,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			return;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			return;
 			
 		}else{
@@ -224,8 +204,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI05");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字の正規表現
-		var regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -234,12 +214,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			return;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			return;
 			
 		}else{
@@ -258,8 +233,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI06");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字の正規表現
-		var regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -268,12 +243,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			return;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			return;
 			
 		}else{
@@ -292,8 +262,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI07");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字の正規表現
-		var regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -302,12 +272,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			return;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			return;
 			
 		}else{
@@ -326,8 +291,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI08");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字の正規表現
-		var regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -336,12 +301,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			return;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			return;
 			
 		}else{
@@ -360,8 +320,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI09");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字の正規表現
-		var regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -370,12 +330,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			return;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			return;
 			
 		}else{
@@ -394,8 +349,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI10");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字の正規表現
-		var regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -404,12 +359,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			return;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			return;
 			
 		}else{
@@ -428,8 +378,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI11");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字の正規表現
-		var regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -438,12 +388,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			return;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			return;
 			
 		}else{
@@ -462,8 +407,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI12");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字の正規表現
-		var regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -472,12 +417,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			return;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			return;
 			
 		}else{
@@ -587,8 +527,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字の正規表現
-		regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -597,12 +537,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			checkOKFlg = false;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			checkOKFlg = false;
 		}
 		
@@ -610,8 +545,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字の正規表現
-		regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -620,12 +555,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			checkOKFlg = false;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			checkOKFlg = false;
 		}
 		
@@ -633,8 +563,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字の正規表現
-		regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -643,12 +573,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			checkOKFlg = false;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			checkOKFlg = false;
 		}
 		
@@ -656,8 +581,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字の正規表現
-		regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -666,12 +591,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			checkOKFlg = false;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			checkOKFlg = false;
 		}
 		
@@ -679,8 +599,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字の正規表現
-		regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -689,12 +609,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			checkOKFlg = false;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			checkOKFlg = false;
 		}
 		
@@ -702,8 +617,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字の正規表現
-		regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -712,12 +627,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			checkOKFlg = false;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			checkOKFlg = false;
 		}
 		
@@ -725,8 +635,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字の正規表現
-		regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -735,12 +645,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			checkOKFlg = false;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			checkOKFlg = false;
 		}
 		
@@ -748,8 +653,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字の正規表現
-		regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -758,12 +663,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			checkOKFlg = false;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			checkOKFlg = false;
 		}
 		
@@ -771,8 +671,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字の正規表現
-		regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -781,12 +681,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			checkOKFlg = false;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			checkOKFlg = false;
 		}
 		
@@ -794,8 +689,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字の正規表現
-		regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -804,12 +699,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			checkOKFlg = false;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			checkOKFlg = false;
 		}
 		
@@ -817,8 +707,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字の正規表現
-		regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -827,12 +717,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			checkOKFlg = false;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			checkOKFlg = false;
 		}
 		
@@ -840,8 +725,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字の正規表現
-		regex = /^[0-9]+$/;
+		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
+		var regex = /^\d{1,4}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -850,12 +735,7 @@ $(function() {
 		
 		} else if (regex.test(inputVal.value) == false) {
 			//半角数字チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-			checkOKFlg = false;
-			
-		} else if (inputVal.value.length > 4) {
-			//桁数チェック
-			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字と小数点のみで入力してください。</p>';
 			checkOKFlg = false;
 		}
 		

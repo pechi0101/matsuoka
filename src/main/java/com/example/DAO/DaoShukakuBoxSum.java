@@ -139,7 +139,7 @@ public class DaoShukakuBoxSum {
 					shukakuBoxSum.setBiko(rs.get("BIKO").toString());
 				}
 				// 収穫ケース数合計
-				shukakuBoxSum.setBoxSum(Integer.parseInt(rs.get("BOXSUM").toString()));
+				shukakuBoxSum.setBoxSum(Double.parseDouble(rs.get("BOXSUM").toString()));
 				
 				// 値は１件のみ取得されるためここでLOOP終了
 				break;

@@ -687,7 +687,7 @@ public class DaoFormKanriMainteWorkStatus {
 			
 			int ret = 0;
 			
-			if (detail.getHouseId().equals(SpecialWork.SHUKAKU) == true) {
+			if (detail.getWorkId().equals(SpecialWork.SHUKAKU) == true) {
 					
 					
 					//------------------------------------------------
@@ -754,8 +754,8 @@ public class DaoFormKanriMainteWorkStatus {
 				
 				
 			} else if (
-				   detail.getHouseId().equals(SpecialWork.SHODOKU) == true
-				&& detail.getHouseId().equals(SpecialWork.OTHER)   == true) {
+				   detail.getWorkId().equals(SpecialWork.SHODOKU) == true
+				&& detail.getWorkId().equals(SpecialWork.OTHER)   == true) {
 					
 					//------------------------------------------------
 					// ハウス作業進捗テーブル の登録 ※ハウスの全列登録

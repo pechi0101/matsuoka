@@ -148,7 +148,7 @@ public class DaoHouseWorkStatusShukaku {
 				}
 				// 収穫箱数
 				if (rs.get("BOXCOUNT") != null) {
-					houseWorkStatusShukaku.setBoxCount(Integer.parseInt(rs.get("BOXCOUNT").toString()));
+					houseWorkStatusShukaku.setBoxCount(Double.parseDouble(rs.get("BOXCOUNT").toString()));
 				}
 				
 				// 値は１件のみ取得されるためここでLOOP終了
@@ -323,7 +323,7 @@ public class DaoHouseWorkStatusShukaku {
 				}
 				// 収穫箱数
 				if (rs.get("BOXCOUNT") != null) {
-					houseWorkStatusShukaku.setBoxCount(Integer.parseInt(rs.get("BOXCOUNT").toString()));
+					houseWorkStatusShukaku.setBoxCount(Double.parseDouble(rs.get("BOXCOUNT").toString()));
 				}
 				
 				// 値は１件のみ取得されるためここでLOOP終了

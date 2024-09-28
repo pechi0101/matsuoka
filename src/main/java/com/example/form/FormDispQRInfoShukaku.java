@@ -43,7 +43,7 @@ public class FormDispQRInfoShukaku implements Serializable {
 	private String endEmployeeName;
 	private int percent;
 	private String biko;
-	private int boxCount;  // 収穫したケース（箱）の数
+	private double boxCount;  // 収穫したケース（箱）の数
 	
 	// その他DBに存在しない項目
 	private int workStatus;  // 値の内容はクラスDaoHouseWorkStatusの「定数:作業状況」参照

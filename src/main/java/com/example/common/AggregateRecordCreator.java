@@ -69,7 +69,7 @@ public class AggregateRecordCreator {
 				//------------------------------------------------
 				//ハウスマスタから収穫ケース数＿予定を取得
 				
-				int boxSumYTI = 0;
+				double boxSumYTI = 0.0;
 				
 				//★文字列結合してどの月の予定を取得するかを指定
 				String strBOXSUM_YTI_MONTH = "BOXSUM_YTI_" + aggregateTable.getList().get(index).getMonth();
@@ -85,7 +85,7 @@ public class AggregateRecordCreator {
 				List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(sql,houseId);
 				
 				for (Map<String, Object> rs: rsList) {
-					boxSumYTI = Integer.parseInt(rs.get(strBOXSUM_YTI_MONTH).toString());
+					boxSumYTI = Double.parseDouble(rs.get(strBOXSUM_YTI_MONTH).toString());
 				}
 				
 				
@@ -189,7 +189,7 @@ public class AggregateRecordCreator {
 				//------------------------------------------------
 				//ハウスマスタから収穫ケース数＿予定を取得
 				
-				int boxSumYTI = 0;
+				double boxSumYTI = 0.0;
 				
 				//★文字列結合してどの月の予定を取得するかを指定
 				String strBOXSUM_YTI_MONTH = "BOXSUM_YTI_" + aggregateTable.getList().get(index).getMonth();
@@ -205,7 +205,7 @@ public class AggregateRecordCreator {
 				List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(sql,houseId);
 				
 				for (Map<String, Object> rs: rsList) {
-					boxSumYTI = Integer.parseInt(rs.get(strBOXSUM_YTI_MONTH).toString());
+					boxSumYTI = Double.parseDouble(rs.get(strBOXSUM_YTI_MONTH).toString());
 				}
 				
 				int ret = 0;
