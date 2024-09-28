@@ -55,7 +55,7 @@ html {
 }
 
 .ymd-navigation{
-    height: 30px; 
+    height: 36px; 
     text-align: center;
 	
 	/*要素外側の空白*/
@@ -560,7 +560,7 @@ html {
     border-right: 1px solid #eee;
     color: #fff;
     display: block;
-    height: 30px;
+    height: 37px;
     line-height: 2rem;
     text-align: center;
     text-decoration: none;

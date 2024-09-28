@@ -141,21 +141,23 @@ $(function() {
 		// 半角数字の正規表現
 		var regex = /^[0-9]+$/;
 		
-		if (inputVal.value.length > 0) {
-				
-			if (regex.test(inputVal.value) == false) {
-				//半角数字チェック
-				msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-				return;
-				
-			} else if (inputVal.value.length > 4) {
-				//桁数チェック
-				msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
-				return;
-				
-			}else{
-				msgArea.innerHTML = '';
-			}
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			return;
+			
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			return;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			return;
+			
+		}else{
+			msgArea.innerHTML = '';
 		}
 	});
 	
@@ -302,19 +304,22 @@ $(function() {
 		// 半角数字の正規表現
 		var regex = /^[0-9]+$/;
 		
-		if (inputVal.value.length > 0) {
-				
-			if (regex.test(inputVal.value) == false) {
-				//半角数字チェック
-				msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
-				checkOKFlg = false;
-				
-			} else if (inputVal.value.length > 4) {
-				//桁数チェック
-				msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
-				checkOKFlg = false;
-			}
+		if (inputVal.value.length == 0) {
+			//未入力チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】入力必須です</p>';
+			checkOKFlg = false;
+			
+		} else if (regex.test(inputVal.value) == false) {
+			//半角数字チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】半角数字のみで入力してください</p>';
+			checkOKFlg = false;
+			
+		} else if (inputVal.value.length > 4) {
+			//桁数チェック
+			msgArea.innerHTML = '<p class="msg-ng">【NG】4ケタ以内で入力してください</p>';
+			checkOKFlg = false;
 		}
+		
 		
 		
 		//------------------------------------------------
@@ -391,10 +396,14 @@ $(function() {
 	// 更新ボタン押下イベント
 	//
 	
-	$('.ymd-kanri-button a[name$="update"]').click(function() {
+	$('.ymd-kanri-button a[name$="update"]').click(function(event) {
 		
 		//alert("新規");
 		//console.log("■" + $(this).closest('div[name="employeeData"]').find('input[name$="employeeId"]').val());
+		
+		// 入力チェックエラー時(return後)のデフォルトの動作（formの送信処理）を防ぐ
+		event.preventDefault();
+		
 		
 		//入力チェックNGの場合は処理終了
 		if (inputCheck() == false) {

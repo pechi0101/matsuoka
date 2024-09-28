@@ -104,12 +104,12 @@
 			
 			<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
 			<div class="ymd-list-headre-container" style="width: 100%; display:flex">
-			    <div class="ymd-list-header-text" style="width: 120px;">氏名</div>
-			    <div class="ymd-list-header-text" style="width: 130px;">電話番号</div>
-			    <div class="ymd-list-header-text" style="width:  80px;">郵便番号</div>
-			    <div class="ymd-list-header-text" style="width: 300px;">住所</div>
-			    <div class="ymd-list-header-text" style="width:  70px;">時給</div>
-			    <div class="ymd-list-header-text" style="width: calc(100% - 700px);">備考</div>
+			    <div class="ymd-list-header-text" style="width: 150px;">氏名</div>
+			    <div class="ymd-list-header-text" style="width: 140px;">電話番号</div>
+			    <div class="ymd-list-header-text" style="width: 100px;">郵便番号</div>
+			    <div class="ymd-list-header-text" style="width: 350px;">住所</div>
+			    <div class="ymd-list-header-text" style="width: 100px;">時給(円)</div>
+			    <div class="ymd-list-header-text" style="width: calc(100% - 840px);">備考</div>
 			</div>
 		</div>
 		
@@ -125,12 +125,12 @@
 			
 			<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
 			<div class="ymd-list-detail-container" name="detail-row" style="width: 100%; display:flex">
-			    <div class="ymd-list-detail-data" style="width: 120px;"><span th:text="*{employeeList[__${stat.index}__].employeeName}" /></div>
-			    <div class="ymd-list-detail-data" style="width: 130px;"><span th:text="*{employeeList[__${stat.index}__].phone}" /></div>
-			    <div class="ymd-list-detail-data" style="width:  80px;"><span th:text="*{employeeList[__${stat.index}__].postCd}" /></div>
-			    <div class="ymd-list-detail-data" style="width: 300px;"><span th:text="*{employeeList[__${stat.index}__].address}" /></div>
-			    <div class="ymd-list-detail-data" style="width:  70px;"><span th:text="*{employeeList[__${stat.index}__].hourlyWage}" /></div>
-			    <div class="ymd-list-detail-data" style="width: calc(100% - 700px);"><span th:text="*{employeeList[__${stat.index}__].biko}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 150px;"><span th:text="*{employeeList[__${stat.index}__].employeeName}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 140px;"><span th:text="*{employeeList[__${stat.index}__].phone}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 100px;"><span th:text="*{employeeList[__${stat.index}__].postCd}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 350px;"><span th:text="*{employeeList[__${stat.index}__].address}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 100px;"><span th:text="*{employeeList[__${stat.index}__].hourlyWage}" /></div>
+			    <div class="ymd-list-detail-data" style="width: calc(100% - 840px);"><span th:text="*{employeeList[__${stat.index}__].biko}" /></div>
 			</div>
 		</div>
 	</form>

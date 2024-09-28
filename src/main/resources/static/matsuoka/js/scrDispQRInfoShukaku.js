@@ -32,8 +32,8 @@ window.addEventListener('DOMContentLoaded',function() {
 	// 入力変更時に入力チェック
 	inputBoxCount.addEventListener("input",function() {
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (this.value.length == 0) {
 			//未入力チェック
@@ -86,8 +86,8 @@ $(function() {
 			let inputBoxCount = document.getElementById("boxCount");
 			
 			
-			// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-			var regex = /^\d{1,4}(\.\d{1})?$/;
+			// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+			var regex = /^\d{1,3}(\.\d{1})?$/;
 			
 			if (inputBoxCount.value.length == 0) {
 				//未入力チェック

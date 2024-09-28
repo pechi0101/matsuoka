@@ -88,8 +88,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI01");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -117,8 +117,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI02");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -146,8 +146,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI03");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -175,8 +175,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI04");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -204,8 +204,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI05");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -233,8 +233,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI06");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -262,8 +262,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI07");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -291,8 +291,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI08");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -320,8 +320,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI09");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -349,8 +349,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI10");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -378,8 +378,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI11");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -407,8 +407,8 @@ $(function() {
 		let inputVal = document.getElementById("boxSumYTI12");
 		let msgArea  = document.getElementById("boxSumYTIMsg");
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -527,8 +527,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -545,8 +545,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -563,8 +563,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -581,8 +581,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -599,8 +599,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -617,8 +617,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -635,8 +635,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -653,8 +653,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -671,8 +671,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -689,8 +689,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -707,8 +707,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -725,8 +725,8 @@ $(function() {
 		msgArea  = document.getElementById("boxSumYTIMsg");
 		msgArea.innerHTML = '';
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック

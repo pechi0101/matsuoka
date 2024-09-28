@@ -115,9 +115,9 @@
 			<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
 			<div class="ymd-list-headre-container" style="width: 100%; display:flex">
 			    <div class="ymd-list-header-text" style="width: 170px;">作業名</div>
-			    <div class="ymd-list-header-text" style="width: 120px;">進捗率区切(%)</div>
-			    <div class="ymd-list-header-text" style="width: 150px;">リセット間隔(日)</div>
-			    <div class="ymd-list-header-text" style="width: calc(100% - 440px);">備考</div>
+			    <div class="ymd-list-header-text" style="width: 170px;">進捗率区切(%)</div>
+			    <div class="ymd-list-header-text" style="width: 160px;">リセット間隔(日)</div>
+			    <div class="ymd-list-header-text" style="width: calc(100% - 500px);">備考</div>
 			</div>
 		</div>
 		
@@ -134,9 +134,9 @@
 			<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
 			<div class="ymd-list-detail-container" name="detail-row" style="width: 100%; display:flex">
 			    <div class="ymd-list-detail-data" style="width: 170px;"><span th:text="*{workList[__${stat.index}__].workName}" /></div>
-			    <div class="ymd-list-detail-data" style="width: 120px;"><span th:text="*{workList[__${stat.index}__].separatePersent}" /></div>
-			    <div class="ymd-list-detail-data" style="width: 150px;"><span th:text="*{workList[__${stat.index}__].resetSpan}" /></div>
-			    <div class="ymd-list-detail-data" style="width: calc(100% - 440px);"><span th:text="*{workList[__${stat.index}__].biko}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 170px;"><span th:text="*{workList[__${stat.index}__].separatePersent}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 160px;"><span th:text="*{workList[__${stat.index}__].resetSpan}" /></div>
+			    <div class="ymd-list-detail-data" style="width: calc(100% - 500px);"><span th:text="*{workList[__${stat.index}__].biko}" /></div>
 			</div>
 		</div>
 	</form>

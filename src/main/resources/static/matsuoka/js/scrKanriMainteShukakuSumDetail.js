@@ -69,8 +69,8 @@ $(function() {
 		let inputVal  = document.getElementById("boxSum");
 		let msgArea   = document.getElementById("boxSumMsg");
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 				
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -179,8 +179,8 @@ $(function() {
 		msgArea   = document.getElementById("boxSumMsg");
 		
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック
@@ -244,8 +244,8 @@ $(function() {
 		msgArea   = document.getElementById("boxSumMsg");
 		
 		
-		// 半角数字と小数点の正規表現（整数部は４桁、小数点以下は１桁）
-		var regex = /^\d{1,4}(\.\d{1})?$/;
+		// 半角数字と小数点の正規表現（整数部は３桁、小数点以下は１桁）
+		var regex = /^\d{1,3}(\.\d{1})?$/;
 		
 		if (inputVal.value.length == 0) {
 			//未入力チェック

@@ -1938,6 +1938,7 @@ public class MatsuokaWebController {
 		log.info("【INF】" + pgmId + " :ﾎﾞﾀﾝ区分=[" + formKanriMainteEmployeeDetail.getButtonKbn() + "]");
 		log.info("【INF】" + pgmId + " :社員ＩＤ=[" + formKanriMainteEmployeeDetail.getEmployeeId() + "]");
 		log.info("【INF】" + pgmId + " :社員氏名=[" + formKanriMainteEmployeeDetail.getEmployeeName() + "]");
+		log.info("【INF】" + pgmId + " :時給    =[" + formKanriMainteEmployeeDetail.getHourlyWage() + "]");
 
 		DaoFormKanriMainteEmployee dao = new DaoFormKanriMainteEmployee(jdbcTemplate);
 		
