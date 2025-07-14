@@ -11,6 +11,16 @@
 <title>Simple QR Reader Test</title>
 
 
+<!-- ローカルストレージをクリアしてTopページにリダイレクトするJavaScript -->
+<script type="text/javascript">
+	function clearLocalStorageAndRedirect() {
+		// ローカルストレージをクリア
+		localStorage.clear();
+		// 新しいページにリダイレクト
+		window.location.href = "/matsuoka/indexQR";
+	}
+</script>
+
 <!--オリジナルＣＳＳ(常に最新のcssを読込むよう工夫)-->
 <script type="text/JavaScript">
 <!--
@@ -60,7 +70,8 @@
 		ＱＲコード読み取り
 	</header>
 	<div class="ymd-navigation">
-		<a th:href="@{/matsuoka/indexQR}">&lt;&lt; 最初に戻る</a>
+		<div style="width: 50%;"><a href="javascript:void(0);" onclick="clearLocalStorageAndRedirect()">&lt;&lt; 作業者を変更</a></div>
+		<div style="width: 50%;"><a th:href="@{/matsuoka/indexQR}">&lt;&lt; 最初に戻る</a></div>
 	</div>
 	<center>
 	

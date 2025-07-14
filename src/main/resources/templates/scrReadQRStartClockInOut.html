@@ -32,6 +32,16 @@
 <!-- ▽や△のアイコンをCSSで使うためにリンクを貼る -->
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
 
+<!-- ローカルストレージをクリアしてTopページにリダイレクトするJavaScript -->
+<script type="text/javascript">
+	function clearLocalStorageAndRedirect() {
+		// ローカルストレージをクリア
+		localStorage.clear();
+		// 新しいページにリダイレクト
+		window.location.href = "/matsuoka/indexQR";
+	}
+</script>
+
 </head>
 <body>
 
@@ -39,9 +49,9 @@
 	ＱＲコード読取起動
 </header>
 <div class="ymd-navigation">
-	<a th:href="@{/matsuoka/indexQR}">&lt;&lt; 最初に戻る</a>
+	<div style="width: 50%;"><a href="javascript:void(0);" onclick="clearLocalStorageAndRedirect()">&lt;&lt; 作業者を変更</a></div>
+	<div style="width: 50%;"><a th:href="@{/matsuoka/indexQR}">&lt;&lt; 最初に戻る</a></div>
 </div>
-
 
 <center>
 <div class="ymd-base-container">

@@ -55,6 +55,8 @@ html {
 }
 
 .ymd-navigation{
+	display:flex;
+	
     height: 36px; 
     text-align: center;
 	

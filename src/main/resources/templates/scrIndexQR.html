@@ -81,5 +81,39 @@
 </center>
 
 
+<!--オリジナルJavaScript(常に最新を読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   
+function handleLogin() { 
+	// ローカルストレージからログイン社員ID、社員名を取得
+	var varLoginEmployeeId   = localStorage.getItem('localStorage_LoginEmployeeId');
+	var varLoginEmployeeName = localStorage.getItem('localStorage_LoginEmployeeName');
+	
+	//console.log("■varLoginEmployeeId=[" + varLoginEmployeeId + "]★★★");
+	if (varLoginEmployeeId == null || varLoginEmployeeId == "") {
+		//console.log("■終了します★★★");
+		return;
+	}
+	
+	// hidden項目に前回ボタンを押下した社員の社員ID、社員名をセットしフォームをPOST送信
+	document.getElementById("loginEmployeeId").value   = varLoginEmployeeId;
+	document.getElementById("loginEmployeeName").value = varLoginEmployeeName;
+	
+	
+	//画面内にformタグは１つしかないため０番目を固定で取得
+	let form = document.getElementsByTagName('form')[0];
+	
+	//form.action="";     // HTML内で直接記載されているためココでのセットは不要
+	//form.method="post"; // HTML内で直接記載されているためココでのセットは不要
+	form.submit();
+	
+}
+
+handleLogin();
+
+//-->
+</script>
+
 </body>
 </html>

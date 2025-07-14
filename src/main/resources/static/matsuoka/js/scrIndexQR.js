@@ -19,6 +19,11 @@ $(function() {
 		document.getElementById("loginEmployeeId").value   = $(this).closest('div[name="employeeData"]').find('input[name$="employeeId"]').val();
 		document.getElementById("loginEmployeeName").value = $(this).closest('div[name="employeeData"]').find('input[name$="employeeName"]').val();
 		
+		// ローカルストレージにログイン社員ID、社員名を保持
+		localStorage.setItem("localStorage_LoginEmployeeId"  ,document.getElementById("loginEmployeeId").value)
+		localStorage.setItem("localStorage_LoginEmployeeName",document.getElementById("loginEmployeeName").value)
+		
+		
 		//画面内にformタグは１つしかないため０番目を固定で取得
 		let form = document.getElementsByTagName('form')[0];
 		
