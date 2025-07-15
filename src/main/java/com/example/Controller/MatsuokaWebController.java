@@ -113,6 +113,7 @@ public class MatsuokaWebController {
 		String pgmId = classId + ".indexQR";
 		
 		log.info("【INF】" + pgmId + ":処理開始");
+		System.out.println("★★★★★Default Charset: " + java.nio.charset.Charset.defaultCharset());
 		
 		DaoFormIndexQR dao = new DaoFormIndexQR(jdbcTemplate);
 		FormIndexQR formIndexQR = dao.getAllValidEmployee();
