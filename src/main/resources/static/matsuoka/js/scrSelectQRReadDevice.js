@@ -123,6 +123,16 @@ $(function() {
 							// hidden項目にボタンを押下したデバイスのラベルをセットしフォームをPOST送信
 							document.getElementById("selectedDeviceLabel").value   = $(this).closest('div[name="device-info"]').find('input[name$="deviceLabel"]').val();
 							
+							// ローカルストレージから社員名のラベルを取得
+							var varLoginEmployeeName     = localStorage.getItem('localStorage_LoginEmployeeName');
+							document.getElementById("loginEmployeeName").value = varLoginEmployeeName;
+							
+							
+							//document.getElementById("loginEmployeeName").value     = $(this).closest('div[name="employeeData"]').find('input[name$="employeeName"]').val();
+							
+							// ローカルストレージにカメラデバイスのラベルを保持
+							localStorage.setItem("localStorage_SelectedDeviceLabel"  ,document.getElementById("selectedDeviceLabel").value);
+							
 							//画面内にformタグは１つしかないため０番目を固定で取得
 							let form = document.getElementsByTagName('form')[0];
 							

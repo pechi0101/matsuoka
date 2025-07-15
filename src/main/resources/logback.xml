@@ -25,6 +25,7 @@ https://yacchi-engineer.com/?p=45
       <maxHistory>30</maxHistory>
     </rollingPolicy>
     <encoder>
+      <charset>UTF-8</charset> <!-- UTF-8を指定 -->
       <pattern>%date %level [%thread] %logger{10} [%file : %line] %msg%n</pattern>
     </encoder>
   </appender>

@@ -84,5 +84,41 @@
 </script>
 
 
+<!--オリジナルJavaScript(常に最新を読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   
+function handleLogin() { 
+	// ローカルストレージからカメラデバイスのラベルを取得
+	var varSelectedDeviceLabel   = localStorage.getItem('localStorage_SelectedDeviceLabel');
+	var varLoginEmployeeName     = localStorage.getItem('localStorage_LoginEmployeeName');
+	
+	console.log("■varSelectedDeviceLabel=[" + varSelectedDeviceLabel + "]★★★");
+	console.log("■varLoginEmployeeName  =[" + varLoginEmployeeName   + "]★★★");
+	if (varSelectedDeviceLabel == null || varSelectedDeviceLabel == "") {
+		console.log("■終了します★★★");
+		return;
+	}
+	console.log("□継続します★★★");
+	
+	// hidden項目に前回ボタンを押下したカメラデバイスのラベルをセットしフォームをPOST送信
+	document.getElementById("selectedDeviceLabel").value   = varSelectedDeviceLabel;
+	document.getElementById("loginEmployeeName").value     = varLoginEmployeeName;
+	
+	//画面内にformタグは１つしかないため０番目を固定で取得
+	let form = document.getElementsByTagName('form')[0];
+	
+	//form.action="";     // HTML内で直接記載されているためココでのセットは不要
+	//form.method="post"; // HTML内で直接記載されているためココでのセットは不要
+	form.submit();
+	
+}
+
+handleLogin();
+
+//-->
+</script>
+
+
 </body>
 </html>
