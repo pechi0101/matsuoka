@@ -21,6 +21,7 @@ public class FormKanriDispShukakuAggregateList implements Serializable {
 	private ArrayList<FormKanriDispShukakuAggregateDetail> detailList_10004 = new ArrayList<FormKanriDispShukakuAggregateDetail>();
 	private ArrayList<FormKanriDispShukakuAggregateDetail> detailList_10005 = new ArrayList<FormKanriDispShukakuAggregateDetail>();
 	private ArrayList<FormKanriDispShukakuAggregateDetail> detailList_10006 = new ArrayList<FormKanriDispShukakuAggregateDetail>();
+	private ArrayList<FormKanriDispShukakuAggregateDetail> detailList_10007 = new ArrayList<FormKanriDispShukakuAggregateDetail>();
 	
 	public FormKanriDispShukakuAggregateList() {
 		

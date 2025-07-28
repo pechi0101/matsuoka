@@ -72,6 +72,7 @@ public class DaoFormKanriDispShukakuAggregate {
 			retForm.setDetailList_10004(    this.getAggregateDataDetailList("10004",aggregateTableNowYear,aggregateTablePrvYear)  );
 			retForm.setDetailList_10005(    this.getAggregateDataDetailList("10005",aggregateTableNowYear,aggregateTablePrvYear)  );
 			retForm.setDetailList_10006(    this.getAggregateDataDetailList("10006",aggregateTableNowYear,aggregateTablePrvYear)  );
+			retForm.setDetailList_10007(    this.getAggregateDataDetailList("10007",aggregateTableNowYear,aggregateTablePrvYear)  );
 			
 			
 			
