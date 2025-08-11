@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head style="height: 100%;">
+<meta charset="UTF-8">
+<title>ログイン</title>
+<!--リセットＣＳＳ-->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/destyle.css@4.0.0/destyle.min.css">
+<!--Font Awesome(無償版)のアイコン-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<!-- jQueryがレスポンシブに対応するため必要になるコード...らしい-->
+<!-- 参考：https://job-support.ne.jp/blog/javascript/howto-jquery-->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- ▽や△のアイコンをCSSで使うためにリンクを貼る -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- ローカルストレージをクリアしてTopページにリダイレクトするJavaScript -->
+<script type="text/javascript">
+	function clearLocalStorageAndRedirect() {
+		// ローカルストレージをクリア
+		localStorage.clear();
+		// 新しいページにリダイレクト
+		window.location.href = "/matsuoka/indexQR";
+	}
+</script>
+
+<!--オリジナルＣＳＳ(常に最新のcssを読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<link href="/matsuoka/css/style.css?ver='+ new Date().getTime() +'" rel="stylesheet" type="text/css">');
+//-->
+</script>
+
+<!--オリジナルJavaScript(常に最新を読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<script src="/matsuoka/js/scrDispWorkStatusList.js?ver='+ new Date().getTime() +'"></script>');
+//-->
+</script>
+
+
+<!-- 
+	サーバでデプロイする場合、CSS,JavaScript,画像などはドキュメントルート（※）内に配置すること
+	※例
+	  ＣＳＳ    ：/var/www/html/css
+	  JavaScript：/var/www/html/js
+	  画像      ：/var/www/html/images
+ -->
+
+
+ 
+</head>
+<body>
+
+<header class="ymd-header">
+   作業状況編集
+</header>
+<div class="ymd-navigation">
+	<div style="width: 50%;"><a href="javascript:void(0);" onclick="clearLocalStorageAndRedirect()">&lt;&lt; 作業者を変更</a></div>
+	<div style="width: 50%;"><a th:href="@{/matsuoka/indexQR}">&lt;&lt; 最初に戻る</a></div>
+</div>
+
+<center>
+<div class="ymd-base-container">
+	<br>
+	<form name="sendForm"  th:action="@{/matsuoka/RegistQRInfo}" th:object="${formDispWorkStatusList}" th:method="post" style="width: 100%;">
+		
+		<!-- ユーザ表示エリア -->
+		<input type="hidden" id="loginEmployeeId"     th:field="*{loginEmployeeId}" />
+		<input type="hidden" id="loginEmployeeName"   th:field="*{loginEmployeeName}" />
+		<input type="hidden" id="selectedDeviceLabel" th:field="*{selectedDeviceLabel}" />
+		<div class="ymd-login-username" style="width: 100%;">
+			作業者名：<p th:text="*{loginEmployeeName}"></p>
+		</div>
+		
+		<br>
+		
+		<!-- メッセージ表示エリア(編集が認められたユーザである場合のみ表示される) -->
+		<th:block th:if="*{editAuthority == true}" >
+		
+		<div class="ymd-container" style="width: 100%;">
+			チェックを入れて「更新」を押すことでその作業を終了させます。
+		</div>
+		
+		<div class="ymd-container"  style="width: 100%;">
+			※表示されている全ての情報を終了させたい場合は「全て終了」ボタンを押してください。
+		</div>
+		<br>
+		</th:block>
+		
+		
+		<!-- ボタン表示 -->
+		<div name="buttonDispArea" th:each="list,stat : *{strWorkStatusDetailList}" style="width: 100%;">
+			
+			<!-- 非表示項目 -->
+			<input type="hidden" name="houseId"          th:field="*{strWorkStatusDetailList[__${stat.index}__].houseId}" />
+			<input type="hidden" name="colNo"            th:field="*{strWorkStatusDetailList[__${stat.index}__].colNo}" />
+			<input type="hidden" name="workId"           th:field="*{strWorkStatusDetailList[__${stat.index}__].workId}" />
+			<input type="hidden" name="startDateTime"    th:field="*{strWorkStatusDetailList[__${stat.index}__].startDateTime}" />
+			
+			
+			
+			<!-- 終了のチェックボックス＋作業情報表示エリア   -->
+			<div class="ymd-list-detail-container" name="detail-row" style="width: 100%; display:flex">
+			
+				<div class="ymd-list-detail-data" style="width: 50px;"><input type="checkbox" class="ymd-checkbox" id="deleteCheckBox" name="deleteCheckBox"></div>
+				<div class="ymd-list-detail-data" style="width: calc(100% - 50px);"><span th:text="*{strWorkStatusDetailList[__${stat.index}__].dispDetailInfo}" /></div>
+				
+			</div>
+			
+			
+		</div>
+		
+		
+		<!-- 更新ボタン(特別ユーザの場合のみ表示される)   -->
+		<th:block th:if="*{editAuthority == true}" >
+		<div class="ymd-button" style="width: 100%;">
+			<a name="send">更新</a>
+		</div>
+		<br>
+		</th:block>
+		
+		<!-- すべて完了ボタン(特別ユーザの場合のみ表示される)   -->
+		<th:block th:if="*{editAuthority == true}" >
+		<div class="ymd-button" style="width: 100%;">
+			<a name="send">全て終了</a>
+		</div>
+		<br>
+		</th:block>
+		
+		<!-- 閉じるボタン   -->
+		<div class="ymd-button" style="width: 100%;">
+			<a name="send">全て終了</a>
+		</div>
+		<br>>
+	</form>
+</div>
+
+
+
+
+
+
+
+
+</center>
+
+
+</body>
+</html>

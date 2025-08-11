@@ -1,29 +1,34 @@
 package com.example.form;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import lombok.Data;
 
 // @Dataアノテーションでgetter、setterが存在する状態にする
 @Data
-public class FormReadQRStart implements Serializable {
+public class FormDispWorkStatusList implements Serializable {
 	
 	private String loginEmployeeId;
 	private String loginEmployeeName;
 	
-	// 出退勤状態、作業状況の表示文言
-	private String strClockInOutStatusMSG;
-	private String strWorkStatusMSG;
-	private String strWorkStatusDetailMSG;
+	private ArrayList<FormDispWorkStatusDetail> strWorkStatusDetailList;
 	
 	private String selectedDeviceLabel; // 使用するデバイスのラベル
+	private Boolean editAuthority;
 	
-	private String message;
-	
-	public FormReadQRStart() {
+	public FormDispWorkStatusList() {
 		this.loginEmployeeId     = "";
 		this.loginEmployeeName   = "";
 		this.selectedDeviceLabel = "";
-		this.message             = "";
+		this.editAuthority       = false;
+		
 	}
+	
+	public void addWorkStatus(FormDispWorkStatusDetail addDetail) {
+		
+		strWorkStatusDetailList.add(addDetail);
+	}
+	
 }
+

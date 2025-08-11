@@ -34,6 +34,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.DAO.DaoClockInOut;
 import com.example.DAO.DaoDropDownList;
 import com.example.DAO.DaoFormDispQRInfoButton;
+import com.example.DAO.DaoFormDispWorkStatusList;
 import com.example.DAO.DaoFormIndexQR;
 import com.example.DAO.DaoFormKanriDispShukakuAggregate;
 import com.example.DAO.DaoFormKanriDispWorkStatus;
@@ -50,6 +51,7 @@ import com.example.DAO.DaoShukakuBoxSum;
 import com.example.DAO.DaoWork;
 import com.example.common.AggregateRecordCreator;
 import com.example.common.AggregateTable;
+import com.example.common.StatusDispMessageCreater;
 import com.example.counst.ButtonKbn;
 import com.example.counst.IntegerErrorCode;
 import com.example.counst.SpecialUser;
@@ -62,6 +64,7 @@ import com.example.form.FormDispQRInfoButton;
 import com.example.form.FormDispQRInfoClockInOut;
 import com.example.form.FormDispQRInfoShukaku;
 import com.example.form.FormDispQRInfoShukakuSum;
+import com.example.form.FormDispWorkStatusList;
 import com.example.form.FormIndexKanri;
 import com.example.form.FormIndexQR;
 import com.example.form.FormKanriDispShukakuAggregateList;
@@ -172,6 +175,15 @@ public class MatsuokaWebController {
 		formReadQRStart.setSelectedDeviceLabel(formSelectQRReadDevice.getSelectedDeviceLabel());
 		
 		
+		// ------------------------------------------------
+		// 出勤状況、作業状況のメッセージセット
+		String employeeId = formSelectQRReadDevice.getLoginEmployeeId();
+		StatusDispMessageCreater statusDispMessageCreater = new StatusDispMessageCreater(jdbcTemplate);
+		formReadQRStart.setStrClockInOutStatusMSG(statusDispMessageCreater.getClockInOutStatusMsg(employeeId));	
+		formReadQRStart.setStrWorkStatusMSG(statusDispMessageCreater.getWorkStatusMsg(employeeId));	
+		formReadQRStart.setStrWorkStatusDetailMSG(statusDispMessageCreater.getWorkStatusDetailMsg(employeeId));	
+		
+		// ------------------------------------------------
 		// 初期メッセージ
 		formReadQRStart.setMessage("ＱＲコードの読み取り準備完了");
 		
@@ -180,6 +192,44 @@ public class MatsuokaWebController {
 		
 		log.info("【INF】" + pgmId + ":処理終了");
 		mav.setViewName("scrReadQRStart.html");
+		return mav;
+	}
+	
+
+	
+	// 作業状況編集画面への遷移
+	@RequestMapping(value ="/matsuoka/DispWorkStatusList",method = RequestMethod.POST)
+	public ModelAndView trunsition_DispWorkStatusList(@ModelAttribute FormReadQRStart formReadQRStart, ModelAndView mav) {
+
+		String pgmId = classId + ".trunsition_DispWorkStatusList";
+		
+		log.info("【INF】" + pgmId + ":処理開始 社員ID=[" + formReadQRStart.getLoginEmployeeId() + "]、社員名=[" + formReadQRStart.getLoginEmployeeName() + "]");
+		log.info("【INF】" + pgmId + ":選択デバイス名=[" + formReadQRStart.getSelectedDeviceLabel() + "]");
+		
+		// ------------------------------------------------
+		// 作業状況の検索
+		String employeeId = formReadQRStart.getLoginEmployeeId();
+		
+		DaoFormDispWorkStatusList daoFormDispWorkStatusList = new DaoFormDispWorkStatusList(jdbcTemplate);
+		FormDispWorkStatusList formDispWorkStatusList = null;
+		formDispWorkStatusList = daoFormDispWorkStatusList.getDispWorkStatusList(employeeId);
+		
+		// ------------------------------------------------
+		// 基本情報のセット
+		formDispWorkStatusList.setLoginEmployeeId(formReadQRStart.getLoginEmployeeId());
+		formDispWorkStatusList.setLoginEmployeeName(formReadQRStart.getLoginEmployeeName());
+		formDispWorkStatusList.setSelectedDeviceLabel(formReadQRStart.getSelectedDeviceLabel());
+		
+		
+		// ------------------------------------------------
+		// 初期メッセージ
+		formReadQRStart.setMessage("ＱＲコードの読み取り準備完了");
+		
+		
+		mav.addObject("formDispWorkStatusList", formDispWorkStatusList);
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		mav.setViewName("scrDispWorkStatusList.html");
 		return mav;
 	}
 	
@@ -200,6 +250,7 @@ public class MatsuokaWebController {
 		formReadQRCode.setLoginEmployeeId(formReadQRStart.getLoginEmployeeId());
 		formReadQRCode.setLoginEmployeeName(formReadQRStart.getLoginEmployeeName());
 		formReadQRCode.setSelectedDeviceLabel(formReadQRStart.getSelectedDeviceLabel());
+		
 		
 		mav.addObject("formReadQRCode", formReadQRCode);
 		
@@ -413,8 +464,15 @@ public class MatsuokaWebController {
 			
 			// ------------------------------------------------
 			
-			mav.addObject("formDispQRInfoClockInOut", formDispQRInfoClockInOut);
 			
+			// 出勤状況、作業状況のメッセージセット
+			String employeeId = formReadQRCode.getLoginEmployeeId();
+			StatusDispMessageCreater statusDispMessageCreater = new StatusDispMessageCreater(jdbcTemplate);
+			formDispQRInfoClockInOut.setStrClockInOutStatusMSG(statusDispMessageCreater.getClockInOutStatusMsg(employeeId));	
+			formDispQRInfoClockInOut.setStrWorkStatusMSG(statusDispMessageCreater.getWorkStatusMsg(employeeId));	
+			
+			
+			mav.addObject("formDispQRInfoClockInOut", formDispQRInfoClockInOut);
 			
 			log.info("【INF】" + pgmId + ":処理終了!!!");
 			mav.setViewName("scrDispQRInfoClockInOut.html");
@@ -653,6 +711,15 @@ public class MatsuokaWebController {
 			
 			// ------------------------------------------------
 			
+			
+			// 出勤状況、作業状況のメッセージセット
+			String employeeId = formReadQRCode.getLoginEmployeeId();
+			StatusDispMessageCreater statusDispMessageCreater = new StatusDispMessageCreater(jdbcTemplate);
+			formDispQRInfoShukaku.setStrClockInOutStatusMSG(statusDispMessageCreater.getClockInOutStatusMsg(employeeId));	
+			formDispQRInfoShukaku.setStrWorkStatusMSG(statusDispMessageCreater.getWorkStatusMsg(employeeId));	
+			
+			
+			
 			mav.addObject("formDispQRInfoShukaku", formDispQRInfoShukaku);
 			
 			
@@ -756,6 +823,15 @@ public class MatsuokaWebController {
 			formDispQRInfoShukakuSum.setButtonDispInfoList(buttonDispInfoList);
 			
 			// ------------------------------------------------
+			
+			
+			// 出勤状況、作業状況のメッセージセット
+			String employeeId = formReadQRCode.getLoginEmployeeId();
+			StatusDispMessageCreater statusDispMessageCreater = new StatusDispMessageCreater(jdbcTemplate);
+			formDispQRInfoShukakuSum.setStrClockInOutStatusMSG(statusDispMessageCreater.getClockInOutStatusMsg(employeeId));	
+			formDispQRInfoShukakuSum.setStrWorkStatusMSG(statusDispMessageCreater.getWorkStatusMsg(employeeId));	
+			
+			
 			
 			mav.addObject("formDispQRInfoShukakuSum", formDispQRInfoShukakuSum);
 			
@@ -994,6 +1070,13 @@ public class MatsuokaWebController {
 		
 		// ------------------------------------------------
 		
+		// 出勤状況、作業状況のメッセージセット
+		String employeeId = formReadQRCode.getLoginEmployeeId();
+		StatusDispMessageCreater statusDispMessageCreater = new StatusDispMessageCreater(jdbcTemplate);
+		formDispQRInfo.setStrClockInOutStatusMSG(statusDispMessageCreater.getClockInOutStatusMsg(employeeId));	
+		formDispQRInfo.setStrWorkStatusMSG(statusDispMessageCreater.getWorkStatusMsg(employeeId));	
+		
+		
 		mav.addObject("formDispQRInfo", formDispQRInfo);
 		
 		
@@ -1159,6 +1242,13 @@ public class MatsuokaWebController {
 				
 			}
 			
+			// ------------------------------------------------
+			// 出勤状況、作業状況のメッセージセット
+			String employeeId = formDispQRInfo.getLoginEmployeeId();
+			StatusDispMessageCreater statusDispMessageCreater = new StatusDispMessageCreater(jdbcTemplate);
+			formReadQRStart.setStrClockInOutStatusMSG(statusDispMessageCreater.getClockInOutStatusMsg(employeeId));	
+			formReadQRStart.setStrWorkStatusMSG(statusDispMessageCreater.getWorkStatusMsg(employeeId));	
+			
 			
 			mav.addObject("formReadQRStart", formReadQRStart);
 			
@@ -1268,6 +1358,14 @@ public class MatsuokaWebController {
 			
 			
 		}
+		
+		// ------------------------------------------------
+		// 出勤状況、作業状況のメッセージセット
+		String employeeId = formDispQRInfo.getLoginEmployeeId();
+		StatusDispMessageCreater statusDispMessageCreater = new StatusDispMessageCreater(jdbcTemplate);
+		formReadQRStart.setStrClockInOutStatusMSG(statusDispMessageCreater.getClockInOutStatusMsg(employeeId));	
+		formReadQRStart.setStrWorkStatusMSG(statusDispMessageCreater.getWorkStatusMsg(employeeId));	
+		
 		
 		
 		mav.addObject("formReadQRStart", formReadQRStart);
@@ -1402,6 +1500,14 @@ public class MatsuokaWebController {
 		}
 		
 		
+		// ------------------------------------------------
+		// 出勤状況、作業状況のメッセージセット
+		String employeeId = formDispQRInfoShukaku.getLoginEmployeeId();
+		StatusDispMessageCreater statusDispMessageCreater = new StatusDispMessageCreater(jdbcTemplate);
+		formReadQRStartShukaku.setStrClockInOutStatusMSG(statusDispMessageCreater.getClockInOutStatusMsg(employeeId));	
+		formReadQRStartShukaku.setStrWorkStatusMSG(statusDispMessageCreater.getWorkStatusMsg(employeeId));	
+		
+		
 		mav.addObject("formReadQRStartShukaku", formReadQRStartShukaku);
 		
 		log.info("【INF】" + pgmId + ":処理終了");
@@ -1440,6 +1546,14 @@ public class MatsuokaWebController {
 		if (formDispQRInfoShukakuSum.getPushedButtunKbn().equals(ButtonKbn.CANCEL)) {
 			
 			formReadQRStartShukakuSum.setMessage("ＱＲコードの読み取りが取消されました。");
+			
+			
+			// 出勤状況、作業状況のメッセージセット
+			String employeeId = formDispQRInfoShukakuSum.getLoginEmployeeId();
+			StatusDispMessageCreater statusDispMessageCreater = new StatusDispMessageCreater(jdbcTemplate);
+			formReadQRStartShukakuSum.setStrClockInOutStatusMSG(statusDispMessageCreater.getClockInOutStatusMsg(employeeId));	
+			formReadQRStartShukakuSum.setStrWorkStatusMSG(statusDispMessageCreater.getWorkStatusMsg(employeeId));	
+			
 			
 			mav.addObject("formReadQRStartShukakuSum", formReadQRStartShukakuSum);
 			
@@ -1543,6 +1657,16 @@ public class MatsuokaWebController {
 			mav.setViewName("scrReadQRStartShukakuSum.html");
 			return mav;
 		}
+		
+		
+		
+		// ------------------------------------------------
+		// 出勤状況、作業状況のメッセージセット
+		String employeeId = formDispQRInfoShukakuSum.getLoginEmployeeId();
+		StatusDispMessageCreater statusDispMessageCreater = new StatusDispMessageCreater(jdbcTemplate);
+		formReadQRStartShukakuSum.setStrClockInOutStatusMSG(statusDispMessageCreater.getClockInOutStatusMsg(employeeId));	
+		formReadQRStartShukakuSum.setStrWorkStatusMSG(statusDispMessageCreater.getWorkStatusMsg(employeeId));	
+		
 		
 		
 		

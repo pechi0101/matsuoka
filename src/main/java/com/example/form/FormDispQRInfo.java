@@ -20,6 +20,11 @@ public class FormDispQRInfo implements Serializable {
 	// 使用するデバイスのラベル
 	private String selectedDeviceLabel;
 	
+	// 出退勤状態、作業状況の表示文言
+	private String strClockInOutStatusMSG;
+	private String strWorkStatusMSG;
+	
+	
 	// ボタン押下情報
 	private String pushedButtunKbn;     // 押下したボタンのボタン区分
 	private int pushedButtunPercent; // 押下したボタンの進捗率

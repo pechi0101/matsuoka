@@ -10,6 +10,11 @@ public class FormReadQRStartShukaku implements Serializable {
 	
 	private String loginEmployeeId;
 	private String loginEmployeeName;
+	
+	// 出退勤状態、作業状況の表示文言
+	private String strClockInOutStatusMSG;
+	private String strWorkStatusMSG;
+	
 	private String selectedDeviceLabel; // 使用するデバイスのラベル
 	
 	private String message;
