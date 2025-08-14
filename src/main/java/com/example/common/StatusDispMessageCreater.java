@@ -1,7 +1,5 @@
 package com.example.common;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -110,7 +108,7 @@ public class StatusDispMessageCreater {
 			sql  = sql + " select distinct";
 			sql  = sql + "     TM_WORK.WORKNAME";
 			sql  = sql + " from";
-			sql  = sql + "     TT_HOUSE_WORKSTATUS TT_STAT";
+			sql  = sql + "     TT_HOUSE_WORKSTATUS_SHUKAKU TT_STAT";
 			sql  = sql + " inner join TM_WORK";
 			sql  = sql + " on";
 			sql  = sql + "     TT_STAT.WORKID = TM_WORK.WORKID";
@@ -128,13 +126,18 @@ public class StatusDispMessageCreater {
 			//作業中の作業が存在する場合は以下のようなメッセージを画面に表示する
 			//例：作業状況：作業中[誘引]
 			//例：作業状況：作業中[誘引、葉かき]
+			//例：作業状況：作業中[誘引、葉かき …]
 			int index = 0;
 			for (Map<String, Object> rs: rsList) {
 				
 				if (index == 0) {
-					returnMsg = "作業中[";
-				} else {
+					returnMsg = "";
+				} else if (index == 1) {
 					returnMsg = returnMsg + "、";
+				} else {
+					// ３つ目以降は表示しないでLOOP脱出
+					returnMsg = returnMsg + " …";
+					break;
 				}
 				
 				returnMsg = returnMsg + rs.get("WORKNAME").toString();
@@ -147,123 +150,7 @@ public class StatusDispMessageCreater {
 			if (index == 0) {
 				returnMsg = "現在作業中の作業なし";
 			} else {
-				returnMsg = returnMsg + "]";
-			}
-			
-			
-			log.info("【DBG】" + pgmId + "返却メッセージ=[" + returnMsg + "]");
-			log.info("【INF】" + pgmId + ":処理終了");
-			return returnMsg;
-			
-			
-		}catch(Exception e){
-			
-			log.error("【ERR】" + pgmId + ":異常終了");
-			log.error("【ERR】" + pgmId + ":" + e.getMessage());
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-			
-			return "";
-		}
-	}
-	
-	
-	
-	// 作業状況(詳細)の表示メッセージ取得
-	public String getWorkStatusDetailMsg(String employeeId) {
-		
-		String pgmId = classId + ".getWorkStatusDetailMsg";
-		
-		try {
-			log.info("【INF】" + pgmId + ":処理開始 社員ID=[" + employeeId + "]");
-			
-			// 直近で「完了していない」作業情報を検索（収穫も含む）
-			String sql = " select distinct";
-			sql  = sql + "     TV_STAT.WORKNAME";
-			sql  = sql + "    ,TV_STAT.WORKID";
-			sql  = sql + "    ,TV_STAT.HOUSEID";
-			sql  = sql + "    ,TV_STAT.HOUSENAME";
-			sql  = sql + "    ,TV_STAT.COLNO";
-			sql  = sql + "    ,TV_STAT.STARTDATETIME_STRING";
-			sql  = sql + " from(";
-			sql  = sql + " select";
-			sql  = sql + "     TM_WORK.WORKID";
-			sql  = sql + "    ,TM_WORK.WORKNAME";
-			sql  = sql + "    ,TM_HOUSE.HOUSEID";
-			sql  = sql + "    ,TM_HOUSE.HOUSENAME";
-			sql  = sql + "    ,TT_STAT.COLNO";
-			sql  = sql + "    ,DATE_FORMAT(TT_STAT.STARTDATETIME ,'%Y%m%d%H%i%S') STARTDATETIME_STRING";  // YYYYMMDDHHMMSS形式で取得（時間は24時間制）
-			sql  = sql + " from";
-			sql  = sql + "     TT_HOUSE_WORKSTATUS TT_STAT";
-			sql  = sql + " inner join TM_HOUSE";
-			sql  = sql + " on";
-			sql  = sql + "     TT_STAT.HOUSEID = TM_HOUSE.HOUSEID";
-			sql  = sql + " inner join TM_WORK";
-			sql  = sql + " on";
-			sql  = sql + "     TT_STAT.WORKID = TM_WORK.WORKID";
-			sql  = sql + " where";
-			sql  = sql + "     TT_STAT.STARTEMPLOYEEID = ?";
-			sql  = sql + " and TT_STAT.DELETEFLG = false";
-			sql  = sql + " and TT_STAT.ENDDATETIME is null";
-			//----------
-			sql  = sql + "      union all";
-			//----------
-			sql  = sql + " select distinct";
-			sql  = sql + "     TM_WORK.WORKID";
-			sql  = sql + "    ,TM_WORK.WORKNAME";
-			sql  = sql + "    ,TM_HOUSE.HOUSEID";
-			sql  = sql + "    ,TM_HOUSE.HOUSENAME";
-			sql  = sql + "    ,TT_STAT.COLNO";
-			sql  = sql + "    ,DATE_FORMAT(TT_STAT.STARTDATETIME ,'%Y%m%d%H%i%S') STARTDATETIME_STRING";  // YYYYMMDDHHMMSS形式で取得（時間は24時間制）
-			sql  = sql + " from";
-			sql  = sql + "     TT_HOUSE_WORKSTATUS TT_STAT";
-			sql  = sql + " inner join TM_HOUSE";
-			sql  = sql + " on";
-			sql  = sql + "     TT_STAT.HOUSEID = TM_HOUSE.HOUSEID";
-			sql  = sql + " inner join TM_WORK";
-			sql  = sql + " on";
-			sql  = sql + "     TT_STAT.WORKID = TM_WORK.WORKID";
-			sql  = sql + " where";
-			sql  = sql + "     TT_STAT.STARTEMPLOYEEID = ?";
-			sql  = sql + " and TT_STAT.DELETEFLG = false";
-			sql  = sql + " and TT_STAT.ENDDATETIME is null";
-			sql  = sql + " ) TV_STAT";
-			sql  = sql + " order by";
-			sql  = sql + "     TV_STAT.HOUSEID";
-			sql  = sql + "    ,TV_STAT.COLNO";
-			sql  = sql + "    ,TV_STAT.WORKID";
-			
-			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
-			List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(sql,employeeId,employeeId);
-			
-			String returnMsg = "";
-			
-			
-			int index = 0;
-			for (Map<String, Object> rs: rsList) {
-				
-				DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-				DateTimeFormatter outFormatter = DateTimeFormatter.ofPattern("MM/dd HH:mm:ss");
-				
-				String startDateTimeString   = rs.get("STARTDATETIME_STRING").toString();
-				LocalDateTime wkLocalDateTime = LocalDateTime.parse(startDateTimeString,inputFormatter);
-				
-				
-				String wkDateString = wkLocalDateTime.format(outFormatter);
-				
-				
-				// 【メモ】\nで改行して表示させている
-				returnMsg = returnMsg + "ハウス：" + rs.get("HOUSENAME").toString()
-									  + "、列："   + rs.get("COLNO").toString() + "\n"
-									  + "、作業名称：" + rs.get("WORKNAME").toString() + "\n"
-									  + "、開始日時：" + wkDateString + "\n";
-				
-				
-				index = index + 1;
-			}
-			
-			if (index == 0) {
-				returnMsg = "なし";
+				returnMsg = "作業中[" + returnMsg + "]";
 			}
 			
 			

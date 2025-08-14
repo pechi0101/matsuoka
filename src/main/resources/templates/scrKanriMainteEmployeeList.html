@@ -109,7 +109,8 @@
 			    <div class="ymd-list-header-text" style="width: 100px;">郵便番号</div>
 			    <div class="ymd-list-header-text" style="width: 350px;">住所</div>
 			    <div class="ymd-list-header-text" style="width: 100px;">時給(円)</div>
-			    <div class="ymd-list-header-text" style="width: calc(100% - 840px);">備考</div>
+			    <div class="ymd-list-header-text" style="width: 100px;">操作権限</div>
+			    <div class="ymd-list-header-text" style="width: calc(100% - 940px);">備考</div>
 			</div>
 		</div>
 		
@@ -130,7 +131,8 @@
 			    <div class="ymd-list-detail-data" style="width: 100px;"><span th:text="*{employeeList[__${stat.index}__].postCd}" /></div>
 			    <div class="ymd-list-detail-data" style="width: 350px;"><span th:text="*{employeeList[__${stat.index}__].address}" /></div>
 			    <div class="ymd-list-detail-data" style="width: 100px;"><span th:text="*{employeeList[__${stat.index}__].hourlyWage}" /></div>
-			    <div class="ymd-list-detail-data" style="width: calc(100% - 840px);"><span th:text="*{employeeList[__${stat.index}__].biko}" /></div>
+			    <div class="ymd-list-detail-data" style="width: 100px;"><span th:text="*{employeeList[__${stat.index}__].authorityKbnName}" /></div>
+			    <div class="ymd-list-detail-data" style="width: calc(100% - 940px);"><span th:text="*{employeeList[__${stat.index}__].biko}" /></div>
 			</div>
 		</div>
 	</form>

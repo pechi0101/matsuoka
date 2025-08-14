@@ -12,17 +12,24 @@ public class FormDispWorkStatusList implements Serializable {
 	private String loginEmployeeId;
 	private String loginEmployeeName;
 	
+	private String selectedDeviceLabel; // 使用するデバイスのラベル
+	
+	// 作業状況表示画面でどのボタンが押されたか。1:更新、2:全て終了、9:閉じる
+	private String pushButtonKbn;
+	
+	private Boolean editAuthority;
+	
 	private ArrayList<FormDispWorkStatusDetail> strWorkStatusDetailList;
 	
-	private String selectedDeviceLabel; // 使用するデバイスのラベル
-	private Boolean editAuthority;
 	
 	public FormDispWorkStatusList() {
 		this.loginEmployeeId     = "";
 		this.loginEmployeeName   = "";
 		this.selectedDeviceLabel = "";
+		this.pushButtonKbn       = "";
 		this.editAuthority       = false;
 		
+		strWorkStatusDetailList = new ArrayList<FormDispWorkStatusDetail>();
 	}
 	
 	public void addWorkStatus(FormDispWorkStatusDetail addDetail) {

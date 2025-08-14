@@ -71,6 +71,13 @@
 		<div class="ymd-login-username" style="width: 100%;">
 			作業者名：<p th:text="*{loginEmployeeName}"></p>
 		</div>
+		<div class="ymd-login-user-status" style="width: 100%;">
+			勤怠状況：<p th:text="*{strClockInOutStatusMSG}"></p>
+		</div>
+		<div class="ymd-login-user-status" style="width: 100%;" id="dispWorkStatusList">
+			作業状況：<p th:text="*{strWorkStatusMSG}"></p>
+		</div>
+		
 		
 		
 		
@@ -106,6 +113,13 @@
 	
 	
 </div>
+
+<!--オリジナルJavaScript(常に最新を読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<script src="/matsuoka/js/scrReadQRStartClockInOut.js?ver='+ new Date().getTime() +'"></script>');
+//-->
+</script>
 
 </body>
 </html>

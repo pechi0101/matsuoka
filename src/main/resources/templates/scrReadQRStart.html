@@ -74,34 +74,9 @@
 		<div class="ymd-login-user-status" style="width: 100%;">
 			勤怠状況：<p th:text="*{strClockInOutStatusMSG}"></p>
 		</div>
-		<div class="ymd-login-user-status" style="width: 100%;" id="openPopup">
+		<div class="ymd-login-user-status" style="width: 100%;" id="dispWorkStatusList">
 			作業状況：<p th:text="*{strWorkStatusMSG}"></p>
 		</div>
-		
-		
-		<!-- 上の「作業状況」をタップすると表示するポップアップ画面 -->
-		<div id="popupOverlay" class="popup-overlay">
-			<div class="popup-content">
-				
-				<div class="ymd-container" style="width: 100%; display: block; height: 50px;">
-				<p>以下が現在作業中状態の作業です。</p>
-				</div>
-				<div class="ymd-container" style="width: 100%; display: block;border: 1px;border-style: solid; border-color: gray; height: calc(100% - 110px);">
-				<textarea
-					id="popupMessage"
-					th:field="*{strWorkStatusDetailMSG}"
-					readonly
-					style="width: 100%; height: 100%;"
-				/></textarea>
-				</div>
-				<div class="ymd-container" style="width: 100%; display: block; height: 60px;">
-				<div class="ymd-button" id="closePopup">
-				<a>閉じる</a>
-				</div>
-				</div>
-			</div>
-		</div>
-		
 		
 		<!-- メッセージ表示エリア -->
 		<div class="ymd-container" id="result-message-area" style="width: 100%; display: block;border: 1px;border-style: solid; border-color: gray;">
@@ -136,12 +111,12 @@
 	
 </div>
 
-	<!--オリジナルJavaScript(常に最新を読込むよう工夫)-->
-	<script type="text/JavaScript">
-	<!--
-	   document.write('<script src="/matsuoka/js/scrReadQRStart.js?ver='+ new Date().getTime() +'"></script>');
-	//-->
-	</script>
-	
+<!--オリジナルJavaScript(常に最新を読込むよう工夫)-->
+<script type="text/JavaScript">
+<!--
+   document.write('<script src="/matsuoka/js/scrReadQRStart.js?ver='+ new Date().getTime() +'"></script>');
+//-->
+</script>
+
 </body>
 </html>

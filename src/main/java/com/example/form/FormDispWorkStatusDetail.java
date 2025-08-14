@@ -13,6 +13,11 @@ import lombok.Data;
 public class FormDispWorkStatusDetail {
 	
 	//------------------------------------------------
+	//チェックボックス操作に関わる項目
+	private boolean deleteCheckBox;
+	
+	
+	//------------------------------------------------
 	//テーブルに存在する項目
 	private String houseId;
 	private String houseName;
@@ -69,6 +74,8 @@ public class FormDispWorkStatusDetail {
 	
 	
 	public FormDispWorkStatusDetail() {
+		
+		this.deleteCheckBox     = false;
 		
 		this.houseId            = "";
 		this.houseName          = "";

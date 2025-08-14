@@ -72,7 +72,9 @@ public class FormKanriMainteWorkStatusDetail {
 	private LocalTime endTime;
 	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
 	private LocalDateTime endDateTime;
-
+	
+	private String workTime; // 作業時間を”時間”単位にセット(小数点以下１位まで) 例 0.0、終了日時が登録されていない場合は現在時刻までの時間をセット
+	
 	private String percentStart;  // 進捗率_開始(%)
 	private String percent;       // 進捗率_終了(%)
 	
@@ -115,6 +117,7 @@ public class FormKanriMainteWorkStatusDetail {
 		this.endEmployeeName    = "";
 		//this.endDate            = "";
 		//this.endTime            = "";
+		this.workTime           = "";
 		this.percentStart       = "";
 		this.percent            = "";
 		this.deleteFlg          = false;

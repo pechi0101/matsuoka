@@ -62,8 +62,11 @@ public class DaoFormDispWorkStatusList {
 					
 					
 				} else {
+					
+					log.info("【INF】" + pgmId + ":ユーザ権限=[" + rs.get("AUTHORITYKBN").toString() + "]");
+					
 					// 9:全権限ありのユーザである場合、編集を認める
-					if (rs.get("AUTHORITYKBN").toString() == "9") {
+					if (rs.get("AUTHORITYKBN").toString().equals("9") == true) {
 						retForm.setEditAuthority(true);
 					}
 				}
@@ -195,7 +198,7 @@ public class DaoFormDispWorkStatusList {
 			
 			
 			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
-			List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(sql);
+			List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(sql,employeeId,employeeId);
 			
 			
 			// 【重要】この変数に作業開始、終了日時を文字列でセットし、作業状況の判定に使用する。
@@ -208,7 +211,6 @@ public class DaoFormDispWorkStatusList {
 				
 				
 				FormDispWorkStatusDetail detail = new FormDispWorkStatusDetail();
-				
 				
 				
 				// ハウスID
@@ -310,13 +312,32 @@ public class DaoFormDispWorkStatusList {
 				
 				
 				
+				// ------------------------------------------------
 				// 表示メッセージ
 				
+				// 開始日時を"yyyy/MM/dd HH:mm"形式に編集
+				DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+				DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+				LocalDateTime dateTime = LocalDateTime.parse(startDateTimeString, inputFormatter);
+				String outputDateTimeString = dateTime.format(outputFormatter);
+				
+				
 				// 【メモ】\nで改行して表示させる
-				String wkInfoData =   "ハウス：" + rs.get("HOUSENAME").toString()
-									 + "、列："   + rs.get("COLNO").toString() + "\n"
-									 + "、作業名称：" + rs.get("WORKNAME").toString() + "\n"
-									 + "、開始日時：" + startDateTimeString + "\n";
+				String wkInfoData = "";
+				if (detail.getColNo().equals("") == true) {
+					
+					// 列の概念が存在しない作業(収穫作業)の場合
+					wkInfoData =   "ハウス：" + detail.getHouseName()
+								 + "、作業名称：" + detail.getWorkName() + "\n"
+								 + "、開始日時：" + outputDateTimeString;
+				} else {
+					
+					// 列の概念が存在する作業(例：葉かき)の場合
+					wkInfoData =   "ハウス：" + detail.getHouseName()
+								 + "、列："   + detail.getColNo() + "\n"
+								 + "、作業名称：" + detail.getWorkName() + "\n"
+								 + "、開始日時：" + outputDateTimeString;
+				}
 				
 				detail.setDispDetailInfo(wkInfoData);
 				
@@ -346,6 +367,8 @@ public class DaoFormDispWorkStatusList {
 	public boolean updateWorkStatusWorkEnd(FormDispWorkStatusDetail detail ,String userName,String registPgmId) {
 		
 		String pgmId = classId + ".updateWorkStatusWorkEnd";
+
+		log.info("【INF】" + pgmId + ":処理開始 社員ID=[" + userName + "]プログラムID=[" + registPgmId + "]");
 		log.info("【INF】" + pgmId + ":処理開始 ハウスID=[" + detail.getHouseId() + "]列No=[" + detail.getColNo() + "]作業ID=[" + detail.getWorkId() + "]、開始日時=[" + detail.getStartDateTime() + "]");
 		
 		try {
@@ -354,6 +377,8 @@ public class DaoFormDispWorkStatusList {
 			
 			if (detail.getWorkId().equals(SpecialWork.SHUKAKU) == true) {
 				
+				//log.info("【INF】" + pgmId + ":収穫を更新 BoxCount=[" + detail.getBoxCount() + "]");
+				
 				//------------------------------------------------
 				// ハウス作業(収穫)進捗テーブルの更新
 				
@@ -361,16 +386,15 @@ public class DaoFormDispWorkStatusList {
 				
 				String sql = " update TT_HOUSE_WORKSTATUS_SHUKAKU";
 				sql  = sql + " set";
-				sql  = sql + "     ENDDATETIME      = ?";
+				sql  = sql + "     ENDDATETIME      = current_timestamp(3)";
 				sql  = sql + "    ,ENDEMPLOYEEID    = ?";
-				sql  = sql + "    ,PERCENT          = ?";
-				sql  = sql + "    ,BOXCOUNT         = ?";
+				sql  = sql + "    ,PERCENT          = 100";
+				sql  = sql + "    ,BOXCOUNT         = 0";  // 収穫ケース数は0で更新
 				sql  = sql + "    ,SYSUPDUSERID     = ?";
 				sql  = sql + "    ,SYSUPDPGMID      = ?";
 				sql  = sql + "    ,SYSUPDYMDHMS     = current_timestamp(3)";
 				sql  = sql + " where";
 				sql  = sql + "     HOUSEID          = ?";
-				sql  = sql + " and COLNO            = ?";
 				sql  = sql + " and WORKID           = ?";
 				sql  = sql + " and STARTDATETIME    = ?";
 				
@@ -378,27 +402,16 @@ public class DaoFormDispWorkStatusList {
 				// 年月日時分秒までの日時フォーマットを準備
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 				
-				// 作業終了日時が未入力である場合を考慮して事前にフォーマットを整えておく
-				String endDateTimeString = null;
-				if (detail.getEndDateTime() != null) {
-					endDateTimeString = formatter.format(detail.getEndDateTime());
-				}
-				
 				ret = this.jdbcTemplate.update(sql
-						,endDateTimeString
-						,detail.getEndEmployeeId()
-						,detail.getPercent()
-						,detail.getBoxCount()
+						,userName
 						,userName
 						,registPgmId
 						,detail.getHouseId()
-						,detail.getColNo()
 						,detail.getWorkId()
 						,formatter.format(detail.getStartDateTime())
 						);
 				
-				
-			}else{
+			} else {
 				
 				
 				//------------------------------------------------
@@ -408,10 +421,9 @@ public class DaoFormDispWorkStatusList {
 				
 				String sql = " update TT_HOUSE_WORKSTATUS";
 				sql  = sql + " set";
-				sql  = sql + "     ENDDATETIME      = ?";
+				sql  = sql + "     ENDDATETIME      = current_timestamp(3)";
 				sql  = sql + "    ,ENDEMPLOYEEID    = ?";
-				sql  = sql + "    ,PERCENT          = ?";
-				sql  = sql + "    ,BOXCOUNT         = ?";
+				sql  = sql + "    ,PERCENT          = 100";
 				sql  = sql + "    ,SYSUPDUSERID     = ?";
 				sql  = sql + "    ,SYSUPDPGMID      = ?";
 				sql  = sql + "    ,SYSUPDYMDHMS     = current_timestamp(3)";
@@ -425,17 +437,8 @@ public class DaoFormDispWorkStatusList {
 				// 年月日時分秒までの日時フォーマットを準備
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 				
-				// 作業終了日時が未入力である場合を考慮して事前にフォーマットを整えておく
-				String endDateTimeString = null;
-				if (detail.getEndDateTime() != null) {
-					endDateTimeString = formatter.format(detail.getEndDateTime());
-				}
-				
 				ret = this.jdbcTemplate.update(sql
-						,endDateTimeString
-						,detail.getEndEmployeeId()
-						,detail.getPercent()
-						,detail.getBoxCount()
+						,userName
 						,userName
 						,registPgmId
 						,detail.getHouseId()
@@ -461,7 +464,7 @@ public class DaoFormDispWorkStatusList {
 			
 		}catch(Exception e){
 			
-			log.error("【ERR】" + pgmId + ":異常終了");
+			log.error("【ERR】" + pgmId + ":異常終了[" + e.toString() + "]");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			

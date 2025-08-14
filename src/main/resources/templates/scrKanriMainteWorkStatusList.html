@@ -152,16 +152,17 @@
 			<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
 			<div class="ymd-list-headre-container" style="width: 100%; display:flex">
 			    <div class="ymd-list-header-text" style="width:  80px;">ハウス名</div>
-			    <div class="ymd-list-header-text" style="width:  50px;">列</div>
+			    <div class="ymd-list-header-text" style="width:  30px;">列</div>
 			    <div class="ymd-list-header-text" style="width: 140px;">作業</div>
 			    <div class="ymd-list-header-text" style="width: 120px;">開始社員</div>
 			    <div class="ymd-list-header-text" style="width: 160px;">開始日時</div>
 			    <div class="ymd-list-header-text" style="width: 120px;">終了社員</div>
 			    <div class="ymd-list-header-text" style="width: 160px;">終了日時</div>
+			    <div class="ymd-list-header-text" style="width:  80px;">作業時間</div>
 			    <div class="ymd-list-header-text" style="width: 100px;">進捗_開始</div>
 			    <div class="ymd-list-header-text" style="width: 100px;">進捗_終了</div>
-			    <div class="ymd-list-header-text" style="width: 100px;">ケース数</div>
-			    <div class="ymd-list-header-text" style="width: calc(100% - 1130px);">備考</div>
+			    <div class="ymd-list-header-text" style="width:  80px;">箱数</div>
+			    <div class="ymd-list-header-text" style="width: calc(100% - 1100px);">備考</div>
 			</div>
 		</div>
 		
@@ -186,7 +187,7 @@
 			
 			<div class="ymd-list-detail-container" name="detail-row" style="width: 100%; display:flex">
 			    <div class="ymd-list-detail-data" style="width:  80px;"><span th:text="*{workStatusList[__${stat.index}__].houseName}" /></div>
-			    <div class="ymd-list-detail-data" style="width:  50px;"><span th:text="*{workStatusList[__${stat.index}__].colNo}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  30px;"><span th:text="*{workStatusList[__${stat.index}__].colNo}" /></div>
 			    <div class="ymd-list-detail-data" style="width: 140px;"><span th:text="*{workStatusList[__${stat.index}__].workName}" /></div>
 			    <div class="ymd-list-detail-data" style="width: 120px;"><span th:text="*{workStatusList[__${stat.index}__].startEmployeeName}" /></div>
 			    <!--
@@ -197,9 +198,10 @@
 			    <div class="ymd-list-detail-data" style="width: 160px;"><span th:text="*{#temporals.format(workStatusList[__${stat.index}__].startDateTime, 'yyyy/MM/dd HH:mm')}" /></div>
 			    <div class="ymd-list-detail-data" style="width: 120px;"><span th:text="*{workStatusList[__${stat.index}__].endEmployeeName}" /></div>
 			    <div class="ymd-list-detail-data" style="width: 160px;"><span th:text="*{#temporals.format(workStatusList[__${stat.index}__].endDateTime, 'yyyy/MM/dd HH:mm')}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  80px;"><span th:text="*{workStatusList[__${stat.index}__].workTime + 'h'}" /></div>
 			    <div class="ymd-list-detail-data" style="width: 100px;"><span th:text="*{workStatusList[__${stat.index}__].percentStart}" /></div>
 			    <div class="ymd-list-detail-data" style="width: 100px;"><span th:text="*{workStatusList[__${stat.index}__].percent}" /></div>
-			    <div class="ymd-list-detail-data" style="width: 100px;"><span th:text="*{workStatusList[__${stat.index}__].boxCount}" /></div>
+			    <div class="ymd-list-detail-data" style="width:  80px;"><span th:text="*{workStatusList[__${stat.index}__].boxCount}" /></div>
 			    <div class="ymd-list-detail-data" style="width: calc(100% - 1130px);"><span th:text="*{workStatusList[__${stat.index}__].biko}" /></div>
 			</div>
 			</div>

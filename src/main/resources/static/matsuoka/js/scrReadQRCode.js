@@ -211,6 +211,9 @@ SQR.reader = (() => {
 					
 					// 標準レンズのデバイスＩＤを取得
 					// ------------------------------------------------
+					// ■Android(山田の１眼スマホ)
+					// camera 0, facing front これしか選択できない★
+					// ------------------------------------------------
 					// ■Android(山田の３眼スマホ)
 					// camera2 1, facing front前面カメラ
 					// camera2 4, facing back 何か暗いレンズ
@@ -238,6 +241,11 @@ SQR.reader = (() => {
 					if (os == 'Android') {
 						
 						if (device.kind == 'videoinput' && device.label.indexOf('camera2 0, facing back') === 0) {
+							useDeviceLabel = device.label; 
+							useDeviceId    = device.deviceId;
+						}
+						
+						if (device.kind == 'videoinput' && device.label.indexOf('camera 0, facing back') === 0) {
 							useDeviceLabel = device.label; 
 							useDeviceId    = device.deviceId;
 						}

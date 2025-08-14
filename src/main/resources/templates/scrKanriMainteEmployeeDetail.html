@@ -156,6 +156,17 @@
 			    <div class="ymd-label"     style="width: 180px;">備考</div>
 			    <div class="ymd-container" style="width: calc(100% - 180px);"><input type="text" style="width: 100%;" th:field="*{biko}" placeholder="例：収穫が早く指導できる" /></div>
 			</div>
+			<div class="ymd-container" style="width: 100%; border: solid 0.01px rgb(219,219,219);">
+			    <div class="ymd-label"     style="width: 180px;">システム操作権限</div>
+			    <div class="ymd-container" style="width: calc(100% - 180px);">
+					<label style="width: 100px;">
+						<input type="radio" class="ymd-radioButton" name="authorityKbn" th:field="*{authorityKbn}" value="0" /> 一般
+					</label>
+					<label style="width: 100px;">
+						<input type="radio" class="ymd-radioButton" name="authorityKbn" th:field="*{authorityKbn}" value="9" /> 特別
+					</label>
+				</div>
+			</div>
 			<div class="ymd-container" style="width: 100%;">
 				<div class="ymd-container" style="width: 180px;"><span></span></div>
 				<div class="ymd-msg-label" style="width: calc(100% - 180px);" id="bikoMsg"></div>

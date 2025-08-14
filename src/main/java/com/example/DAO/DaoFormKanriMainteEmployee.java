@@ -44,6 +44,7 @@ public class DaoFormKanriMainteEmployee {
 			sql  = sql + "    ,TM_EMPLOYEE.ADDRESS";
 			sql  = sql + "    ,TM_HOURLYWAGE.HOURLYWAGE";
 			sql  = sql + "    ,TM_EMPLOYEE.BIKO";
+			sql  = sql + "    ,TM_EMPLOYEE.AUTHORITYKBN";
 			sql  = sql + " from";
 			sql  = sql + "     TM_EMPLOYEE";
 			sql  = sql + " left outer join";
@@ -126,6 +127,19 @@ public class DaoFormKanriMainteEmployee {
 				}else{
 					detail.setBiko("");
 				}
+				// 権限区分
+				if (rs.get("AUTHORITYKBN") != null) {
+					detail.setAuthorityKbn(rs.get("AUTHORITYKBN").toString());
+				}else{
+					detail.setAuthorityKbn("0");
+				}
+				// 権限区分名
+				if (detail.getAuthorityKbn().equals("9") == true) {
+					detail.setAuthorityKbnName("特別");
+				}else{
+					detail.setAuthorityKbnName("一般");
+				}
+				
 				
 				retForm.addEmployee(detail);
 				
@@ -196,6 +210,7 @@ public class DaoFormKanriMainteEmployee {
 			sql  = sql + "    ,TM_EMPLOYEE.ADDRESS";
 			sql  = sql + "    ,TM_HOURLYWAGE.HOURLYWAGE";
 			sql  = sql + "    ,TM_EMPLOYEE.BIKO";
+			sql  = sql + "    ,TM_EMPLOYEE.AUTHORITYKBN";
 			sql  = sql + " from";
 			sql  = sql + "     TM_EMPLOYEE";
 			sql  = sql + " left outer join";
@@ -277,6 +292,12 @@ public class DaoFormKanriMainteEmployee {
 					retForm.setBiko(rs.get("BIKO").toString());
 				}else{
 					retForm.setBiko("");
+				}
+				// 権限区分
+				if (rs.get("AUTHORITYKBN") != null) {
+					retForm.setAuthorityKbn(rs.get("AUTHORITYKBN").toString());
+				}else{
+					retForm.setAuthorityKbn("0");
 				}
 				
 			}
@@ -385,6 +406,7 @@ public class DaoFormKanriMainteEmployee {
 			sql  = sql + "    ,BANK_ACCOUNTTYPE";
 			sql  = sql + "    ,BANK_ACCOUNTNO";
 			sql  = sql + "    ,BIKO";
+			sql  = sql + "    ,AUTHORITYKBN";
 			sql  = sql + "    ,DELETEFLG";
 			sql  = sql + "    ,DELETEYMDHMS";
 			sql  = sql + "    ,SYSREGUSERID";
@@ -405,7 +427,8 @@ public class DaoFormKanriMainteEmployee {
 			sql  = sql + "    ,null"; //銀行情報は未使用
 			sql  = sql + "    ,null"; //銀行情報は未使用
 			sql  = sql + "    ,null"; //銀行情報は未使用
-			sql  = sql + "    ,?";
+			sql  = sql + "    ,?";    //備考
+			sql  = sql + "    ,?";    //権限区分
 			sql  = sql + "    ,0";    //削除フラグは0(false)で登録
 			sql  = sql + "    ,null"; //削除日時はnull
 			sql  = sql + "    ,?";
@@ -423,6 +446,7 @@ public class DaoFormKanriMainteEmployee {
 					,employeeDetail.getAddress()
 					,employeeDetail.getPhone()
 					,employeeDetail.getBiko()
+					,employeeDetail.getAuthorityKbn()
 					,userName
 					,registPgmId
 					,userName
@@ -520,6 +544,7 @@ public class DaoFormKanriMainteEmployee {
 			sql  = sql + "    ,BANK_ACCOUNTTYPE = null"; //銀行情報は未使用
 			sql  = sql + "    ,BANK_ACCOUNTNO   = null"; //銀行情報は未使用
 			sql  = sql + "    ,BIKO             = ?";
+			sql  = sql + "    ,AUTHORITYKBN     = ?";
 			sql  = sql + "    ,SYSUPDUSERID     = ?";
 			sql  = sql + "    ,SYSUPDPGMID      = ?";
 			sql  = sql + "    ,SYSUPDYMDHMS     = current_timestamp(3)";
@@ -532,6 +557,7 @@ public class DaoFormKanriMainteEmployee {
 					,employeeDetail.getAddress()
 					,employeeDetail.getPhone()
 					,employeeDetail.getBiko()
+					,employeeDetail.getAuthorityKbn()
 					,userName
 					,registPgmId
 					,employeeDetail.getEmployeeId()

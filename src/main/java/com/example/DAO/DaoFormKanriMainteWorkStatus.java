@@ -1,5 +1,8 @@
 package com.example.DAO;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -269,6 +272,44 @@ public class DaoFormKanriMainteWorkStatus {
 				if (rs.get("ENDEMPLOYEENAME") != null) {
 					detail.setEndEmployeeName(rs.get("ENDEMPLOYEENAME").toString());
 				}
+				
+				// ------------------------------------------------
+				// 作業時間   ※開始～終了時日時間を作業時間として”時間”単位にセット(小数点以下１位まで) 例 0.0
+				// 終了日時が登録されていない場合は現在時刻までの時間をセット
+				
+				if (rs.get("ENDDATETIME_STRING") != null) {
+					
+					// 秒差を求める
+					long secondsDiff = Duration.between(detail.getStartDateTime(), detail.getEndDateTime()).getSeconds();
+					
+					// 秒を時間に変換（小数第1位まで）
+					BigDecimal hours = BigDecimal.valueOf(secondsDiff).divide(BigDecimal.valueOf(60 * 60), 1, RoundingMode.HALF_UP);
+					
+					// 上限999.9に制限
+					if (hours.compareTo(BigDecimal.valueOf(999.9)) > 0) {
+						hours = BigDecimal.valueOf(999.9);
+					}
+					
+					detail.setWorkTime(hours.toString());
+					
+				} else {
+					
+					// 秒差を求める(終了日時が未登録であるため現在日時との秒差を求める)
+					long secondsDiff = Duration.between(detail.getStartDateTime(), LocalDateTime.now()).getSeconds();
+					
+					// 秒を時間に変換（小数第1位まで）
+					BigDecimal hours = BigDecimal.valueOf(secondsDiff).divide(BigDecimal.valueOf(60 * 60), 1, RoundingMode.HALF_UP);
+					
+					// 上限999.9に制限
+					if (hours.compareTo(BigDecimal.valueOf(999.9)) > 0) {
+						hours = BigDecimal.valueOf(999.9);
+					}
+					
+					detail.setWorkTime(hours.toString());
+					
+				}
+				
+				// ------------------------------------------------
 				
 				// 進捗率_開始
 				detail.setPercentStart(rs.get("PERCENT_START").toString());

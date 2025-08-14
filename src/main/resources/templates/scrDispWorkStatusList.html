@@ -56,7 +56,7 @@
 <body>
 
 <header class="ymd-header">
-   作業状況編集
+   作業状況表示
 </header>
 <div class="ymd-navigation">
 	<div style="width: 50%;"><a href="javascript:void(0);" onclick="clearLocalStorageAndRedirect()">&lt;&lt; 作業者を変更</a></div>
@@ -66,12 +66,14 @@
 <center>
 <div class="ymd-base-container">
 	<br>
-	<form name="sendForm"  th:action="@{/matsuoka/RegistQRInfo}" th:object="${formDispWorkStatusList}" th:method="post" style="width: 100%;">
+	<form name="sendForm"  th:action="@{/matsuoka/EditWorkStatus}" th:object="${formDispWorkStatusList}" th:method="post" style="width: 100%;">
 		
 		<!-- ユーザ表示エリア -->
 		<input type="hidden" id="loginEmployeeId"     th:field="*{loginEmployeeId}" />
 		<input type="hidden" id="loginEmployeeName"   th:field="*{loginEmployeeName}" />
 		<input type="hidden" id="selectedDeviceLabel" th:field="*{selectedDeviceLabel}" />
+		<input type="hidden" id="editAuthority"       th:field="*{editAuthority}" />
+		<input type="hidden" id="pushButtonKbn"       th:field="*{pushButtonKbn}" />
 		<div class="ymd-login-username" style="width: 100%;">
 			作業者名：<p th:text="*{loginEmployeeName}"></p>
 		</div>
@@ -82,18 +84,18 @@
 		<th:block th:if="*{editAuthority == true}" >
 		
 		<div class="ymd-container" style="width: 100%;">
-			チェックを入れて「更新」を押すことでその作業を終了させます。
+			チェックを入れて「チェックのみ完了」を押すことでその作業を完了させることができます。
 		</div>
 		
 		<div class="ymd-container"  style="width: 100%;">
-			※表示されている全ての情報を終了させたい場合は「全て終了」ボタンを押してください。
+			※表示されている全ての作業情報を完了させたい場合は「全作業を完了」ボタンを押してください。
 		</div>
 		<br>
 		</th:block>
 		
 		
-		<!-- ボタン表示 -->
-		<div name="buttonDispArea" th:each="list,stat : *{strWorkStatusDetailList}" style="width: 100%;">
+		<!-- 作業中の作業を表示 -->
+		<div name="workDispArea" th:each="list,stat : *{strWorkStatusDetailList}" style="width: 100%;">
 			
 			<!-- 非表示項目 -->
 			<input type="hidden" name="houseId"          th:field="*{strWorkStatusDetailList[__${stat.index}__].houseId}" />
@@ -101,41 +103,53 @@
 			<input type="hidden" name="workId"           th:field="*{strWorkStatusDetailList[__${stat.index}__].workId}" />
 			<input type="hidden" name="startDateTime"    th:field="*{strWorkStatusDetailList[__${stat.index}__].startDateTime}" />
 			
-			
-			
 			<!-- 終了のチェックボックス＋作業情報表示エリア   -->
 			<div class="ymd-list-detail-container" name="detail-row" style="width: 100%; display:flex">
-			
-				<div class="ymd-list-detail-data" style="width: 50px;"><input type="checkbox" class="ymd-checkbox" id="deleteCheckBox" name="deleteCheckBox"></div>
-				<div class="ymd-list-detail-data" style="width: calc(100% - 50px);"><span th:text="*{strWorkStatusDetailList[__${stat.index}__].dispDetailInfo}" /></div>
 				
+				<!-- 編集権限がある場合は未完作業情報に加えチェックボックスも表示 -->
+				<th:block th:if="*{editAuthority == true}" >
+				<div class="ymd-list-detail-data" style="width: 30px;">
+					<input type="checkbox" class="ymd-checkbox" id="deleteCheckBox" name="deleteCheckBox" th:field="*{strWorkStatusDetailList[__${stat.index}__].deleteCheckBox}">
+				</div>
+				<div class="ymd-list-detail-data" style="width: calc(100% - 30px);">
+					<span th:text="*{strWorkStatusDetailList[__${stat.index}__].dispDetailInfo}" />
+				</div>
+				</th:block>
+				
+				<!-- 編集権限がない場合は未完作業情報のみ表示 -->
+				<th:block th:if="*{editAuthority == false}" >
+				<div class="ymd-list-detail-data" style="width: 100%;">
+					<span th:text="*{strWorkStatusDetailList[__${stat.index}__].dispDetailInfo}" />
+				</div>
+				</th:block>
 			</div>
 			
 			
 		</div>
 		
+		<br>
 		
-		<!-- 更新ボタン(特別ユーザの場合のみ表示される)   -->
+		<!-- チェックのみ完了ボタン(特別ユーザの場合のみ表示される)   -->
 		<th:block th:if="*{editAuthority == true}" >
 		<div class="ymd-button" style="width: 100%;">
-			<a name="send">更新</a>
+			<a name="checkedWorEnd">チェックのみ完了</a>
 		</div>
 		<br>
 		</th:block>
 		
-		<!-- すべて完了ボタン(特別ユーザの場合のみ表示される)   -->
+		<!-- 全作業を完了ボタン(特別ユーザの場合のみ表示される)   -->
 		<th:block th:if="*{editAuthority == true}" >
 		<div class="ymd-button" style="width: 100%;">
-			<a name="send">全て終了</a>
+			<a name="allWorkEnd">全作業を完了</a>
 		</div>
 		<br>
 		</th:block>
 		
 		<!-- 閉じるボタン   -->
 		<div class="ymd-button" style="width: 100%;">
-			<a name="send">全て終了</a>
+			<a name="close">閉じる</a>
 		</div>
-		<br>>
+		<br>
 	</form>
 </div>
 
