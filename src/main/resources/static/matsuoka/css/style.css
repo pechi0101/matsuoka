@@ -795,7 +795,15 @@ html {
 
 
 /*
-ブラウザ表示用の一覧表(ヘッダのテキスト)
+ブラウザ表示用の一覧表(列ヘッダのテキスト)
+
+※列ヘッダ
+[  XXXXX  ][  XXXXX  ][  XXXXX  ][  XXXXX  ][  XXXXX  ][  XXXXX  ]
+[         ][         ][         ][         ][         ][         ]
+[         ][         ][         ][         ][         ][         ]
+[         ][         ][         ][         ][         ][         ]
+[         ][         ][         ][         ][         ][         ]
+
 */
 .ymd-list-header-text {
     /*高さ*/
@@ -828,6 +836,47 @@ html {
     
 }
 
+/*
+ブラウザ表示用の一覧表(列ヘッダのテキスト)
+
+※行ヘッダ
+[  XXXXX  ][         ][         ][         ][         ][         ]
+[  XXXXX  ][         ][         ][         ][         ][         ]
+[  XXXXX  ][         ][         ][         ][         ][         ]
+[  XXXXX  ][         ][         ][         ][         ][         ]
+[  XXXXX  ][         ][         ][         ][         ][         ]
+
+*/
+.ymd-list-row-header-text {
+    /*高さ*/
+    height: auto;
+    
+    /*横幅*/
+    /*width: 100%;*/
+    
+    /*要素外側の空白*/
+    margin-top: 0 auto;
+    margin-bottom: 3px;
+    margin-left: 0 auto;
+    margin-right: 0 auto;
+    
+    /*要素内側の余白*/
+    padding-top:1px;
+    padding-bottom: 0px;
+    padding-left:1px;
+    padding-right: 0px;
+    
+    /*文字の位置*/
+    line-height:auto; /*上下中央寄せ*/
+    text-align:left;  /*左寄せ*/
+    
+    /*文字の装飾*/
+    font-weight: bold;
+    
+    /* 背景色 */
+    background-color:rgb(219, 219, 219);
+    
+}
 
 
 /*

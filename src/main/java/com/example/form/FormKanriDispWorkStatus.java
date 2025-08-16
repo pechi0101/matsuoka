@@ -12,6 +12,14 @@ import lombok.Data;
 @Data
 public class FormKanriDispWorkStatus implements Serializable {
 	
+	// ------------------------------------------------
+	// スマホ側のシステムで使用する際にのみ必要な項目
+	private String loginEmployeeId;
+	private String loginEmployeeName;
+	private String selectedDeviceLabel; // 使用するデバイスのラベル
+	private boolean editAuthority;
+	// ------------------------------------------------
+	
 	private String message;
 	
 	
@@ -47,6 +55,7 @@ public class FormKanriDispWorkStatus implements Serializable {
 		this.nonActiveWorkListHeader  = new ArrayList<String>();
 		this.shukakuStatusList        = new ArrayList<ShukakuStatus>(); 
 		this.nonActiveWorkList        = new ArrayList<NonActiveWorkRow>();
+		this.editAuthority            = false;
 	}
 	
 	

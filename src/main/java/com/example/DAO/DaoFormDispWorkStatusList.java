@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.example.common.EmployeeAuthority;
 import com.example.counst.SpecialWork;
 import com.example.form.FormDispWorkStatusDetail;
 import com.example.form.FormDispWorkStatusList;
@@ -40,48 +41,9 @@ public class DaoFormDispWorkStatusList {
 		// 返却値
 		FormDispWorkStatusList retForm = new FormDispWorkStatusList();
 		
-		try {
-			
-			String sql = " select";
-			sql  = sql + "     TM_EMPLOYEE.AUTHORITYKBN";
-			sql  = sql + " from";
-			sql  = sql + "     TM_EMPLOYEE";
-			sql  = sql + " where";
-			sql  = sql + "     TM_EMPLOYEE.EMPLOYEEID  = ?";
-			sql  = sql + " and TM_EMPLOYEE.DELETEFLG   = False";
-			
-			
-			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
-			List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(sql,employeeId);
-			
-			
-			for (Map<String, Object> rs: rsList) {
-				
-				// 権限区分
-				if (rs.get("AUTHORITYKBN") == null) {
-					
-					
-				} else {
-					
-					log.info("【INF】" + pgmId + ":ユーザ権限=[" + rs.get("AUTHORITYKBN").toString() + "]");
-					
-					// 9:全権限ありのユーザである場合、編集を認める
-					if (rs.get("AUTHORITYKBN").toString().equals("9") == true) {
-						retForm.setEditAuthority(true);
-					}
-				}
-				
-				
-			}
-			
-		}catch(Exception e){
-			
-			log.error("【ERR】" + pgmId + ":異常終了");
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-			
-			return null;
-		}
+		// ユーザ編集権限を取得
+		EmployeeAuthority employeeAuthority = new EmployeeAuthority(this.jdbcTemplate);
+		retForm.setEditAuthority(employeeAuthority.IsEditAuthority(employeeId));
 		
 		
 		
