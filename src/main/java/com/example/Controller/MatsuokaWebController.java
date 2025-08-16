@@ -703,6 +703,7 @@ public class MatsuokaWebController {
 			formDispQRInfoShukaku.setLoginEmployeeId(formReadQRCode.getLoginEmployeeId());
 			formDispQRInfoShukaku.setLoginEmployeeName(formReadQRCode.getLoginEmployeeName());
 			formDispQRInfoShukaku.setSelectedDeviceLabel(formReadQRCode.getSelectedDeviceLabel());
+			formDispQRInfoShukaku.setScrName(formReadQRCode.getScrName());
 			
 			formDispQRInfoShukaku.setWorkId(qrDataList[4]);
 			formDispQRInfoShukaku.setHouseId(qrDataList[1]);
@@ -943,6 +944,7 @@ public class MatsuokaWebController {
 			formDispQRInfoShukakuSum.setLoginEmployeeId(formReadQRCode.getLoginEmployeeId());
 			formDispQRInfoShukakuSum.setLoginEmployeeName(formReadQRCode.getLoginEmployeeName());
 			formDispQRInfoShukakuSum.setSelectedDeviceLabel(formReadQRCode.getSelectedDeviceLabel());
+			formDispQRInfoShukakuSum.setScrName(formReadQRCode.getScrName());
 			
 			formDispQRInfoShukakuSum.setHouseId(qrDataList[1]);
 			formDispQRInfoShukakuSum.setShukakuDate(LocalDateTime.now());
@@ -1675,6 +1677,14 @@ public class MatsuokaWebController {
 		log.info("【INF】" + pgmId + " :★処理開始 押したボタンのボタン区分=[" + formDispQRInfoShukaku.getPushedButtunKbn() + "]、進捗率=[" + formDispQRInfoShukaku.getPushedButtunPercent() + "]、備考=[" + formDispQRInfoShukaku.getBiko() + "]、社員ID=[" + formDispQRInfoShukaku.getLoginEmployeeId() + "]");
 		log.info("【INF】" + pgmId + " :選択デバイス名=[" + formDispQRInfoShukaku.getSelectedDeviceLabel() + "]");
 		log.info("【INF】" + pgmId + " :ハウスID=[" + formDispQRInfoShukaku.getHouseId() + "]、列№=[" + formDispQRInfoShukaku.getColNo() + "]、作業ID=[" + formDispQRInfoShukaku.getWorkId() + "]、開始日時=[" + formDispQRInfoShukaku.getStartDatetime() + "]");
+		log.info("【INF】" + pgmId + " :遷移元画面名=[" + formDispQRInfoShukaku.getScrName() + "]");
+		
+		if (formDispQRInfoShukaku.getScrName() == null) {
+			formDispQRInfoShukaku.setScrName("scrDispQRInfoShukaku");
+		}
+		if (formDispQRInfoShukaku.getScrName().equals("") == true) {
+			formDispQRInfoShukaku.setScrName("scrDispQRInfoShukaku");
+		}
 		
 		FormReadQRStartShukaku formReadQRStartShukaku = new FormReadQRStartShukaku();
 		
@@ -1687,6 +1697,33 @@ public class MatsuokaWebController {
 		
 		// キャンセル(取消してもう一度)である場合は登録処理を行わない
 		if (formDispQRInfoShukaku.getPushedButtunKbn().equals(ButtonKbn.CANCEL)) {
+			
+			
+			// ------------------------------------------------
+			// 遷移元画面が作業状況表示（scrDispWorkStatusMobile）である場合、遷移元に戻る
+			if (formDispQRInfoShukaku.getScrName().equals("scrDispWorkStatusMobile") == true) {
+				
+				// 画面に表示する情報の取得
+				DaoFormKanriDispWorkStatus dao = new DaoFormKanriDispWorkStatus(jdbcTemplate);
+				FormKanriDispWorkStatus formKanriDispWorkStatus = dao.getDispData();
+				
+				formKanriDispWorkStatus.setLoginEmployeeId(formDispQRInfoShukaku.getLoginEmployeeId());
+				formKanriDispWorkStatus.setLoginEmployeeName(formDispQRInfoShukaku.getLoginEmployeeName());
+				formKanriDispWorkStatus.setSelectedDeviceLabel(formDispQRInfoShukaku.getSelectedDeviceLabel());
+				
+				// ユーザ編集権限を取得
+				EmployeeAuthority employeeAuthority = new EmployeeAuthority(this.jdbcTemplate);
+				formKanriDispWorkStatus.setEditAuthority(employeeAuthority.IsEditAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
+				
+				mav.addObject("formKanriDispWorkStatus",formKanriDispWorkStatus);
+				
+				log.info("【INF】" + pgmId + ":処理終了");
+				
+				mav.setViewName("scrDispWorkStatusMobile.html");
+				return mav;
+				
+			}
+			
 			
 			formReadQRStartShukaku.setMessage("ＱＲコードの読み取りが取消されました。");
 			
@@ -1744,7 +1781,7 @@ public class MatsuokaWebController {
 			//houseWorkStatusShukaku.setEndEmployeeId();  // ”作業開始”なので終了社員IDはセット不要
 			//houseWorkStatusShukaku.setEndDateTime();    // ”作業開始”なので終了日時  はセット不要
 			
-			ret = daoHouseWorkStatusShukaku.registStartStatus(houseWorkStatusShukaku, formDispQRInfoShukaku.getLoginEmployeeId(), "scrDispQRInfoShukaku");
+			ret = daoHouseWorkStatusShukaku.registStartStatus(houseWorkStatusShukaku, formDispQRInfoShukaku.getLoginEmployeeId(), formDispQRInfoShukaku.getScrName());
 			
 			formReadQRStartShukaku.setMessage("作業開始で登録しました。");
 			
@@ -1759,7 +1796,7 @@ public class MatsuokaWebController {
 			houseWorkStatusShukaku.setEndEmployeeId(formDispQRInfoShukaku.getLoginEmployeeId());
 			houseWorkStatusShukaku.setEndDateTime(LocalDateTime.now());
 			
-			ret = daoHouseWorkStatusShukaku.updateEndStatus(houseWorkStatusShukaku, formDispQRInfoShukaku.getLoginEmployeeId(), "scrDispQRInfoShukaku");
+			ret = daoHouseWorkStatusShukaku.updateEndStatus(houseWorkStatusShukaku, formDispQRInfoShukaku.getLoginEmployeeId(), formDispQRInfoShukaku.getScrName());
 			
 			//// 作業開始日時
 			//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
@@ -1801,6 +1838,31 @@ public class MatsuokaWebController {
 		
 		
 		// ------------------------------------------------
+		// 遷移元画面が作業状況表示（scrDispWorkStatusMobile）である場合、遷移元に戻る
+		if (formDispQRInfoShukaku.getScrName().equals("scrDispWorkStatusMobile") == true) {
+			
+			// 画面に表示する情報の取得
+			DaoFormKanriDispWorkStatus dao = new DaoFormKanriDispWorkStatus(jdbcTemplate);
+			FormKanriDispWorkStatus formKanriDispWorkStatus = dao.getDispData();
+			
+			formKanriDispWorkStatus.setLoginEmployeeId(formDispQRInfoShukaku.getLoginEmployeeId());
+			formKanriDispWorkStatus.setLoginEmployeeName(formDispQRInfoShukaku.getLoginEmployeeName());
+			formKanriDispWorkStatus.setSelectedDeviceLabel(formDispQRInfoShukaku.getSelectedDeviceLabel());
+			
+			// ユーザ編集権限を取得
+			EmployeeAuthority employeeAuthority = new EmployeeAuthority(this.jdbcTemplate);
+			formKanriDispWorkStatus.setEditAuthority(employeeAuthority.IsEditAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
+			
+			mav.addObject("formKanriDispWorkStatus",formKanriDispWorkStatus);
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			
+			mav.setViewName("scrDispWorkStatusMobile.html");
+			return mav;
+			
+		}
+		
+		// ------------------------------------------------
 		// 出勤状況、作業状況のメッセージセット
 		String employeeId = formDispQRInfoShukaku.getLoginEmployeeId();
 		StatusDispMessageCreater statusDispMessageCreater = new StatusDispMessageCreater(jdbcTemplate);
@@ -1831,7 +1893,14 @@ public class MatsuokaWebController {
 		log.info("【INF】" + pgmId + " :選択デバイス名=[" + formDispQRInfoShukakuSum.getSelectedDeviceLabel() + "]");
 		log.info("【INF】" + pgmId + " :ハウスID=[" + formDispQRInfoShukakuSum.getHouseId() + "]");
 		log.info("【INF】" + pgmId + " :登録社員ID=[" + formDispQRInfoShukakuSum.getRegistEmployeeid() + "]、登録日時=[" + formDispQRInfoShukakuSum.getRegistDatetime() + "]");
+		log.info("【INF】" + pgmId + " :遷移元画面名=[" + formDispQRInfoShukakuSum.getScrName() + "]");
 		
+		if (formDispQRInfoShukakuSum.getScrName() == null) {
+			formDispQRInfoShukakuSum.setScrName("scrDispQRInfoShukakuSum");
+		}
+		if (formDispQRInfoShukakuSum.getScrName().equals("") == true) {
+			formDispQRInfoShukakuSum.setScrName("scrDispQRInfoShukakuSum");
+		}
 		
 		FormReadQRStartShukakuSum formReadQRStartShukakuSum = new FormReadQRStartShukakuSum();
 		
@@ -1844,6 +1913,32 @@ public class MatsuokaWebController {
 		
 		// キャンセル(取消してもう一度)である場合は登録処理を行わない
 		if (formDispQRInfoShukakuSum.getPushedButtunKbn().equals(ButtonKbn.CANCEL)) {
+			
+			
+			// ------------------------------------------------
+			// 遷移元画面が作業状況表示（scrDispWorkStatusMobile）である場合、遷移元に戻る
+			if (formDispQRInfoShukakuSum.getScrName().equals("scrDispWorkStatusMobile") == true) {
+				
+				// 画面に表示する情報の取得
+				DaoFormKanriDispWorkStatus dao = new DaoFormKanriDispWorkStatus(jdbcTemplate);
+				FormKanriDispWorkStatus formKanriDispWorkStatus = dao.getDispData();
+				
+				formKanriDispWorkStatus.setLoginEmployeeId(formDispQRInfoShukakuSum.getLoginEmployeeId());
+				formKanriDispWorkStatus.setLoginEmployeeName(formDispQRInfoShukakuSum.getLoginEmployeeName());
+				formKanriDispWorkStatus.setSelectedDeviceLabel(formDispQRInfoShukakuSum.getSelectedDeviceLabel());
+				
+				// ユーザ編集権限を取得
+				EmployeeAuthority employeeAuthority = new EmployeeAuthority(this.jdbcTemplate);
+				formKanriDispWorkStatus.setEditAuthority(employeeAuthority.IsEditAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
+				
+				mav.addObject("formKanriDispWorkStatus",formKanriDispWorkStatus);
+				
+				log.info("【INF】" + pgmId + ":処理終了");
+				
+				mav.setViewName("scrDispWorkStatusMobile.html");
+				return mav;
+				
+			}
 			
 			formReadQRStartShukakuSum.setMessage("ＱＲコードの読み取りが取消されました。");
 			
@@ -1884,7 +1979,7 @@ public class MatsuokaWebController {
 		ret = daoShukakuBoxSum.updateDeleteState(formDispQRInfoShukakuSum.getHouseId()
 												,formDispQRInfoShukakuSum.getRegistDatetime()
 												,formDispQRInfoShukakuSum.getLoginEmployeeId()
-												,"scrDispQRInfoShukakuSum"
+												,formDispQRInfoShukakuSum.getScrName()
 												);
 		
 		// 更新処理結果判定
@@ -1927,7 +2022,7 @@ public class MatsuokaWebController {
 		
 		ret = daoShukakuBoxSum.regist(shukakuBoxSum
 									, formDispQRInfoShukakuSum.getLoginEmployeeId()
-									,"scrDispQRInfoShukakuSum"
+									, formDispQRInfoShukakuSum.getScrName()
 									);
 		
 		// 登録処理結果判定
@@ -1981,6 +2076,33 @@ public class MatsuokaWebController {
 			mav.setViewName("scrReadQRStartShukakuSum.html");
 			return mav;
 		}
+		
+		
+		// ------------------------------------------------
+		// 遷移元画面が作業状況表示（scrDispWorkStatusMobile）である場合、遷移元に戻る
+		if (formDispQRInfoShukakuSum.getScrName().equals("scrDispWorkStatusMobile") == true) {
+			
+			// 画面に表示する情報の取得
+			DaoFormKanriDispWorkStatus dao = new DaoFormKanriDispWorkStatus(jdbcTemplate);
+			FormKanriDispWorkStatus formKanriDispWorkStatus = dao.getDispData();
+			
+			formKanriDispWorkStatus.setLoginEmployeeId(formDispQRInfoShukakuSum.getLoginEmployeeId());
+			formKanriDispWorkStatus.setLoginEmployeeName(formDispQRInfoShukakuSum.getLoginEmployeeName());
+			formKanriDispWorkStatus.setSelectedDeviceLabel(formDispQRInfoShukakuSum.getSelectedDeviceLabel());
+			
+			// ユーザ編集権限を取得
+			EmployeeAuthority employeeAuthority = new EmployeeAuthority(this.jdbcTemplate);
+			formKanriDispWorkStatus.setEditAuthority(employeeAuthority.IsEditAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
+			
+			mav.addObject("formKanriDispWorkStatus",formKanriDispWorkStatus);
+			
+			log.info("【INF】" + pgmId + ":処理終了");
+			
+			mav.setViewName("scrDispWorkStatusMobile.html");
+			return mav;
+			
+		}
+		
 		
 		// ------------------------------------------------
 		// 正常終了メッセージのセット

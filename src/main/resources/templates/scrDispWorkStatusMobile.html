@@ -234,7 +234,7 @@
 		
 		<!-- 文言表示エリア -->
 		<div class="ymd-container" style="background-color:rgb(0, 128, 128); color: rgb(255,255,255); width: 100%;">
-			<span>■全ハウスの収穫状況（本シーズン）</span>
+			<span>■全ハウスの収穫数合計（本シーズン）</span>
 		</div>
 		
 		
@@ -251,13 +251,13 @@
 		
 		
 		<!-- 一覧表明細部 -->
-		<div class="ymd-list-detail-container" name="detail-parent" th:each="list,stat : *{shukakuStatusList}" style="width: 100%; border-bottom: 1px dashed rgb(219, 219, 219);">
+		<div class="ymd-list-detail-container" name="detail-shukakuSum-parent" th:each="list,stat : *{shukakuStatusList}" style="width: 100%; border-bottom: 1px dashed rgb(219, 219, 219);">
 			
 			<!-- 隠し項目 -->
 			<input type="hidden" name="houseId"   th:field="*{shukakuStatusList[__${stat.index}__].houseId}" />
 			
 			<!-- 基本は各列固定幅であるが、備考のみ横幅をブラウザに合わせて可変にする -->
-			<div class="ymd-list-detail-container" name="detail-row" style="width: 100%; display:flex">
+			<div class="ymd-list-detail-container" name="detail-shukakuSum-row" style="width: 100%; display:flex">
 				<div class="ymd-list-detail-data" style="width: 120px;"><span th:text="*{shukakuStatusList[__${stat.index}__].houseName}" /></div>
 				
 				

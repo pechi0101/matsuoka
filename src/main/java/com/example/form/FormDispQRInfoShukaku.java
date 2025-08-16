@@ -21,6 +21,9 @@ public class FormDispQRInfoShukaku implements Serializable {
 	// 使用するデバイスのラベル
 	private String selectedDeviceLabel;
 	
+	private String scrName; // 画面名※どの画面から遷移してきたか？ 例：作業状況表示画面の場合「scrDispWorkStatusMobile」
+	
+	
 	// ボタン押下情報
 	private String pushedButtunKbn;     // 押下したボタンのボタン区分
 	private int pushedButtunPercent; // 押下したボタンの進捗率
