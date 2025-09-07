@@ -2250,7 +2250,7 @@ public class MatsuokaWebController {
 		DaoClockInOut dao = new DaoClockInOut(jdbcTemplate);
 		
 		// ------------------------------------------------
-		// 勤務時間が重複していないかをチェック
+		// 勤務時間が重複していないかをチェック 例：Ａさんに対して①2025/09/01 08:00～12:00の出退勤が登録されてるのに②2025/09/01 09:00～13:00の出退勤を登録しようとしてる
 		Boolean isDuplication = dao.isDuplicationClockInDataTime(
 															formReadQRStartClockInOut.getLoginEmployeeId()
 														   ,clockInDate.format(yearFormatter)
@@ -2264,7 +2264,7 @@ public class MatsuokaWebController {
 		if (isDuplication == true) {
 			
 			log.error("【ERR】" + pgmId + " :出退勤の登録・更新処理で重複チェックエラー。");
-			formReadQRStartClockInOut.setMessage("【エラー】入力した出退勤日時と重複した出退勤情報が存在します。もう一度ＱＲコードの読み取りを行い出退勤登録をやり直してください。");
+			formReadQRStartClockInOut.setMessage("【エラー】入力した出退勤日時と重複した出退勤情報がすでに存在します。もう一度ＱＲコードの読み取りを行い出退勤登録をやり直してください。");
 			
 			
 			// ------------------------------------------------
