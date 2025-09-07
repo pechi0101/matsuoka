@@ -2250,7 +2250,7 @@ public class MatsuokaWebController {
 		DaoClockInOut dao = new DaoClockInOut(jdbcTemplate);
 		
 		// ------------------------------------------------
-		// 勤務時間が重複していないかをチェック 例：Ａさんに対して①2025/09/01 08:00～12:00の出退勤が登録されてるのに②2025/09/01 09:00～13:00の出退勤を登録しようとしてる
+		// 勤務時間が重複していないかをチェック 例：Ａさんに対して①2025/09/01 08:00～12:00の出退勤が登録されてるのに②2025/09/01 09:00～13:00の出退勤を登録しようとしたらエラーにする
 		Boolean isDuplication = dao.isDuplicationClockInDataTime(
 															formReadQRStartClockInOut.getLoginEmployeeId()
 														   ,clockInDate.format(yearFormatter)
@@ -2287,7 +2287,7 @@ public class MatsuokaWebController {
 		
 		
 		// ------------------------------------------------
-		// 変更"後"出勤日の日付で「出勤」状態の情報があるか否かのチェック
+		// 変更"後"出勤日の日付(年月日のみで時分秒は指定なし)で「出勤」状態の情報があるか否かのチェック
 		
 		Boolean exeitsClockInData = dao.exsistsClockInData( formReadQRStartClockInOut.getLoginEmployeeId()
 														   ,clockInDate.format(yearFormatter)
@@ -2309,6 +2309,57 @@ public class MatsuokaWebController {
 		// 「出勤」状態の情報が存在しない場合：登録処理
 		if (exeitsClockInData == false) {
 			
+			// ------------------------------------------------
+			// 二重登録防止用のチェック
+			Boolean isExists = dao.exsistsClockInOutData(
+							formReadQRStartClockInOut.getLoginEmployeeId()
+							,clockInDate.format(yearFormatter)
+							,clockInDate.format(monthFormatter)
+							,clockInDate.format(dayFormatter)
+							,formDispQRInfoClockInOut.getClockInDatetime()
+							,formDispQRInfoClockInOut.getClockOutDatetime()
+							);
+			
+			if (isExists == true) {
+				// 二重登録が発生している場合エラー表示 例：退勤登録した後にブラウザバックして再度退勤登録ボタンを押した場合
+				
+				// 作業開始日時
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+				
+				// 出退勤日時をメッセージ表示用に文字列編集
+				String clockInDateTimeString = "";
+				if (formDispQRInfoClockInOut.getClockInDatetime() != null) {
+					clockInDateTimeString = formatter.format(formDispQRInfoClockInOut.getClockInDatetime());
+				}
+				String clockOutDateTimeString = "";
+				if (formDispQRInfoClockInOut.getClockOutDatetime() != null) {
+					clockOutDateTimeString = formatter.format(formDispQRInfoClockInOut.getClockOutDatetime());
+				}
+				
+				// データ的には問題ないため、あえて【エラー】とは画面に表示しないが「登録済み」である旨だけ表示する
+				log.error("【ERR】" + pgmId + " :出退勤の登録・更新処理で異常が発生しました。（二重登録）");
+				formReadQRStartClockInOut.setMessage("下の出退勤日時で既に登録済みです。\n出勤日時：" + clockInDateTimeString + "\n退勤日時：" + clockOutDateTimeString + "\n業務を継続する場合は画面上の「最初に戻る」を押してください。業務を終了する場合はシステムを閉じてください。");
+				
+				
+				// ------------------------------------------------
+				// 出勤状況、作業状況のメッセージセット
+				String employeeId = formReadQRStartClockInOut.getLoginEmployeeId();
+				StatusDispMessageCreater statusDispMessageCreater = new StatusDispMessageCreater(jdbcTemplate);
+				formReadQRStartClockInOut.setStrClockInOutStatusMSG(statusDispMessageCreater.getClockInOutStatusMsg(employeeId));	
+				formReadQRStartClockInOut.setStrWorkStatusMSG(statusDispMessageCreater.getWorkStatusMsg(employeeId));	
+				
+				
+				mav.addObject("formReadQRStartClockInOut", formReadQRStartClockInOut);
+				
+				log.info("【INF】" + pgmId + ":処理終了");
+				mav.setViewName("scrReadQRStartClockInOut.html");
+				return mav;
+				
+				
+			}
+			
+			// ------------------------------------------------
+			// 登録処理
 			ret = dao.regist(formDispQRInfoClockInOut
 							, formDispQRInfoClockInOut.getLoginEmployeeId()
 							,"scrDispQRInfoClockInOut"

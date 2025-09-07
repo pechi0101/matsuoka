@@ -87,6 +87,87 @@ public class DaoClockInOut {
 			return false;
 		}
 	}
+
+	// 指定の出退勤日時で出退勤の情報があるか否かのチェック（二重登録防止用のチェックメソッド）
+	public boolean exsistsClockInOutData(String empliyeeId,String clockInYear,String clockInMonth,String clockInDay,LocalDateTime clockInDatetime,LocalDateTime clockOutDatetime) {
+		
+		// 年月日時分秒までの日時フォーマットを準備
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		
+		String pgmId = classId + ".exsistsClockInOutData";
+		log.info("【INF】" + pgmId + ":処理開始 社員ID=[" + empliyeeId + "]、出勤年月日=[" + clockInYear + clockInMonth + clockInDay + "]、出勤日時=[" + clockInDatetime + "]、退勤日時=[" + clockOutDatetime + "]");
+		
+		try {
+			
+			int count = 0;
+			
+			if (clockOutDatetime == null) {
+				
+				
+				String sql = " select count(1)";
+				sql  = sql + " from";
+				sql  = sql + "     TT_CLOCKINOUT";
+				sql  = sql + " where";
+				sql  = sql + "     EMPLOYEEID        = ?";
+				sql  = sql + " and CLOCKINYEAR       = ?";
+				sql  = sql + " and CLOCKINMONTH      = ?";
+				sql  = sql + " and CLOCKINDAY        = ?";
+				sql  = sql + " and CLOCKINDATETIME   = ?";
+				sql  = sql + " and CLOCKOUTDATETIME  is null";
+				
+				// queryForListメソッドでSQLを実行
+				count = this.jdbcTemplate.queryForObject(sql
+												,Integer.class
+												,empliyeeId
+												,clockInYear
+												,clockInMonth
+												,clockInDay
+												,formatter.format(clockInDatetime)
+				//								,formatter.format(clockOutDatetime)
+												);
+			} else {
+				
+				
+				String sql = " select count(1)";
+				sql  = sql + " from";
+				sql  = sql + "     TT_CLOCKINOUT";
+				sql  = sql + " where";
+				sql  = sql + "     EMPLOYEEID        = ?";
+				sql  = sql + " and CLOCKINYEAR       = ?";
+				sql  = sql + " and CLOCKINMONTH      = ?";
+				sql  = sql + " and CLOCKINDAY        = ?";
+				sql  = sql + " and CLOCKINDATETIME   = ?";
+				sql  = sql + " and CLOCKOUTDATETIME  = ?";
+				
+				// queryForListメソッドでSQLを実行
+				count = this.jdbcTemplate.queryForObject(sql
+												,Integer.class
+												,empliyeeId
+												,clockInYear
+												,clockInMonth
+												,clockInDay
+												,formatter.format(clockInDatetime)
+												,formatter.format(clockOutDatetime)
+												);
+				
+			}
+			
+			log.info("【INF】" + pgmId + ":処理終了 件数=[" + Integer.toString(count) + "]");
+			
+			// 件数が１件以上である場合Trueを返却
+			return count >= 1;
+			
+			
+		}catch(Exception e){
+			
+			log.error("【ERR】" + pgmId + ":異常終了");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
+			//検索した結果を返却します
+			return false;
+		}
+	}
 	
 	
 	
@@ -116,9 +197,9 @@ public class DaoClockInOut {
 				sql  = sql + " and CLOCKINYEAR       = ?";
 				sql  = sql + " and CLOCKINMONTH      = ?";
 				sql  = sql + " and CLOCKINDAY        = ?";
-				sql  = sql + " and CLOCKINDATETIME  <> ?";
+				sql  = sql + " and CLOCKINDATETIME  <> ?"; // 既存の出勤日時とこれから登録予定の出勤日時が異なる場合のみチェック対象とする ※Ａ出勤登録した後のＢ退勤登録時にＡで登録したレコードはチェック対象外にするため
 				sql  = sql + " and (";
-				sql  = sql + "     CLOCKINDATETIME  <= ? and ? <= CLOCKOUTDATETIME";
+				sql  = sql + "     CLOCKINDATETIME  <= ? and ? <= CLOCKOUTDATETIME"; // 既存の出勤～退勤間に新規登録予定の出勤日時が含まれる場合
 			  //sql  = sql + " or  CLOCKINDATETIME  <= ? and ? <= CLOCKOUTDATETIME";
 				sql  = sql + "     )";
 				
@@ -146,10 +227,10 @@ public class DaoClockInOut {
 				sql  = sql + " and CLOCKINYEAR       = ?";
 				sql  = sql + " and CLOCKINMONTH      = ?";
 				sql  = sql + " and CLOCKINDAY        = ?";
-				sql  = sql + " and CLOCKINDATETIME  <> ?";
+				sql  = sql + " and CLOCKINDATETIME  <> ?"; // 既存の出勤日時とこれから登録予定の出勤日時が異なる場合のみチェック対象とする ※Ａ出勤登録した後のＢ退勤登録時にＡで登録したレコードはチェック対象外にするため
 				sql  = sql + " and (";
-				sql  = sql + "     CLOCKINDATETIME  <= ? and ? <= CLOCKOUTDATETIME";
-				sql  = sql + " or  CLOCKINDATETIME  <= ? and ? <= CLOCKOUTDATETIME";
+				sql  = sql + "     CLOCKINDATETIME  <= ? and ? <= CLOCKOUTDATETIME"; // 既存の出勤～退勤間に新規更新予定の出勤日時が含まれる場合
+				sql  = sql + " or  CLOCKINDATETIME  <= ? and ? <= CLOCKOUTDATETIME"; // 既存の出勤～退勤間に新規更新予定の退勤日時が含まれる場合
 				sql  = sql + "     )";
 				
 				// queryForListメソッドでSQLを実行
