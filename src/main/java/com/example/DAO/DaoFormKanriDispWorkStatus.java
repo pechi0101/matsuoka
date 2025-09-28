@@ -136,6 +136,28 @@ public class DaoFormKanriDispWorkStatus {
 			// |                        |   |                        |   |                                    |   |                                        |
 			// +------------------------+   +------------------------+   +------------------------------------+   +----------------------------------------+
 			//
+			//	                                                                   ▼
+			//	                                                                   ▼
+			// ■上位検索結果に対して、各ハウス、各作業のMAX開始/終了日時をinner joinする（MAX日時、ハウスID、作業IDをくっつけたものをソートキーにするため）
+			// 
+			// +-------------------------------------------------------------------------------------------------------------------------------------------+
+			// |  ⑤全ハウスと全作業                                                                                                                       |
+			// |                                                                                                                                           |
+			// |  ３号隔離 牽引            MAX開始/終了日時                                                                                                |
+			// |  ３号隔離 葉かき          MAX開始/終了日時                                                                                                |
+			// |  ３号隔離 摘花            MAX開始/終了日時                                                                                                |
+			// |  ４号隔離 牽引            MAX開始/終了日時                                                                                                |
+			// |  ４号隔離 葉かき          MAX開始/終了日時                                                                                                |
+			// |  ４号隔離 摘花            MAX開始/終了日時                                                                                                |
+			// |  11号隔離 牽引            MAX開始/終了日時                                                                                                |
+			// |  11号隔離 葉かき          MAX開始/終了日時                                                                                                |
+			// |  11号隔離 摘花            MAX開始/終了日時                                                                                                |
+			// |  ８号土耕 牽引            MAX開始/終了日時                                                                                                |
+			// |  ８号土耕 葉かき          MAX開始/終了日時                                                                                                |
+			// |  ８号土耕 摘花            MAX開始/終了日時                                                                                                |
+			// |       ...                                                                                                                                 |
+			// +-------------------------------------------------------------------------------------------------------------------------------------------+
+			//
 			
 			// ------------------------------------------------
 			// 【メモ】
@@ -170,71 +192,117 @@ public class DaoFormKanriDispWorkStatus {
 			// ------------------------------------------------
 			
 			String sql = " select";
-			sql  = sql + "     VM_HOUSEWORK.HOUSEID";
-			sql  = sql + "    ,VM_HOUSEWORK.HOUSENAME";
-			sql  = sql + "    ,VM_HOUSEWORK.WORKID";
-			sql  = sql + "    ,VM_HOUSEWORK.WORKNAME";
-			sql  = sql + "    ,TM_HOUSECOL.COLNO";
-			sql  = sql + "    ,DATE_FORMAT(TT_WORK.STARTDATETIME,'%Y%m%d%H%i%S') STARTDATETIME_STRING";
-			sql  = sql + "    ,TT_WORK.STARTEMPLOYEEID";
-			sql  = sql + "    ,TM_EMPLOYEE.EMPLOYEENAME STARTEMPLOYEENAME";
-			sql  = sql + "    ,DATE_FORMAT(TT_WORK.ENDDATETIME,'%Y%m%d%H%i%S') ENDDATETIME_STRING";
-			sql  = sql + "    ,TT_WORK.ENDEMPLOYEEID";
-			sql  = sql + "    ,CASE WHEN TT_WORK.PERCENT = 0 THEN TT_WORK.PERCENT_START ELSE TT_WORK.PERCENT END AS PERCENT"; //★進捗率は最新のモノを使用する
+			sql  = sql + "     VT_WORK01.HOUSEID";
+			sql  = sql + "    ,VT_WORK01.HOUSENAME";
+			sql  = sql + "    ,VT_WORK01.WORKID";
+			sql  = sql + "    ,VT_WORK01.WORKNAME";
+			sql  = sql + "    ,VT_WORK01.COLNO";
+			sql  = sql + "    ,VT_WORK01.STARTDATETIME_STRING";
+			sql  = sql + "    ,VT_WORK01.STARTEMPLOYEEID";
+			sql  = sql + "    ,VT_WORK01.STARTEMPLOYEENAME";
+			sql  = sql + "    ,VT_WORK01.ENDDATETIME_STRING";
+			sql  = sql + "    ,VT_WORK01.ENDEMPLOYEEID";
+			sql  = sql + "    ,VT_WORK01.PERCENT";
+			sql  = sql + "    ,VT_WORK02.MAX_DATETIME_STRING";
 			sql  = sql + " from";
+			sql  = sql + " (";
+			sql  = sql + "     select";
+			sql  = sql + "         VM_HOUSEWORK.HOUSEID";
+			sql  = sql + "        ,VM_HOUSEWORK.HOUSENAME";
+			sql  = sql + "        ,VM_HOUSEWORK.WORKID";
+			sql  = sql + "        ,VM_HOUSEWORK.WORKNAME";
+			sql  = sql + "        ,TM_HOUSECOL.COLNO";
+			sql  = sql + "        ,DATE_FORMAT(TT_WORK.STARTDATETIME,'%Y%m%d%H%i%S') STARTDATETIME_STRING";
+			sql  = sql + "        ,TT_WORK.STARTEMPLOYEEID";
+			sql  = sql + "        ,TM_EMPLOYEE.EMPLOYEENAME STARTEMPLOYEENAME";
+			sql  = sql + "        ,DATE_FORMAT(TT_WORK.ENDDATETIME,'%Y%m%d%H%i%S') ENDDATETIME_STRING";
+			sql  = sql + "        ,TT_WORK.ENDEMPLOYEEID";
+			sql  = sql + "        ,CASE WHEN TT_WORK.PERCENT = 0 THEN TT_WORK.PERCENT_START ELSE TT_WORK.PERCENT END AS PERCENT";//★進捗率は最新のモノを使用する
+			sql  = sql + "     from";
 			// ①：ハウスと作業を「全て」列挙する。ただし作業状況が１つもないハウスと作業は除く。
-			sql  = sql + "    (";
-			sql  = sql + "     select distinct";
-			sql  = sql + "         TM_HOUSE.HOUSEID";
-			sql  = sql + "        ,TM_HOUSE.HOUSENAME";
-			sql  = sql + "        ,TM_WORK.WORKID";
-			sql  = sql + "        ,TM_WORK.WORKNAME";
-			sql  = sql + "     from TM_HOUSE";
-			sql  = sql + "     cross join TM_WORK";
-			sql  = sql + "     inner join TT_HOUSE_WORKSTATUS TT_WORK";
-			sql  = sql + "     on  TM_HOUSE.HOUSEID        = TT_WORK.HOUSEID";
-			sql  = sql + "     and TM_WORK.WORKID          = TT_WORK.WORKID";
-			sql  = sql + "     and TT_WORK.DELETEFLG       = 0";
-			sql  = sql + "     and TT_WORK.STARTEMPLOYEEID <> '" + SpecialUser.TEST_USER + "'";//テストユーザは対象にしない
-			sql  = sql + "    )VM_HOUSEWORK";
+			sql  = sql + "        (";
+			sql  = sql + "         select distinct";
+			sql  = sql + "             TM_HOUSE.HOUSEID";
+			sql  = sql + "            ,TM_HOUSE.HOUSENAME";
+			sql  = sql + "            ,TM_WORK.WORKID";
+			sql  = sql + "            ,TM_WORK.WORKNAME";
+			sql  = sql + "         from TM_HOUSE";
+			sql  = sql + "         cross join TM_WORK";
+			sql  = sql + "         inner join TT_HOUSE_WORKSTATUS TT_WORK";
+			sql  = sql + "         on  TM_HOUSE.HOUSEID        = TT_WORK.HOUSEID";
+			sql  = sql + "         and TM_WORK.WORKID          = TT_WORK.WORKID";
+			sql  = sql + "         and TT_WORK.DELETEFLG       = 0";
+			sql  = sql + "         and TT_WORK.STARTEMPLOYEEID <> '" + SpecialUser.TEST_USER + "'";//テストユーザは対象にしない
+			sql  = sql + "        )VM_HOUSEWORK";
 			// ②：上記①に対して全ての列（列マスタ）を列挙する
-			sql  = sql + " inner join";
-			sql  = sql + "     TM_HOUSECOL";
-			sql  = sql + "     on";
-			sql  = sql + "         VM_HOUSEWORK.HOUSEID  = TM_HOUSECOL.HOUSEID";
+			sql  = sql + "     inner join";
+			sql  = sql + "         TM_HOUSECOL";
+			sql  = sql + "         on";
+			sql  = sql + "             VM_HOUSEWORK.HOUSEID  = TM_HOUSECOL.HOUSEID";
 			// ③：上記①②に対して作業状況が「あれば」ヒモ付ける。ただし①②に対して作業が複数存在する場合は作業開始日時がMAXのものとヒモ付ける
-			sql  = sql + " left join";
-			sql  = sql + "     (";
-			sql  = sql + "     select HOUSEID,COLNO,WORKID,MAX(STARTDATETIME) STARTDATETIME";
-			sql  = sql + "     from TT_HOUSE_WORKSTATUS";
-			sql  = sql + "     where";
-			sql  = sql + "         TT_HOUSE_WORKSTATUS.STARTEMPLOYEEID <> '" + SpecialUser.TEST_USER + "'";//テストユーザは対象にしない
-			sql  = sql + "     and TT_HOUSE_WORKSTATUS.DELETEFLG       = 0";//未削除のデータのみ扱う 
-			sql  = sql + "     group by HOUSEID,COLNO,WORKID";
-			sql  = sql + "     )VT_WORK";
-			sql  = sql + "     on";
-			sql  = sql + "         VM_HOUSEWORK.HOUSEID    = VT_WORK.HOUSEID";
-			sql  = sql + "     and TM_HOUSECOL.COLNO       = VT_WORK.COLNO";
-			sql  = sql + "     and VM_HOUSEWORK.WORKID     = VT_WORK.WORKID";
+			sql  = sql + "     left join";
+			sql  = sql + "         (";
+			sql  = sql + "         select HOUSEID,COLNO,WORKID,MAX(STARTDATETIME) STARTDATETIME";
+			sql  = sql + "         from TT_HOUSE_WORKSTATUS";
+			sql  = sql + "         where";
+			sql  = sql + "             TT_HOUSE_WORKSTATUS.STARTEMPLOYEEID <> '" + SpecialUser.TEST_USER + "'";//テストユーザは対象にしない
+			sql  = sql + "         and TT_HOUSE_WORKSTATUS.DELETEFLG       = 0";//未削除のデータのみ扱う 
+			sql  = sql + "         group by HOUSEID,COLNO,WORKID";
+			sql  = sql + "         )VT_WORK";
+			sql  = sql + "         on";
+			sql  = sql + "             VM_HOUSEWORK.HOUSEID    = VT_WORK.HOUSEID";
+			sql  = sql + "         and TM_HOUSECOL.COLNO       = VT_WORK.COLNO";
+			sql  = sql + "         and VM_HOUSEWORK.WORKID     = VT_WORK.WORKID";
 			// ④：上記①②③に対して作業状況が「あれば」ヒモ付けてる。※作業の進捗状況(%)や作業開始・終了情報などを取得するため
-			sql  = sql + " left join";
-			sql  = sql + "     TT_HOUSE_WORKSTATUS TT_WORK";
-			sql  = sql + "     on";
-			sql  = sql + "         VT_WORK.HOUSEID         = TT_WORK.HOUSEID";
-			sql  = sql + "     and VT_WORK.COLNO           = TT_WORK.COLNO";
-			sql  = sql + "     and VT_WORK.WORKID          = TT_WORK.WORKID";
-			sql  = sql + "     and VT_WORK.STARTDATETIME   = TT_WORK.STARTDATETIME";
-			sql  = sql + "     and TT_WORK.DELETEFLG       = 0";
-			sql  = sql + "     and TT_WORK.STARTEMPLOYEEID <> '" + SpecialUser.TEST_USER + "'";//テストユーザは対象にしない
-			sql  = sql + " left join";
-			sql  = sql + "     TM_EMPLOYEE";
-			sql  = sql + "     on";
-			sql  = sql + "         TT_WORK.STARTEMPLOYEEID = TM_EMPLOYEE.EMPLOYEEID";
+			sql  = sql + "     left join";
+			sql  = sql + "         TT_HOUSE_WORKSTATUS TT_WORK";
+			sql  = sql + "         on";
+			sql  = sql + "             VT_WORK.HOUSEID         = TT_WORK.HOUSEID";
+			sql  = sql + "         and VT_WORK.COLNO           = TT_WORK.COLNO";
+			sql  = sql + "         and VT_WORK.WORKID          = TT_WORK.WORKID";
+			sql  = sql + "         and VT_WORK.STARTDATETIME   = TT_WORK.STARTDATETIME";
+			sql  = sql + "         and TT_WORK.DELETEFLG       = 0";
+			sql  = sql + "         and TT_WORK.STARTEMPLOYEEID <> '" + SpecialUser.TEST_USER + "'";//テストユーザは対象にしない
+			sql  = sql + "     left join";
+			sql  = sql + "         TM_EMPLOYEE";
+			sql  = sql + "         on";
+			sql  = sql + "             TT_WORK.STARTEMPLOYEEID = TM_EMPLOYEE.EMPLOYEEID";
+			sql  = sql + " ) VT_WORK01";
+			// ⑤：上記検索結果に対し▼のハウス、作業ごとのMAX日時テーブルと紐付ける（最後に作業を行った作業を画面最上部に表示するため）
+			sql  = sql + " inner join";
+			sql  = sql + " (";
+			sql  = sql + "     select";
+			sql  = sql + "         VT_WORK.HOUSEID";
+			sql  = sql + "        ,VT_WORK.WORKID";
+			sql  = sql + "        ,DATE_FORMAT(MAX(VT_WORK.DATETIME),'%Y%m%d%H%i%S') MAX_DATETIME_STRING";
+			sql  = sql + "        ,CONCAT(DATE_FORMAT(MAX(VT_WORK.DATETIME),'%Y%m%d%H%i%S') ,VT_WORK.HOUSEID ,VT_WORK.WORKID) SORT_KEY"; //MAX日時、ハウスID、作業IDをくっつけたものをソートキーにする
+			sql  = sql + "     from (";
+			sql  = sql + "         select  HOUSEID";
+			sql  = sql + "                ,WORKID";
+			sql  = sql + "                ,STARTDATETIME DATETIME";
+			sql  = sql + "         from    TT_HOUSE_WORKSTATUS";
+			sql  = sql + "         where   STARTEMPLOYEEID <> '" + SpecialUser.TEST_USER + "'";//テストユーザは対象にしない
+			sql  = sql + "              union all";
+			sql  = sql + "         select  HOUSEID";
+			sql  = sql + "                ,WORKID";
+			sql  = sql + "                ,ENDDATETIME DATETIME";
+			sql  = sql + "         from    TT_HOUSE_WORKSTATUS";
+			sql  = sql + "         where   STARTEMPLOYEEID <> '" + SpecialUser.TEST_USER + "'";//テストユーザは対象にしない
+			sql  = sql + "         and     ENDDATETIME is not null";
+			sql  = sql + "         ) VT_WORK";
+			sql  = sql + "         group by";
+			sql  = sql + "             VT_WORK.HOUSEID";
+			sql  = sql + "            ,VT_WORK.WORKID";
+			sql  = sql + " ) VT_WORK02";
+			sql  = sql + " on";
+			sql  = sql + "     VT_WORK01.HOUSEID = VT_WORK02.HOUSEID";
+			sql  = sql + " and VT_WORK01.WORKID  = VT_WORK02.WORKID";
 			sql  = sql + " order by";
-			sql  = sql + "     VM_HOUSEWORK.HOUSEID";
-			sql  = sql + "    ,VM_HOUSEWORK.HOUSENAME";
-			sql  = sql + "    ,VM_HOUSEWORK.WORKID";
-			sql  = sql + "    ,TM_HOUSECOL.COLNO";
+			sql  = sql + "     VT_WORK02.SORT_KEY desc"; //MAX日時、ハウスID、作業IDをくっつけたものをソートキーにする
+			sql  = sql + "    ,VT_WORK01.HOUSEID";
+			sql  = sql + "    ,VT_WORK01.HOUSENAME";
+			sql  = sql + "    ,VT_WORK01.WORKID";
+			sql  = sql + "    ,VT_WORK01.COLNO";
 			
 			
 			
