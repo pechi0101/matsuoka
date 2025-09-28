@@ -26,6 +26,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -108,6 +110,13 @@ public class MatsuokaWebController {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
+	// ------------------------------------------------
+	// リクエストが受け取ることのできるデータ件数を拡張(デフォルト256件)
+	// ※参照：https://avocado-system.com/2023/03/13/%E3%80%90spring%E3%80%91controller%E3%81%8Cform%E3%81%BE%E3%81%9F%E3%81%AF%E3%83%AA%E3%82%AF%E3%82%A8%E3%82%B9%E3%83%88%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF%E3%82%92%E5%BC%95%E6%95%B0%E3%81%A8/
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.setAutoGrowCollectionLimit(1024);
+	}
 	
 	
 	//システムの初期処理→作業者一覧画面の表示
