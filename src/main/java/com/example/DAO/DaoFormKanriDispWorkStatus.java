@@ -79,7 +79,7 @@ public class DaoFormKanriDispWorkStatus {
 			
 		}catch(Exception e){
 			
-			log.error("【ERR】" + pgmId + ":異常終了");
+			log.error("【ERR】" + pgmId + ":異常終了[" + e.toString() + "]");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			
@@ -204,6 +204,7 @@ public class DaoFormKanriDispWorkStatus {
 			sql  = sql + "    ,VT_WORK01.ENDEMPLOYEEID";
 			sql  = sql + "    ,VT_WORK01.PERCENT";
 			sql  = sql + "    ,VT_WORK02.MAX_DATETIME_STRING";
+			sql  = sql + "    ,VT_WORK03.FIRST_STARTDATETIME_STRING";
 			sql  = sql + " from";
 			sql  = sql + " (";
 			sql  = sql + "     select";
@@ -282,12 +283,14 @@ public class DaoFormKanriDispWorkStatus {
 			sql  = sql + "                ,STARTDATETIME DATETIME";
 			sql  = sql + "         from    TT_HOUSE_WORKSTATUS";
 			sql  = sql + "         where   STARTEMPLOYEEID <> '" + SpecialUser.TEST_USER + "'";//テストユーザは対象にしない
+			sql  = sql + "         and     DELETEFLG        = 0";
 			sql  = sql + "              union all";
 			sql  = sql + "         select  HOUSEID";
 			sql  = sql + "                ,WORKID";
 			sql  = sql + "                ,ENDDATETIME DATETIME";
 			sql  = sql + "         from    TT_HOUSE_WORKSTATUS";
 			sql  = sql + "         where   STARTEMPLOYEEID <> '" + SpecialUser.TEST_USER + "'";//テストユーザは対象にしない
+			sql  = sql + "         and     DELETEFLG        = 0";
 			sql  = sql + "         and     ENDDATETIME is not null";
 			sql  = sql + "         ) VT_WORK";
 			sql  = sql + "         group by";
@@ -297,6 +300,28 @@ public class DaoFormKanriDispWorkStatus {
 			sql  = sql + " on";
 			sql  = sql + "     VT_WORK01.HOUSEID = VT_WORK02.HOUSEID";
 			sql  = sql + " and VT_WORK01.WORKID  = VT_WORK02.WORKID";
+			// ⑥：上記検索結果に対し▼のハウス、作業ごとのMIN開始日時テーブルと紐付ける（最後に作業を行った作業を画面最上部に表示するため）
+			sql  = sql + " inner join";
+			sql  = sql + " (";
+			sql  = sql + "     select";
+			sql  = sql + "         VT_WORK.HOUSEID";
+			sql  = sql + "        ,VT_WORK.WORKID";
+			sql  = sql + "        ,DATE_FORMAT(MIN(VT_WORK.DATETIME),'%Y%m%d%H%i%S') FIRST_STARTDATETIME_STRING";
+			sql  = sql + "     from (";
+			sql  = sql + "         select  HOUSEID";
+			sql  = sql + "                ,WORKID";
+			sql  = sql + "                ,STARTDATETIME DATETIME";
+			sql  = sql + "         from    TT_HOUSE_WORKSTATUS";
+			sql  = sql + "         where   STARTEMPLOYEEID <> '" + SpecialUser.TEST_USER + "'";//テストユーザは対象にしない
+			sql  = sql + "         and     DELETEFLG        = 0";
+			sql  = sql + "         ) VT_WORK";
+			sql  = sql + "         group by";
+			sql  = sql + "             VT_WORK.HOUSEID";
+			sql  = sql + "            ,VT_WORK.WORKID";
+			sql  = sql + " ) VT_WORK03";
+			sql  = sql + " on";
+			sql  = sql + "     VT_WORK01.HOUSEID = VT_WORK03.HOUSEID";
+			sql  = sql + " and VT_WORK01.WORKID  = VT_WORK03.WORKID";
 			sql  = sql + " order by";
 			sql  = sql + "     VT_WORK02.SORT_KEY desc"; //MAX日時、ハウスID、作業IDをくっつけたものをソートキーにする
 			sql  = sql + "    ,VT_WORK01.HOUSEID";
@@ -352,6 +377,9 @@ public class DaoFormKanriDispWorkStatus {
 				
 				count = count + 1;
 				
+				// 年月日時分秒までの日時フォーマットを準備
+				DateTimeFormatter formatterDateTime = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+				
 				
 				if (wkHouseId.equals("") == true
 				&&   wkWorkId.equals("") == true) {
@@ -365,7 +393,9 @@ public class DaoFormKanriDispWorkStatus {
 					list.setHouseName(  rs.get("HOUSENAME").toString()  );
 					list.setWorkId(     rs.get("WORKID" ).toString()    );
 					list.setWorkName(   rs.get("WORKNAME").toString()   );
-				
+					
+					String firstStartDateString = rs.get("FIRST_STARTDATETIME_STRING").toString();
+					list.setFirstStartDateTime(LocalDateTime.parse(firstStartDateString,formatterDateTime));
 				
 				} else  if (
 					wkHouseId.equals(rs.get("HOUSEID").toString()) == false
@@ -382,6 +412,9 @@ public class DaoFormKanriDispWorkStatus {
 					list.setHouseName(  rs.get("HOUSENAME").toString()  );
 					list.setWorkId(     rs.get("WORKID" ).toString()    );
 					list.setWorkName(   rs.get("WORKNAME").toString()   );
+					
+					String firstStartDateString = rs.get("FIRST_STARTDATETIME_STRING").toString();
+					list.setFirstStartDateTime(LocalDateTime.parse(firstStartDateString,formatterDateTime));
 				}
 				
 				//ブレイクアウト用の変数をセット
@@ -401,9 +434,6 @@ public class DaoFormKanriDispWorkStatus {
 				//列No
 				detail.setColNo(rs.get("COLNO").toString());
 				
-				
-				// 年月日時分秒までの日時フォーマットを準備
-				DateTimeFormatter formatterDateTime = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 				
 				
 				// 作業開始日時
@@ -461,7 +491,7 @@ public class DaoFormKanriDispWorkStatus {
 			
 		}catch(Exception e){
 			
-			log.error("【ERR】" + pgmId + ":異常終了");
+			log.error("【ERR】" + pgmId + ":異常終了[" + e.toString() + "]");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			
@@ -571,7 +601,7 @@ public class DaoFormKanriDispWorkStatus {
 			
 		}catch(Exception e){
 			
-			log.error("【ERR】" + pgmId + ":異常終了");
+			log.error("【ERR】" + pgmId + ":異常終了[" + e.toString() + "]");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			
@@ -799,7 +829,7 @@ public class DaoFormKanriDispWorkStatus {
 			
 		}catch(Exception e){
 			
-			log.error("【ERR】" + pgmId + ":異常終了");
+			log.error("【ERR】" + pgmId + ":異常終了[" + e.toString() + "]");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			

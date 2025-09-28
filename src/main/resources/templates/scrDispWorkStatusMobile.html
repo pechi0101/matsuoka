@@ -154,6 +154,10 @@
 					    <span th:text="*{activeWorkLists[__${stat.index}__].workName}" />
 					    】
 					</div>
+					<div class="ymd-list-header-text" style="width: 100%; display:flex">
+					    作業開始：
+					    <span th:text="*{#temporals.format(activeWorkLists[__${stat.index}__].firstStartDateTime, 'yyyy/MM/dd HH:mm')}" />
+					</div>
 					
 					<div class="ymd-list-headre-container" style="width: 100%;">
 						<!-- 隠し項目 -->

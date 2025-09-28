@@ -72,6 +72,8 @@ public class FormKanriDispWorkStatus implements Serializable {
 		private String houseName;
 		private String workId;
 		private String workName;
+		@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+		private LocalDateTime firstStartDateTime;
 		
 		private ArrayList<ActiveWorkRow> activeWorKRows;
 		
