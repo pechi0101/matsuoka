@@ -623,7 +623,7 @@ public class DaoFormKanriDispWorkStatus {
 		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		
 		String pgmId = classId + ".getNonActiveWorkList";
-		log.info("【INF】" + pgmId + ":処理開始");
+		log.info("【INF】" + pgmId + ":処理開始!");
 		
 		
 		try {
@@ -788,6 +788,14 @@ public class DaoFormKanriDispWorkStatus {
 				
 				
 				NonActiveWorkCol col = wkForm.new NonActiveWorkCol();
+				
+				// 1000005(横ひも巻き)、1000007(その他)、1000008(空き作業１)、1000009(空き作業２)、1000010(収穫)は表示しない
+				String workId = rs.get("WORKID").toString();
+				
+				if (("1000005").equals(workId) == true || ("1000007").equals(workId) == true || ("1000008").equals(workId) == true || ("1000009").equals(workId) == true || ("1000010").equals(workId) == true) {
+					continue;
+				}
+				
 				
 				//作業ID、作業名
 				col.setWorkId(rs.get("WORKID").toString());
