@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.DAO.DaoClockInOut;
@@ -91,7 +92,6 @@ import com.example.form.FormReadQRStartShukaku;
 import com.example.form.FormReadQRStartShukakuSum;
 import com.example.form.FormSelectQRReadDevice;
 
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -4074,18 +4074,21 @@ public class MatsuokaWebController {
 	
 	//Excelダウンロード
 	@RequestMapping(value ="/matsuoka/DownloadClockInOutExcel",method = RequestMethod.GET)
-	public ResponseEntity<InputStreamResource> download_ClockInOutExcel(@ModelAttribute FormKanriMainteClockInOutList formKanriMainteClockInOutList,HttpServletResponse response) throws IOException {
+	public ResponseEntity<InputStreamResource> download_ClockInOutExcel(
+			@RequestParam String filterTargetYM,
+			@RequestParam(required = false) String filterEmployeeId,
+			@RequestParam(required = false) String filterDateFr,
+			@RequestParam(required = false) String filterDateTo
+	        ) throws IOException {
 		
-		String pgmId = classId + ".transition_KanriMainteClockInOutListSearch";
+		String pgmId = classId + ".download_ClockInOutExcel";
 		
-		log.info("【INF】" + pgmId + ":処理開始");
-
-		log.info("【INF】" + pgmId + " :処理開始");
+		log.info("【INF】" + pgmId + " :処理開始■");
 		log.info("【INF】" + pgmId + " :▼フィルタリング条件------------------------------------------------");
-		log.info("【INF】" + pgmId + " :表示年月    =[" + formKanriMainteClockInOutList.getFilterTargetYM() + "]");
-		log.info("【INF】" + pgmId + " :社員ID      =[" + formKanriMainteClockInOutList.getFilterEmployeeId() + "]");
-		log.info("【INF】" + pgmId + " :作業開始日Fr=[" + formKanriMainteClockInOutList.getFilterDateFr() + "]");
-		log.info("【INF】" + pgmId + " :作業開始日To=[" + formKanriMainteClockInOutList.getFilterDateTo() + "]");
+		log.info("【INF】" + pgmId + " :表示年月    =[" + filterTargetYM + "]");
+		log.info("【INF】" + pgmId + " :社員ID      =[" + filterEmployeeId + "]");
+		log.info("【INF】" + pgmId + " :作業開始日Fr=[" + filterDateFr + "]");
+		log.info("【INF】" + pgmId + " :作業開始日To=[" + filterDateTo + "]");
 		
 		// クラスパスからファイルを読み込む
 		InputStream is = getClass().getClassLoader().getResourceAsStream("templates/excelClockInOutTemplate.xlsx");
@@ -4103,7 +4106,7 @@ public class MatsuokaWebController {
 			boolean ret = false;
 			
 			DaoClockInOut dao = new DaoClockInOut(jdbcTemplate);
-			ret = dao.createPaySlipExcel(formKanriMainteClockInOutList.getFilterTargetYM(), workbook);
+			ret = dao.createPaySlipExcel(filterTargetYM, workbook);
 			
 			if (ret == false) {
 				log.info("【ERR】" + pgmId + ":処理終了：給与明細Exclファイルの出力で異常が発生しました。");
@@ -4118,7 +4121,7 @@ public class MatsuokaWebController {
 			// レスポンスにセット
 			HttpHeaders headers = new HttpHeaders();
 			
-			String dowloadFileName = "給与明細_" + formKanriMainteClockInOutList.getFilterTargetYM().replace("-", "") + ".xlsx";
+			String dowloadFileName = "給与明細_" + filterTargetYM.replace("-", "") + ".xlsx";
 			//log.info("【DBG】" + pgmId + ":ダウンロード設定①");
 			//headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=modified_excel.xlsx");
 			headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(dowloadFileName, "UTF-8") + "\"");

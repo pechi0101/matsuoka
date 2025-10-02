@@ -258,13 +258,25 @@ $(function() {
 		document.getElementById("filterDateTo").value          = $("#searchDateTo").val();
 		
 		
-		
+		/*
 		//画面内にformタグは１つしかないため０番目を固定で取得
 		let form = document.getElementsByTagName('form')[0];
 		
 		form.action="/matsuoka/DownloadClockInOutExcel";
 		form.method="get";
 		form.submit();
+		*/
+		
+		// クエリ文字列を組み立てる
+		const url = `/matsuoka/DownloadClockInOutExcel`
+				+ `?filterTargetYM=${encodeURIComponent(document.getElementById("filterTargetYM").value)}`
+				+ `&filterEmployeeId=${encodeURIComponent(document.getElementById("filterEmployeeId").value)}`
+				+ `&filterDateFr=${encodeURIComponent(document.getElementById("filterDateFr").value)}`
+				+ `&filterDateTo=${encodeURIComponent(document.getElementById("filterDateTo").value)}`;
+		
+		// 画面遷移せずにExcelをダウンロード（新しいリクエストを発行）
+		window.location.href = url;
+		
 	});
 	
 	

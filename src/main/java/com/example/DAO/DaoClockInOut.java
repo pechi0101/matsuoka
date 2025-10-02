@@ -790,7 +790,7 @@ public class DaoClockInOut {
 				String employeeName = rs.get("EMPLOYEENAME").toString();
 				boolean ret = false;
 				
-				log.info("【INFO】" + pgmId + ":■------社員名=[" + employeeName + "]の出退勤記録出力処理 開始---------");
+				log.info("【INFO】" + pgmId + ":■------社員名=[" + employeeName + "]社員ID=[" + employeeId + "]の出退勤記録出力処理 開始---------");
 				
 				//------------------------------------------------
 				// シートをコピーして対象社員のシートを作成
@@ -1075,12 +1075,18 @@ public class DaoClockInOut {
 			sql  = sql + "     EMP.EMPLOYEEID      = ?";
 			sql  = sql + " and WAG.STARTDATETIME  <= ?"; //時給は月初日が開始～終了内のものを参照する
 			sql  = sql + " and WAG.ENDDATETIME    >  ?";
+			sql  = sql + "            or";
+			sql  = sql + "     EMP.EMPLOYEEID      = ?";
+			sql  = sql + " and WAG.STARTDATETIME  <= ?"; //時給は月初日が開始～終了内のものを参照する
+			sql  = sql + " and WAG.ENDDATETIME    is null";
 			
 			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
 			List<Map<String, Object>> rsListEmpt = this.jdbcTemplate.queryForList(
 														 sql
 														,employeeId
 														,targetYMDfirstDay
+														,targetYMDfirstDay
+														,employeeId
 														,targetYMDfirstDay
 														);
 			
@@ -1090,6 +1096,9 @@ public class DaoClockInOut {
 				retObj.setEmployeeId(employeeId);
 				retObj.setEmployeeName(rs.get("EMPLOYEENAME").toString());
 				retObj.setHourwage(Integer.parseInt(rs.get("HOURLYWAGE").toString()));
+				
+				log.info("【INF】" + pgmId + ":検索結果 社員ID=[" + retObj.getEmployeeId() + "]社員名=[" + retObj.getEmployeeName() + "]、対象年月=[" + retObj.getTargetYMfirstDate() + "]、時給=[" + retObj.getHourwage() + "]");
+				
 				// 検索結果は１件のみ
 				break;
 			}
@@ -1211,6 +1220,7 @@ public class DaoClockInOut {
 		}catch(Exception e){
 			
 			log.error("【ERR】" + pgmId + ":異常終了");
+			log.error("【ERR】" + pgmId + ":message=[" + e.toString() + "]");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			
@@ -1270,6 +1280,7 @@ public class DaoClockInOut {
 		}catch(Exception e){
 			
 			log.error("【ERR】" + pgmId + ":異常終了");
+			log.error("【ERR】" + pgmId + ":message=[" + e.toString() + "]");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			
@@ -1308,12 +1319,18 @@ public class DaoClockInOut {
 			sql  = sql + "     EMP.EMPLOYEEID      = ?";
 			sql  = sql + " and WAG.STARTDATETIME  <= ?"; //時給は月初日が開始～終了内のものを参照する
 			sql  = sql + " and WAG.ENDDATETIME    >  ?";
+			sql  = sql + "            or";
+			sql  = sql + "     EMP.EMPLOYEEID      = ?";
+			sql  = sql + " and WAG.STARTDATETIME  <= ?"; //時給は月初日が開始～終了内のものを参照する
+			sql  = sql + " and WAG.ENDDATETIME    is null";
 			
 			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
 			List<Map<String, Object>> rsListEmpt = this.jdbcTemplate.queryForList(
 														 sql
 														,employeeId
 														,targetYMDfirstDay
+														,targetYMDfirstDay
+														,employeeId
 														,targetYMDfirstDay
 														);
 			
@@ -1323,6 +1340,9 @@ public class DaoClockInOut {
 				retObj.setEmployeeId(employeeId);
 				retObj.setEmployeeName(rs.get("EMPLOYEENAME").toString());
 				retObj.setHourwage(Integer.parseInt(rs.get("HOURLYWAGE").toString()));
+				
+				log.info("【INF】" + pgmId + ":検索結果 社員ID=[" + retObj.getEmployeeId() + "]社員名=[" + retObj.getEmployeeName() + "]、対象年月=[" + retObj.getTargetYMfirstDate() + "]、時給=[" + retObj.getHourwage() + "]");
+				
 				// 検索結果は１件のみ
 				break;
 			}
@@ -1415,6 +1435,7 @@ public class DaoClockInOut {
 		}catch(Exception e){
 			
 			log.error("【ERR】" + pgmId + ":異常終了");
+			log.error("【ERR】" + pgmId + ":message=[" + e.toString() + "]");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			
@@ -1474,6 +1495,7 @@ public class DaoClockInOut {
 		}catch(Exception e){
 			
 			log.error("【ERR】" + pgmId + ":異常終了");
+			log.error("【ERR】" + pgmId + ":message=[" + e.toString() + "]");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			
@@ -1573,12 +1595,18 @@ public class DaoClockInOut {
 			sql  = sql + "     EMP.EMPLOYEEID      = ?";
 			sql  = sql + " and WAG.STARTDATETIME  <= ?"; //時給は月初日が開始～終了内のものを参照する
 			sql  = sql + " and WAG.ENDDATETIME    >  ?";
+			sql  = sql + "            or";
+			sql  = sql + "     EMP.EMPLOYEEID      = ?";
+			sql  = sql + " and WAG.STARTDATETIME  <= ?"; //時給は月初日が開始～終了内のものを参照する
+			sql  = sql + " and WAG.ENDDATETIME    is null";
 			
 			// queryForListメソッドでSQLを実行し、結果MapのListで受け取る。
 			List<Map<String, Object>> rsList = this.jdbcTemplate.queryForList(
 														 sql
 														,employeeId
 														,targetYMDfirstDay
+														,targetYMDfirstDay
+														,employeeId
 														,targetYMDfirstDay
 														);
 			
@@ -1588,6 +1616,9 @@ public class DaoClockInOut {
 				retObj.setEmployeeId(employeeId);
 				retObj.setEmployeeName(rs.get("EMPLOYEENAME").toString());
 				retObj.setHourwage(Integer.parseInt(rs.get("HOURLYWAGE").toString()));
+				
+				log.info("【INF】" + pgmId + ":検索結果 社員ID=[" + retObj.getEmployeeId() + "]社員名=[" + retObj.getEmployeeName() + "]、対象年月=[" + retObj.getTargetYMfirstDate() + "]、時給=[" + retObj.getHourwage() + "]");
+				
 				// 検索結果は１件のみ
 				break;
 			}
@@ -1789,6 +1820,7 @@ public class DaoClockInOut {
 		}catch(Exception e){
 			
 			log.error("【ERR】" + pgmId + ":異常終了");
+			log.error("【ERR】" + pgmId + ":message=[" + e.toString() + "]");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			
@@ -1855,6 +1887,7 @@ public class DaoClockInOut {
 		}catch(Exception e){
 			
 			log.error("【ERR】" + pgmId + ":異常終了");
+			log.error("【ERR】" + pgmId + ":message=[" + e.toString() + "]");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			
