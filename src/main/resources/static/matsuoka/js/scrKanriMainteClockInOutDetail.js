@@ -1,10 +1,24 @@
-
 /*
 JQueryで各種イベント操作
 
 */
 $(function() {
 	
+	//□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+	//
+	// 画面描画直後の処理
+	
+	
+	// 出勤日が入力されており、退勤日が未入力である場合、同じ日付を退勤日にセットする（入力補助）
+	
+	let clockInDate  = document.getElementById("startDate").value;
+	let clockOutDate = document.getElementById("endDate").value;
+	
+	//console.log("■clockInDate=[" + clockInDate +"]、clockOutDate=[" + clockOutDate + "]");
+	if (clockInDate != "" && clockOutDate == "") {
+		//console.log("■セット！！");
+		document.getElementById("endDate").value = clockInDate;
+	}
 	
 	
 	//□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
