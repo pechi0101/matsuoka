@@ -746,6 +746,7 @@ public class NightBatch {
 			sql  = sql + "    ,ENDEMPLOYEEID";
 			sql  = sql + "    ,PERCENT_START";
 			sql  = sql + "    ,PERCENT";
+			sql  = sql + "    ,FORCE_RESETFLG";
 			sql  = sql + "    ,RESETYMDHMS";
 			sql  = sql + "    ,BIKO";
 			sql  = sql + "    ,SYSREGUSERID";
@@ -765,6 +766,7 @@ public class NightBatch {
 			sql  = sql + "    ,ENDEMPLOYEEID";
 			sql  = sql + "    ,PERCENT_START";
 			sql  = sql + "    ,PERCENT";
+			sql  = sql + "    ,?";             // FORCE_RESETFLG ※強制リセットフラグ
 			sql  = sql + "    ,?";             // RESETYMDHMS
 			sql  = sql + "    ,BIKO";
 			sql  = sql + "    ,SYSREGUSERID";
@@ -781,6 +783,7 @@ public class NightBatch {
 			
 			
 			int ret = this.jdbcTemplate.update(sql
+					,false
 					,nowDateTime
 					,houseId
 					,workId
@@ -881,6 +884,7 @@ public class NightBatch {
 			sql  = sql + "    ,ENDEMPLOYEEID";
 			sql  = sql + "    ,PERCENT_START";
 			sql  = sql + "    ,PERCENT";
+			sql  = sql + "    ,FORCE_RESETFLG";
 			sql  = sql + "    ,RESETYMDHMS";
 			sql  = sql + "    ,BACKUPYMDHMS";
 			sql  = sql + "    ,BIKO";
@@ -901,6 +905,7 @@ public class NightBatch {
 			sql  = sql + "    ,ENDEMPLOYEEID";
 			sql  = sql + "    ,PERCENT_START";
 			sql  = sql + "    ,PERCENT";
+			sql  = sql + "    ,FORCE_RESETFLG";
 			sql  = sql + "    ,RESETYMDHMS";
 			sql  = sql + "    ,?";
 			sql  = sql + "    ,BIKO";
