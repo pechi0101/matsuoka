@@ -21,6 +21,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -3121,30 +3122,44 @@ public class MatsuokaWebController {
 	
 	
 	
-	//詳細画面への遷移
+	//詳細画面への遷移 ※リストの値を全て受け取ると256個の上限をオーバーしてしまうので必要最低限のパラメータを受け取る
 	@RequestMapping(value ="/matsuoka/TransitionKanriMainteWorkStatusDetail",method = RequestMethod.POST)
-	public ModelAndView trunsition_KanriMainteWorkStatusDetail(@ModelAttribute FormKanriMainteWorkStatusList formKanriMainteWorkStatusList, ModelAndView mav) {
+	public ModelAndView trunsition_KanriMainteWorkStatusDetail(
+			 @RequestParam("selectHouseId") String selectHouseId
+			,@RequestParam("selectColNo") String selectColNo
+			,@RequestParam("selectWorkId") String selectWorkId
+			 // 作業開始日時  ※yyyy/MM/dd HH:mm:ssの文字列形式→ LocalDateTime に型変換(required = falseで空白が飛んできても型変換でエラーにならないようにする)
+			,@RequestParam(value = "selectStartDateTime", required = false) @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss") LocalDateTime selectStartDateTime 
+			,@RequestParam("filterHouseId") String filterHouseId
+			,@RequestParam("filterWorkId") String filterWorkId
+			,@RequestParam("filterStartEmployeeId") String filterStartEmployeeId
+			// フィルタ日付  ※yyyy-MM-dd の文字列形式→ LocalDate に型変換(required = falseで空白が飛んできても型変換でエラーにならないようにする)
+			,@RequestParam(value = "filterDateFr", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate filterDateFr
+			,@RequestParam(value = "filterDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate filterDateTo
+			) {
+		ModelAndView mav = new ModelAndView();
+		
 		
 		String pgmId = classId + ".trunsition_KanriMainteWorkStatusDetail";
 		
 		log.info("【INF】" + pgmId + " :処理開始");
-		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteWorkStatusList.getSelectHouseId() + "]");
-		log.info("【INF】" + pgmId + " :列No        =[" + formKanriMainteWorkStatusList.getSelectColNo() + "]");
-		log.info("【INF】" + pgmId + " :作業ID      =[" + formKanriMainteWorkStatusList.getSelectWorkId() + "]");
-		log.info("【INF】" + pgmId + " :作業開始日時=[" + formKanriMainteWorkStatusList.getSelectStartDateTime() + "]");
+		log.info("【INF】" + pgmId + " :ハウスID    =[" + selectHouseId + "]");
+		log.info("【INF】" + pgmId + " :列No        =[" + selectColNo + "]");
+		log.info("【INF】" + pgmId + " :作業ID      =[" + selectWorkId + "]");
+		log.info("【INF】" + pgmId + " :作業開始日時=[" + selectStartDateTime + "]");
 		log.info("【INF】" + pgmId + " :▼フィルタリング条件------------------------------------------------");
-		log.info("【INF】" + pgmId + " :ハウスID    =[" + formKanriMainteWorkStatusList.getFilterHouseId() + "]");
-		log.info("【INF】" + pgmId + " :作業ID      =[" + formKanriMainteWorkStatusList.getFilterWorkId() + "]");
-		log.info("【INF】" + pgmId + " :社員ID      =[" + formKanriMainteWorkStatusList.getFilterStartEmployeeId() + "]");
-		log.info("【INF】" + pgmId + " :作業開始日Fr=[" + formKanriMainteWorkStatusList.getFilterDateFr() + "]");
-		log.info("【INF】" + pgmId + " :作業開始日To=[" + formKanriMainteWorkStatusList.getFilterDateTo() + "]");
+		log.info("【INF】" + pgmId + " :ハウスID    =[" + filterHouseId + "]");
+		log.info("【INF】" + pgmId + " :作業ID      =[" + filterWorkId + "]");
+		log.info("【INF】" + pgmId + " :社員ID      =[" + filterStartEmployeeId + "]");
+		log.info("【INF】" + pgmId + " :作業開始日Fr=[" + filterDateFr + "]");
+		log.info("【INF】" + pgmId + " :作業開始日To=[" + filterDateTo + "]");
 		log.info("【INF】" + pgmId + " :▲フィルタリング条件------------------------------------------------");
 		
 		
-		String targetHouseId              = formKanriMainteWorkStatusList.getSelectHouseId();
-		String targetColNo                = formKanriMainteWorkStatusList.getSelectColNo();
-		String targetWorkId               = formKanriMainteWorkStatusList.getSelectWorkId();
-		LocalDateTime targetStartDateTime = formKanriMainteWorkStatusList.getSelectStartDateTime();
+		String targetHouseId              = selectHouseId;
+		String targetColNo                = selectColNo;
+		String targetWorkId               = selectWorkId;
+		LocalDateTime targetStartDateTime = selectStartDateTime;
 		
 		
 		FormKanriMainteWorkStatusDetail formKanriMainteWorkStatusDetail = new FormKanriMainteWorkStatusDetail();
@@ -3168,11 +3183,11 @@ public class MatsuokaWebController {
 		// ------------------------------------------------
 		// 一覧画面で選択・入力したフィルタリング条件を引継ぎ
 		
-		formKanriMainteWorkStatusDetail.setFilterHouseId(        formKanriMainteWorkStatusList.getFilterHouseId());
-		formKanriMainteWorkStatusDetail.setFilterWorkId(         formKanriMainteWorkStatusList.getFilterWorkId());
-		formKanriMainteWorkStatusDetail.setFilterStartEmployeeId(formKanriMainteWorkStatusList.getFilterStartEmployeeId());
-		formKanriMainteWorkStatusDetail.setFilterDateFr(         formKanriMainteWorkStatusList.getFilterDateFr());
-		formKanriMainteWorkStatusDetail.setFilterDateTo(         formKanriMainteWorkStatusList.getFilterDateTo());
+		formKanriMainteWorkStatusDetail.setFilterHouseId(        filterHouseId);
+		formKanriMainteWorkStatusDetail.setFilterWorkId(         filterWorkId);
+		formKanriMainteWorkStatusDetail.setFilterStartEmployeeId(filterStartEmployeeId);
+		formKanriMainteWorkStatusDetail.setFilterDateFr(         filterDateFr);
+		formKanriMainteWorkStatusDetail.setFilterDateTo(         filterDateTo);
 		
 		
 		// ------------------------------------------------
