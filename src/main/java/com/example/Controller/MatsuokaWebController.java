@@ -391,13 +391,62 @@ public class MatsuokaWebController {
 		
 		
 		mav.addObject("formKanriDispWorkStatus",formKanriDispWorkStatus);
+		//redirectAttributes.addFlashAttribute("formKanriDispWorkStatus", formKanriDispWorkStatus);
 		
 		log.info("【INF】" + pgmId + ":処理終了★");
-		
+		//log.info("【INF】" + pgmId + ": 処理終了 → 画面表示へリダイレクト");
 		
 		mav.setViewName("scrDispWorkStatusMobile.html");
 		return mav;
+		
+		//return "redirect:/matsuoka/DispWorkStatusMobileView";
+		
 	}
+	
+	/*
+	@GetMapping("/matsuoka/DispWorkStatusMobileView")
+	public ModelAndView dispWorkStatusMobileView(
+							@ModelAttribute("formKanriDispWorkStatus") FormKanriDispWorkStatus formKanriDispWorkStatus,
+							ModelAndView mav,
+							HttpServletResponse response) {
+
+		String pgmId = classId + ".dispWorkStatusMobileView";
+		log.info("【INF】" + pgmId + ": 画面描画開始");
+		
+		// ----------------------------------------------------------
+		// ブラウザバック対策（キャッシュ無効化）
+		// ----------------------------------------------------------
+		response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+		response.setHeader("Pragma", "no-cache");
+		response.setDateHeader("Expires", 0);
+		
+		// ----------------------------------------------------------
+		// 画面にデータを渡す
+		// ----------------------------------------------------------
+		mav.addObject("formKanriDispWorkStatus", formKanriDispWorkStatus);
+		mav.setViewName("scrDispWorkStatusMobile.html");
+		
+		log.info("【INF】" + pgmId + ": 画面描画終了★");
+		return mav;
+	}
+	*/
+	
+	
+	/*
+	// 強制リセット実施
+	@RequestMapping(value = "/matsuoka/DispWorkStatusMobileExecReset", method = RequestMethod.POST)
+	public ModelAndView dispWorkStatusMobileExecReset(@ModelAttribute FormReadQRStart formReadQRStart, ModelAndView mav) {
+	
+		String pgmId = classId + ".dispWorkStatusMobileExecReset";
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		log.info("【INF】" + pgmId + ":処理終了 → dispWorkStatusMobile へリダイレクト");
+		
+		// ★ ここで次のメソッドを呼び出す
+		mav.setViewName("redirect:/matsuoka/DispWorkStatusMobile");
+		return mav;
+	}
+	*/
 	
 	
 	
