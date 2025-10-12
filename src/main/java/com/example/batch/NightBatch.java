@@ -783,7 +783,7 @@ public class NightBatch {
 			
 			
 			int ret = this.jdbcTemplate.update(sql
-					,false
+					,false  // 強制リセットフラグ
 					,nowDateTime
 					,houseId
 					,workId

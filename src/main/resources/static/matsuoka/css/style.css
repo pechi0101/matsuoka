@@ -449,11 +449,11 @@ html {
 	line-height:auto; /*上下中央寄せ*/
 	text-align:left;  /*左寄せ*/
 	
-    /*文字色*/
-    /*color: rgb(0, 0, 0);*/
-    /*文字サイズ*/
-    /*font-size: 20pt;*/
-    
+	/*文字色*/
+	/*color: rgb(0, 0, 0);*/
+	/*文字サイズ*/
+	/*font-size: 20pt;*/
+	
 	/*背景色*/
 	background-color:white;
 	
@@ -464,6 +464,53 @@ html {
 }
 
 
+/*------------------------------------------------*/
+
+/*XXXXしますか？などの確認メッセージボックス設定*/
+
+
+#ymd-confirmOverlay {
+	display: none;
+	position: fixed;
+	top: 0; left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0,0,0,0.4);
+	z-index: 999;
+}
+
+/* --- ダイアログ本体 --- */
+#ymd-confirmBox {
+	position: absolute;
+	top: 50%; left: 50%;
+	transform: translate(-50%, -50%);
+	background: #fff;
+	padding: 20px 30px;
+	border-radius: 12px;
+	text-align: center;
+	box-shadow: 0 0 10px rgba(0,0,0,0.3);
+	width: 300px;
+}
+
+#confirmBox p {
+	margin-bottom: 20px;
+	font-size: 16px;
+}
+
+#confirmBox button {
+	margin: 0 10px;
+	padding: 6px 20px;
+	border: none;
+	border-radius: 6px;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+#btnYes { background-color: #007bff; color: white; }
+#btnNo	{ background-color: #ccc; }
+
+
+/*------------------------------------------------*/
 
 /*ボタンの基本デザイン設定*/
 .ymd-button a {
@@ -592,6 +639,84 @@ html {
 	border-style: solid;
 	border-color: gray;
 	
+}
+
+
+/*------------------------------------------------*/
+
+/*赤文字ボタンの基本デザイン設定(普通のボタンみたいに丸みを帯びていない)*/
+.ymd-red-button a {
+	
+    /*ボタン内は要素を横に並べる(ボタンの文字とアイコンを横並びにするために指定)*/
+    display: flex;
+    /*それぞれの要素に均等な余白をつける(今回はdisplay: flexで横並び指定されているため各要素の横に均等に余白を付ける)*/
+    /*...つまりボタンの文字と右矢印のアイコンの間に余白を付けることになる*/
+    justify-content: space-around;
+	
+    /*要素の境界の外側の角を丸める*/
+    border-radius: 5px;
+    /*元々表示されていた位置を基準に、相対位置を指定する(top、rightなどの指定は無しであるため元々表示されていた位置に表示する)*/
+    position: relative;
+    
+    /*上下中央にボタンの文字を表示する*/
+    align-items: center;
+    
+    /*ボタンの最大幅*/
+    max-width: 500px;
+    
+    /*要素外側の余白*/
+    margin-top: 0 auto;
+	margin-bottom: 0 auto;
+	margin-left: 0 auto;
+	margin-right: 0 auto;
+	
+    /*要素内側の余白*/
+    padding-top:5px;
+    padding-bottom: 5px;
+    padding-left:55px; 
+    padding-right: 55px;
+    
+    /*文字色*/
+    color: rgb(255, 0, 0);
+    /*文字サイズ*/
+    font-size: 15px;
+    /*フォントの太さ*/
+    font-weight: 500;
+    
+	/*背景色*/
+    background: #eee;
+    
+    /*マウスホバー時に0.1秒かけて状態を変化する*/
+    transition: 0.1s ease-in-out;
+    
+	/*枠線*/
+	border: 1px;
+	border-style: solid;
+	border-color: gray;
+	
+}
+/*疑似要素(after)で右矢印のアイコンを表示する*/
+.ymd-red-button a:after {
+	/*親要素(今回はボタンのこと)を基準に絶対配置を指定する(上下中央の50%、右端から20pxの位置を指定)*/
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    
+    border-radius: 1px;
+    /*マウスホバー解除時に0.1秒かけて状態を変化する*/
+    transition: 0.1s ease-in-out;
+    /*CSS用Unicodeで三角の右矢印(f0da)を指定　参考：https://web-manabu.com/fontawesome4-7-list/ */
+    content: "\f0da";
+    /*右矢印のアイコン*/
+    font-family: "Font Awesome 5 Free";
+    /*フォントの太さ*/
+    font-weight: 900;
+    transform: translateY(-50%);
+}
+/*マウスホバーで背景色と文字色が変化する*/
+.ymd-red-button a:hover {
+    background: rgb(255, 0, 0);
+    color: #FFF;
 }
 
 

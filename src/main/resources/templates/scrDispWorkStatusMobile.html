@@ -82,6 +82,34 @@
 			<span th:text="*{message}" />
 		</div>
 		
+		
+		<!--
+		★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+		★
+		★          強制リセット時に表示する確認ダイアログボックス
+		★
+		★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+		-->
+		
+		
+		<!-- 確認ダイアログ -->
+		<div id="ymd-confirmOverlay">
+			<div id="ymd-confirmBox">
+				<div class="ymd-container" style="width: 100%;">
+					<span>本当に強制リセットしますか？</span>
+				</div>
+				<br>
+				<div class="ymd-button" style="width: 100%;">
+					<a id="btnYes">は　い</a>
+				</div>
+				<br>
+				<div class="ymd-button" style="width: 100%;">
+					<a id="btnNo">いいえ</a>
+				</div>
+			</div>
+		</div>
+		
+		
 		<!--
 		★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 		★
@@ -154,6 +182,17 @@
 					    <span th:text="*{activeWorkLists[__${stat.index}__].workName}" />
 					    】
 					</div>
+					
+					<!-- 強制リセットボタンは管理者のみ表示される -->
+					<th:block th:if="*{administrationAuthority == true}" >
+					<div class="ymd-red-button" style="width: 100%;">
+						<!-- 隠し項目 -->
+						<input type="hidden" name="houseId" th:field="*{activeWorkLists[__${stat.index}__].houseId}" />
+						<input type="hidden" name="workId"  th:field="*{activeWorkLists[__${stat.index}__].workId}" />
+						<a name="reset">強制リセット</a>
+					</div>
+					</th:block>
+					
 					<div class="ymd-list-header-text" style="width: 100%; display:flex">
 					    作業開始：
 					    <span th:text="*{#temporals.format(activeWorkLists[__${stat.index}__].firstStartDateTime, 'yyyy/MM/dd HH:mm')}" />

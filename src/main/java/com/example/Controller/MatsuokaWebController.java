@@ -350,12 +350,17 @@ public class MatsuokaWebController {
 	
 
 	@RequestMapping(value ="/matsuoka/DispWorkStatusMobile",method = RequestMethod.POST)
-	public ModelAndView dispWorkStatusMobile(@ModelAttribute FormReadQRStart formReadQRStart, ModelAndView mav) {
+	public ModelAndView dispWorkStatusMobile(
+			 @RequestParam("loginEmployeeId") String loginEmployeeId
+			,@RequestParam("loginEmployeeName") String loginEmployeeName
+			,@RequestParam("selectedDeviceLabel") String selectedDeviceLabel
+			) {
+		ModelAndView mav = new ModelAndView();
 		
 		String pgmId = classId + ".dispWorkStatusMobile";
 		
-		log.info("【INF】" + pgmId + ":処理開始 社員ID=[" + formReadQRStart.getLoginEmployeeId() + "]、社員名=[" + formReadQRStart.getLoginEmployeeName() + "]");
-		log.info("【INF】" + pgmId + ":選択デバイス名=[" + formReadQRStart.getSelectedDeviceLabel() + "]");
+		log.info("【INF】" + pgmId + ":処理開始 社員ID=[" + loginEmployeeId + "]、社員名=[" + loginEmployeeName + "]");
+		log.info("【INF】" + pgmId + ":選択デバイス名=[" + selectedDeviceLabel + "]");
 		
 		log.info("【INF】" + pgmId + ":処理開始");
 		
@@ -381,9 +386,9 @@ public class MatsuokaWebController {
 		}
 		//------------------------------------------------
 		
-		formKanriDispWorkStatus.setLoginEmployeeId(formReadQRStart.getLoginEmployeeId());
-		formKanriDispWorkStatus.setLoginEmployeeName(formReadQRStart.getLoginEmployeeName());
-		formKanriDispWorkStatus.setSelectedDeviceLabel(formReadQRStart.getSelectedDeviceLabel());
+		formKanriDispWorkStatus.setLoginEmployeeId(loginEmployeeId);
+		formKanriDispWorkStatus.setLoginEmployeeName(loginEmployeeName);
+		formKanriDispWorkStatus.setSelectedDeviceLabel(selectedDeviceLabel);
 		
 		// ユーザ編集権限を取得
 		EmployeeAuthority employeeAuthority = new EmployeeAuthority(this.jdbcTemplate);
@@ -393,62 +398,51 @@ public class MatsuokaWebController {
 		
 		
 		mav.addObject("formKanriDispWorkStatus",formKanriDispWorkStatus);
-		//redirectAttributes.addFlashAttribute("formKanriDispWorkStatus", formKanriDispWorkStatus);
 		
 		log.info("【INF】" + pgmId + ":処理終了★");
-		//log.info("【INF】" + pgmId + ": 処理終了 → 画面表示へリダイレクト");
 		
 		mav.setViewName("scrDispWorkStatusMobile.html");
 		return mav;
 		
-		//return "redirect:/matsuoka/DispWorkStatusMobileView";
-		
 	}
-	
-	/*
-	@GetMapping("/matsuoka/DispWorkStatusMobileView")
-	public ModelAndView dispWorkStatusMobileView(
-							@ModelAttribute("formKanriDispWorkStatus") FormKanriDispWorkStatus formKanriDispWorkStatus,
-							ModelAndView mav,
-							HttpServletResponse response) {
-
-		String pgmId = classId + ".dispWorkStatusMobileView";
-		log.info("【INF】" + pgmId + ": 画面描画開始");
 		
-		// ----------------------------------------------------------
-		// ブラウザバック対策（キャッシュ無効化）
-		// ----------------------------------------------------------
-		response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
-		response.setHeader("Pragma", "no-cache");
-		response.setDateHeader("Expires", 0);
-		
-		// ----------------------------------------------------------
-		// 画面にデータを渡す
-		// ----------------------------------------------------------
-		mav.addObject("formKanriDispWorkStatus", formKanriDispWorkStatus);
-		mav.setViewName("scrDispWorkStatusMobile.html");
-		
-		log.info("【INF】" + pgmId + ": 画面描画終了★");
-		return mav;
-	}
-	*/
 	
-	
-	/*
 	// 強制リセット実施
 	@RequestMapping(value = "/matsuoka/DispWorkStatusMobileExecReset", method = RequestMethod.POST)
-	public ModelAndView dispWorkStatusMobileExecReset(@ModelAttribute FormReadQRStart formReadQRStart, ModelAndView mav) {
+	public ModelAndView dispWorkStatusMobileExecReset(
+			 @RequestParam("loginEmployeeId") String loginEmployeeId
+			,@RequestParam("loginEmployeeName") String loginEmployeeName
+			,@RequestParam("selectedDeviceLabel") String selectedDeviceLabel
+			//強制リセット対象のハウス、作業(強制リセットはハウス・列単位で実施される)
+			,@RequestParam("selectHouseId") String targetHouseId
+			,@RequestParam("selectWorkId") String targetWorkId
+			) {
+		ModelAndView mav = new ModelAndView();
 	
 		String pgmId = classId + ".dispWorkStatusMobileExecReset";
 		log.info("【INF】" + pgmId + ":処理開始");
 		
-		log.info("【INF】" + pgmId + ":処理終了 → dispWorkStatusMobile へリダイレクト");
 		
-		// ★ ここで次のメソッドを呼び出す
-		mav.setViewName("redirect:/matsuoka/DispWorkStatusMobile");
+		// ------------------------------------------------
+		// 強制リセット実施
+		DaoFormKanriDispWorkStatus dao = new DaoFormKanriDispWorkStatus(jdbcTemplate);
+		dao.execReset(targetHouseId, targetWorkId);
+		
+		
+		
+		log.info("【INF】" + pgmId + ":処理終了");
+		
+		// "/matsuoka/DispWorkStatusMobil"に渡すパラメータをModelに詰める
+		mav.addObject("loginEmployeeId", loginEmployeeId);
+		mav.addObject("loginEmployeeName", loginEmployeeName);
+		mav.addObject("selectedDeviceLabel", selectedDeviceLabel);
+		
+		// コントローラ内の別メソッドを直接コール
+		mav.setViewName("forward:/matsuoka/DispWorkStatusMobile");
 		return mav;
+		
 	}
-	*/
+	
 	
 	
 	

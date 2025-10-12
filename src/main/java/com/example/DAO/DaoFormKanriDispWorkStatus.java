@@ -845,4 +845,104 @@ public class DaoFormKanriDispWorkStatus {
 		}
 	}
 	
+	
+	
+	
+	public boolean execReset(String houseId,String workId) {
+		
+		String pgmId = classId + ".execReset";
+		log.info("【INF】" + pgmId + ":処理開始");
+		
+		try {
+			LocalDateTime nowDateTime =  LocalDateTime.now();
+			
+			// ------------------------------------------------
+			// 作業進捗情報をリセットテーブルに移行
+			
+			
+			String sql = " insert into TT_HOUSE_WORKSTATUS_RESET";
+			sql  = sql + " (";
+			sql  = sql + "     HOUSEID";
+			sql  = sql + "    ,COLNO";
+			sql  = sql + "    ,WORKID";
+			sql  = sql + "    ,STARTDATETIME";
+			sql  = sql + "    ,STARTEMPLOYEEID";
+			sql  = sql + "    ,ENDDATETIME";
+			sql  = sql + "    ,ENDEMPLOYEEID";
+			sql  = sql + "    ,PERCENT_START";
+			sql  = sql + "    ,PERCENT";
+			sql  = sql + "    ,FORCE_RESETFLG";
+			sql  = sql + "    ,RESETYMDHMS";
+			sql  = sql + "    ,BIKO";
+			sql  = sql + "    ,SYSREGUSERID";
+			sql  = sql + "    ,SYSREGPGMID";
+			sql  = sql + "    ,SYSREGYMDHMS";
+			sql  = sql + "    ,SYSUPDUSERID";
+			sql  = sql + "    ,SYSUPDPGMID";
+			sql  = sql + "    ,SYSUPDYMDHMS";
+			sql  = sql + " )";
+			sql  = sql + " select";
+			sql  = sql + "     HOUSEID";
+			sql  = sql + "    ,COLNO";
+			sql  = sql + "    ,WORKID";
+			sql  = sql + "    ,STARTDATETIME";
+			sql  = sql + "    ,STARTEMPLOYEEID";
+			sql  = sql + "    ,ENDDATETIME";
+			sql  = sql + "    ,ENDEMPLOYEEID";
+			sql  = sql + "    ,PERCENT_START";
+			sql  = sql + "    ,PERCENT";
+			sql  = sql + "    ,?";             // FORCE_RESETFLG ※強制リセットフラグ
+			sql  = sql + "    ,?";             // RESETYMDHMS
+			sql  = sql + "    ,BIKO";
+			sql  = sql + "    ,SYSREGUSERID";
+			sql  = sql + "    ,SYSREGPGMID";
+			sql  = sql + "    ,SYSREGYMDHMS";
+			sql  = sql + "    ,SYSUPDUSERID";
+			sql  = sql + "    ,SYSUPDPGMID";
+			sql  = sql + "    ,SYSUPDYMDHMS";
+			sql  = sql + " from";
+			sql  = sql + "     TT_HOUSE_WORKSTATUS";
+			sql  = sql + " where";
+			sql  = sql + "     HOUSEID   = ?";
+			sql  = sql + " and WORKID    = ?";
+			
+			
+			int ret = this.jdbcTemplate.update(sql
+					,true   // 強制リセットフラグ
+					,nowDateTime
+					,houseId
+					,workId
+					);
+			
+			log.info("【INF】" + pgmId + ":処理終了 登録件数=[" + ret + "]件");
+			
+			
+			// ------------------------------------------------
+			// 移行した作業進捗情報を削除
+			
+			sql        = " delete from TT_HOUSE_WORKSTATUS";
+			sql  = sql + " where";
+			sql  = sql + "     HOUSEID = ?";
+			sql  = sql + " and WORKID  = ?";
+			
+			
+			ret = this.jdbcTemplate.update(sql
+					,houseId
+					,workId
+					);
+			
+			// メモ：commitはjdbcTemplateが自動で行ってくれる
+			
+			log.info("【INF】" + pgmId + ":処理終了 削除件数=[" + ret + "]件");
+			
+			return true;
+			
+		}catch(Exception e){
+			
+			log.error("【ERR】" + pgmId + ":異常終了[" + e.toString() + "]");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
+	}
 }
