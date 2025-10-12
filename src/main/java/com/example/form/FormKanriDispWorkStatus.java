@@ -17,7 +17,9 @@ public class FormKanriDispWorkStatus implements Serializable {
 	private String loginEmployeeId;
 	private String loginEmployeeName;
 	private String selectedDeviceLabel; // 使用するデバイスのラベル
+	// 操作権限
 	private boolean editAuthority;
+	private boolean administrationAuthority;
 	// ------------------------------------------------
 	
 	private String message;
@@ -56,6 +58,7 @@ public class FormKanriDispWorkStatus implements Serializable {
 		this.shukakuStatusList        = new ArrayList<ShukakuStatus>(); 
 		this.nonActiveWorkList        = new ArrayList<NonActiveWorkRow>();
 		this.editAuthority            = false;
+		this.administrationAuthority  = false;
 	}
 	
 	

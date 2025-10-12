@@ -44,6 +44,7 @@ public class DaoFormDispWorkStatusList {
 		// ユーザ編集権限を取得
 		EmployeeAuthority employeeAuthority = new EmployeeAuthority(this.jdbcTemplate);
 		retForm.setEditAuthority(employeeAuthority.IsEditAuthority(employeeId));
+		retForm.setAdministrationAuthority(employeeAuthority.IsAdministrationAuthority(employeeId));
 		
 		
 		

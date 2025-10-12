@@ -388,6 +388,7 @@ public class MatsuokaWebController {
 		// ユーザ編集権限を取得
 		EmployeeAuthority employeeAuthority = new EmployeeAuthority(this.jdbcTemplate);
 		formKanriDispWorkStatus.setEditAuthority(employeeAuthority.IsEditAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
+		formKanriDispWorkStatus.setAdministrationAuthority(employeeAuthority.IsAdministrationAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
 		
 		
 		
@@ -1366,6 +1367,7 @@ public class MatsuokaWebController {
 				// ユーザ編集権限を取得
 				EmployeeAuthority employeeAuthority = new EmployeeAuthority(this.jdbcTemplate);
 				formKanriDispWorkStatus.setEditAuthority(employeeAuthority.IsEditAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
+				formKanriDispWorkStatus.setAdministrationAuthority(employeeAuthority.IsAdministrationAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
 				
 				mav.addObject("formKanriDispWorkStatus",formKanriDispWorkStatus);
 				
@@ -1552,6 +1554,7 @@ public class MatsuokaWebController {
 				// ユーザ編集権限を取得
 				EmployeeAuthority employeeAuthority = new EmployeeAuthority(this.jdbcTemplate);
 				formKanriDispWorkStatus.setEditAuthority(employeeAuthority.IsEditAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
+				formKanriDispWorkStatus.setAdministrationAuthority(employeeAuthority.IsAdministrationAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
 				
 				mav.addObject("formKanriDispWorkStatus",formKanriDispWorkStatus);
 				
@@ -1695,6 +1698,7 @@ public class MatsuokaWebController {
 			// ユーザ編集権限を取得
 			EmployeeAuthority employeeAuthority = new EmployeeAuthority(this.jdbcTemplate);
 			formKanriDispWorkStatus.setEditAuthority(employeeAuthority.IsEditAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
+			formKanriDispWorkStatus.setAdministrationAuthority(employeeAuthority.IsAdministrationAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
 			
 			mav.addObject("formKanriDispWorkStatus",formKanriDispWorkStatus);
 			
@@ -1773,6 +1777,7 @@ public class MatsuokaWebController {
 				// ユーザ編集権限を取得
 				EmployeeAuthority employeeAuthority = new EmployeeAuthority(this.jdbcTemplate);
 				formKanriDispWorkStatus.setEditAuthority(employeeAuthority.IsEditAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
+				formKanriDispWorkStatus.setAdministrationAuthority(employeeAuthority.IsAdministrationAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
 				
 				mav.addObject("formKanriDispWorkStatus",formKanriDispWorkStatus);
 				
@@ -1911,6 +1916,7 @@ public class MatsuokaWebController {
 			// ユーザ編集権限を取得
 			EmployeeAuthority employeeAuthority = new EmployeeAuthority(this.jdbcTemplate);
 			formKanriDispWorkStatus.setEditAuthority(employeeAuthority.IsEditAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
+			formKanriDispWorkStatus.setAdministrationAuthority(employeeAuthority.IsAdministrationAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
 			
 			mav.addObject("formKanriDispWorkStatus",formKanriDispWorkStatus);
 			
@@ -1989,6 +1995,7 @@ public class MatsuokaWebController {
 				// ユーザ編集権限を取得
 				EmployeeAuthority employeeAuthority = new EmployeeAuthority(this.jdbcTemplate);
 				formKanriDispWorkStatus.setEditAuthority(employeeAuthority.IsEditAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
+				formKanriDispWorkStatus.setAdministrationAuthority(employeeAuthority.IsAdministrationAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
 				
 				mav.addObject("formKanriDispWorkStatus",formKanriDispWorkStatus);
 				
@@ -2152,6 +2159,7 @@ public class MatsuokaWebController {
 			// ユーザ編集権限を取得
 			EmployeeAuthority employeeAuthority = new EmployeeAuthority(this.jdbcTemplate);
 			formKanriDispWorkStatus.setEditAuthority(employeeAuthority.IsEditAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
+			formKanriDispWorkStatus.setAdministrationAuthority(employeeAuthority.IsAdministrationAuthority(formKanriDispWorkStatus.getLoginEmployeeId()));
 			
 			mav.addObject("formKanriDispWorkStatus",formKanriDispWorkStatus);
 			

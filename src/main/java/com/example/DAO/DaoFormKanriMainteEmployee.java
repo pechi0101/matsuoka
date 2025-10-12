@@ -134,7 +134,9 @@ public class DaoFormKanriMainteEmployee {
 					detail.setAuthorityKbn("0");
 				}
 				// 権限区分名
-				if (detail.getAuthorityKbn().equals("9") == true) {
+				if (detail.getAuthorityKbn().equals("Z") == true) {
+					detail.setAuthorityKbnName("管理者");
+				} else if (detail.getAuthorityKbn().equals("9") == true) {
 					detail.setAuthorityKbnName("特別");
 				}else{
 					detail.setAuthorityKbnName("一般");

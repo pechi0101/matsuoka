@@ -21,7 +21,7 @@ $(function() {
 		
 		
 		// 権限がない場合は作業情報の編集は不可
-		let editAuthority        = document.getElementById("editAuthority").value;
+		let editAuthority           = document.getElementById("editAuthority").value;
 		
 		if (editAuthority == "false") {
 			return;

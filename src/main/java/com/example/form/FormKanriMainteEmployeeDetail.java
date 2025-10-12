@@ -29,7 +29,7 @@ public class FormKanriMainteEmployeeDetail {
 	private String bankAccountType;
 	private String bankAccountNo;
 	private String biko;
-	private String authorityKbn; //権限区分 0:一般ユーザ、9:全操作権限あり
+	private String authorityKbn; //権限区分 0:一般ユーザ、9:特別ユーザ、Z:管理者ユーザ
 	private String authorityKbnName;
 	private boolean deleteFlg;
 	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")

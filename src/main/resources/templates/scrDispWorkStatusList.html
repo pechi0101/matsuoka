@@ -129,7 +129,7 @@
 		
 		<br>
 		
-		<!-- チェックのみ完了ボタン(特別ユーザの場合のみ表示される)   -->
+		<!-- チェックのみ完了ボタン(特別ユーザ、管理者ユーザの場合のみ表示される)   -->
 		<th:block th:if="*{editAuthority == true}" >
 		<div class="ymd-button" style="width: 100%;">
 			<a name="checkedWorEnd">チェックのみ完了</a>
@@ -137,7 +137,7 @@
 		<br>
 		</th:block>
 		
-		<!-- 全作業を完了ボタン(特別ユーザの場合のみ表示される)   -->
+		<!-- 全作業を完了ボタン(特別ユーザ、管理者ユーザの場合のみ表示される)   -->
 		<th:block th:if="*{editAuthority == true}" >
 		<div class="ymd-button" style="width: 100%;">
 			<a name="allWorkEnd">全作業を完了</a>
