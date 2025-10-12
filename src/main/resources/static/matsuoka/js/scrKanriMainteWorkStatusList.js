@@ -267,7 +267,7 @@ $(function() {
 		
 		
 		//------------------------------------------------
-		// hidden項目に「選択したフィルタリング条件の情報」をセットしフォームをPOST送信
+		// hidden項目に「選択したフィルタリング条件の情報」をセット
 		document.getElementById("filterHouseId").value         = $("#dropDownHouse").val();
 		document.getElementById("filterWorkId").value          = $("#dropDownWork").val();
 		document.getElementById("filterStartEmployeeId").value = $("#dropDownEmployee").val();
@@ -278,20 +278,62 @@ $(function() {
 		
 		
 		//------------------------------------------------
-		// hidden項目に「選択した一覧の情報」をセットしフォームをPOST送信(新規追加時は空白)
+		// hidden項目に「選択した一覧の情報」をセット
 		document.getElementById("selectHouseId").value         = "";
 		document.getElementById("selectColNo").value           = "";
 		document.getElementById("selectWorkId").value          = "";
 		document.getElementById("selectStartDateTime").value   = "";
 		
-		//------------------------------------------------
 		
-		//画面内にformタグは１つしかないため０番目を固定で取得
-		let form = document.getElementsByTagName('form')[0];
 		
-		//form.action="";     // HTML内で直接記載されているためココでのセットは不要
-    	//form.method="post"; // HTML内で直接記載されているためココでのセットは不要
-    	form.submit();
+		// ------------------------------------------------
+		// hidden項目に設定した情報を「新規」で作成したフォームにセットし送信(submit)
+		//
+		// ※既存のformをそのままsubmitしてしまうと、画面に一覧表示されてる全ての情報をサーバに送信してしまう。
+		//   そのためsubmit用に必要最低限の情報を新規で作成したformにセットし、それをsubmitする。
+		//
+		
+		let filterHouseId          = document.getElementById("filterHouseId").value;
+		let filterWorkId           = document.getElementById("filterWorkId").value;
+		let filterStartEmployeeId  = document.getElementById("filterStartEmployeeId").value
+		let filterDateFr           = document.getElementById("filterDateFr").value;
+		let filterDateTo           = document.getElementById("filterDateTo").value;
+		let selectHouseId          = document.getElementById("selectHouseId").value;
+		let selectColNo            = document.getElementById("selectColNo").value;
+		let selectWorkId           = document.getElementById("selectWorkId").value;
+		let selectStartDateTime    = document.getElementById("selectStartDateTime").value;
+		
+		
+		// 新しいフォームを一時的に作成
+		const form = document.createElement("form");
+		form.method = "POST";
+		form.action = "/matsuoka/TransitionKanriMainteWorkStatusDetail";
+		
+		// 送信したい hidden 要素だけ追加
+		const params = {
+			 filterHouseId
+			,filterWorkId
+			,filterStartEmployeeId
+			,filterDateFr
+			,filterDateTo
+			,selectHouseId
+			,selectColNo
+			,selectWorkId
+			,selectStartDateTime
+		};
+		
+		for (const key in params) {
+			const input = document.createElement("input");
+			input.type = "hidden";
+			input.name = key;
+			input.value = params[key];
+			form.appendChild(input);
+		}
+		
+		// フォームをbodyに追加して送信
+		document.body.appendChild(form);
+		form.submit();
+		
 	});
 	
 	
@@ -310,7 +352,7 @@ $(function() {
 		
 		
 		//------------------------------------------------
-		// hidden項目に「選択したフィルタリング条件の情報」をセットしフォームをPOST送信
+		// hidden項目に「選択したフィルタリング条件の情報」をセット
 		document.getElementById("filterHouseId").value         = $("#dropDownHouse").val();
 		document.getElementById("filterWorkId").value          = $("#dropDownWork").val();
 		document.getElementById("filterStartEmployeeId").value = $("#dropDownEmployee").val();
@@ -321,20 +363,61 @@ $(function() {
 		
 		
 		//------------------------------------------------
-		// hidden項目に「選択した一覧の情報」をセットしフォームをPOST送信(新規追加時は空白)
+		// hidden項目に「選択した一覧の情報」をセット
 		document.getElementById("selectHouseId").value         = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="houseId"]').val();
 		document.getElementById("selectColNo").value           = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="colNo"]').val();
 		document.getElementById("selectWorkId").value          = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="workId"]').val();
 		document.getElementById("selectStartDateTime").value   = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="startDateTime"]').val();
 		
-		//------------------------------------------------
 		
-		//画面内にformタグは１つしかないため０番目を固定で取得
-		let form = document.getElementsByTagName('form')[0];
+		// ------------------------------------------------
+		// hidden項目に設定した情報を「新規」で作成したフォームにセットし送信(submit)
+		//
+		// ※既存のformをそのままsubmitしてしまうと、画面に一覧表示されてる全ての情報をサーバに送信してしまう。
+		//   そのためsubmit用に必要最低限の情報を新規で作成したformにセットし、それをsubmitする。
+		//
 		
-		//form.action="";     // HTML内で直接記載されているためココでのセットは不要
-    	//form.method="post"; // HTML内で直接記載されているためココでのセットは不要
-    	form.submit();
+		let filterHouseId          = document.getElementById("filterHouseId").value;
+		let filterWorkId           = document.getElementById("filterWorkId").value;
+		let filterStartEmployeeId  = document.getElementById("filterStartEmployeeId").value
+		let filterDateFr           = document.getElementById("filterDateFr").value;
+		let filterDateTo           = document.getElementById("filterDateTo").value;
+		let selectHouseId          = document.getElementById("selectHouseId").value;
+		let selectColNo            = document.getElementById("selectColNo").value;
+		let selectWorkId           = document.getElementById("selectWorkId").value;
+		let selectStartDateTime    = document.getElementById("selectStartDateTime").value;
+		
+		
+		// 新しいフォームを一時的に作成
+		const form = document.createElement("form");
+		form.method = "POST";
+		form.action = "/matsuoka/TransitionKanriMainteWorkStatusDetail";
+		
+		// 送信したい hidden 要素だけ追加
+		const params = {
+			 filterHouseId
+			,filterWorkId
+			,filterStartEmployeeId
+			,filterDateFr
+			,filterDateTo
+			,selectHouseId
+			,selectColNo
+			,selectWorkId
+			,selectStartDateTime
+		};
+		
+		for (const key in params) {
+			const input = document.createElement("input");
+			input.type = "hidden";
+			input.name = key;
+			input.value = params[key];
+			form.appendChild(input);
+		}
+		
+		// フォームをbodyに追加して送信
+		document.body.appendChild(form);
+		form.submit();
+		
 	});
 	
 	//------------------------------------------------
@@ -348,7 +431,7 @@ $(function() {
 		
 		
 		//------------------------------------------------
-		// hidden項目に「選択したフィルタリング条件の情報」をセットしフォームをPOST送信
+		// hidden項目に「選択したフィルタリング条件の情報」をセット
 		document.getElementById("filterHouseId").value         = $("#dropDownHouse").val();
 		document.getElementById("filterWorkId").value          = $("#dropDownWork").val();
 		document.getElementById("filterStartEmployeeId").value = $("#dropDownEmployee").val();
@@ -359,20 +442,61 @@ $(function() {
 		
 		
 		//------------------------------------------------
-		// hidden項目に「選択した一覧の情報」をセットしフォームをPOST送信(新規追加時は空白)
+		// hidden項目に「選択した一覧の情報」をセット
 		document.getElementById("selectHouseId").value         = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="houseId"]').val();
 		document.getElementById("selectColNo").value           = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="colNo"]').val();
 		document.getElementById("selectWorkId").value          = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="workId"]').val();
 		document.getElementById("selectStartDateTime").value   = $(this).closest('.ymd-list-detail-container[name$="detail-parent"]').find('input[name$="startDateTime"]').val();
 		
-		//------------------------------------------------
 		
-		//画面内にformタグは１つしかないため０番目を固定で取得
-		let form = document.getElementsByTagName('form')[0];
+		// ------------------------------------------------
+		// hidden項目に設定した情報を「新規」で作成したフォームにセットし送信(submit)
+		//
+		// ※既存のformをそのままsubmitしてしまうと、画面に一覧表示されてる全ての情報をサーバに送信してしまう。
+		//   そのためsubmit用に必要最低限の情報を新規で作成したformにセットし、それをsubmitする。
+		//
 		
-		//form.action="";     // HTML内で直接記載されているためココでのセットは不要
-    	//form.method="post"; // HTML内で直接記載されているためココでのセットは不要
-    	form.submit();
+		let filterHouseId          = document.getElementById("filterHouseId").value;
+		let filterWorkId           = document.getElementById("filterWorkId").value;
+		let filterStartEmployeeId  = document.getElementById("filterStartEmployeeId").value
+		let filterDateFr           = document.getElementById("filterDateFr").value;
+		let filterDateTo           = document.getElementById("filterDateTo").value;
+		let selectHouseId          = document.getElementById("selectHouseId").value;
+		let selectColNo            = document.getElementById("selectColNo").value;
+		let selectWorkId           = document.getElementById("selectWorkId").value;
+		let selectStartDateTime    = document.getElementById("selectStartDateTime").value;
+		
+		
+		// 新しいフォームを一時的に作成
+		const form = document.createElement("form");
+		form.method = "POST";
+		form.action = "/matsuoka/TransitionKanriMainteWorkStatusDetail";
+		
+		// 送信したい hidden 要素だけ追加
+		const params = {
+			 filterHouseId
+			,filterWorkId
+			,filterStartEmployeeId
+			,filterDateFr
+			,filterDateTo
+			,selectHouseId
+			,selectColNo
+			,selectWorkId
+			,selectStartDateTime
+		};
+		
+		for (const key in params) {
+			const input = document.createElement("input");
+			input.type = "hidden";
+			input.name = key;
+			input.value = params[key];
+			form.appendChild(input);
+		}
+		
+		// フォームをbodyに追加して送信
+		document.body.appendChild(form);
+		form.submit();
+		
 	});
 	
 });
