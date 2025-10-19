@@ -96,7 +96,7 @@
 		<div id="ymd-confirmOverlay">
 			<div id="ymd-confirmBox">
 				<div class="ymd-container" style="width: 100%;">
-					<span>本当に強制リセットしますか？</span>
+					<span>本当に「完了」にしますか？<br><br>※完了にするとその作業の進捗状況が画面に表示されなくなります。</span>
 				</div>
 				<br>
 				<div class="ymd-button" style="width: 100%;">
@@ -189,7 +189,7 @@
 						<!-- 隠し項目 -->
 						<input type="hidden" name="houseId" th:field="*{activeWorkLists[__${stat.index}__].houseId}" />
 						<input type="hidden" name="workId"  th:field="*{activeWorkLists[__${stat.index}__].workId}" />
-						<a name="reset">強制リセット</a>
+						<a name="reset">完了にする</a>
 					</div>
 					</th:block>
 					
