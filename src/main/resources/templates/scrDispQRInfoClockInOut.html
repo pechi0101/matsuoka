@@ -17,6 +17,61 @@
 <!-- ▽や△のアイコンをCSSで使うためにリンクを貼る -->
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
 
+<!-- 画面表示判定を実施するJavaScript -->
+<script type="text/javascript">
+	
+	
+	// DOMContentLoaded イベントで、ブラウザがHTMLを解析し終えた直後に動作
+	document.addEventListener("DOMContentLoaded", function () {
+	
+		// 当画面を表示するかTOP画面に戻すかの判定処理を行う
+		//
+		// ■ブラウザバック防止施策
+		// ------------------------------------------------
+		// 【やりたいコト】
+		// 以下画面②へブラウザバックで戻ってこれないようにする
+		// ①データを書き込む画面の遷移元画面
+		// ②データを書き込む画面
+		// 
+		// 【施策】
+		// indexQR画面表示時：ローカルストレージを「不許可」にする
+		// 画面①→②遷移時：ローカルストレージを「許可」にする
+		// 画面②表示前：ローカルストレージが「許可」  である場合、画面表示処理を行い、  表示処理終了後にローカルストレージを「不許可」に戻す
+		// 画面②表示前：ローカルストレージが「不許可」である場合、画面表示処理を行わず、indexQR画面に強制的に遷移させられる
+		//          ▼
+		// 画面②のボタン押下などでデータを書き込んだあと別画面に遷移
+		// ブラウザバックで画面②に戻った際、ローカルストレージが「不許可」になっているためindexQR画面に強制的に遷移する 
+		// ------------------------------------------------
+		// 
+		// ■ローカルストレージの設定例(true：許可、false：不許可)
+		// localStorage.setItem("localStorage_IsDispScreen"  ,"false");
+		
+		// ローカルストレージから画面表示の許可・不許可を取得
+		var varIsDispScreen  = localStorage.getItem('localStorage_IsDispScreen');
+		
+		//ローカルストレージの値取得失敗、又は不正な値を取得した場合の処理
+		if (varIsDispScreen == null || varIsDispScreen == "") {
+			varIsDispScreen = "false";
+		}
+		if (varIsDispScreen != "true" && varIsDispScreen != "false") {
+			varIsDispScreen = "false";
+		}
+		
+		//画面表示処理を行わず、indexQR画面に強制的に遷移
+		if (varIsDispScreen == "false") {
+			// 2秒間メッセージを表示してTOP画面に遷移 ※画面には意図的に「３秒後」って出してある
+			document.body.innerHTML = "<h4 style='text-align:center; margin-top:50px;'>３秒後にTOPページに戻ります</h4>";
+			setTimeout(function() {
+				window.location.href = "/matsuoka/indexQR";
+			}, 2000);
+		}
+		
+		//上記以外(画面表示を許可)である場合は画面表示「不許可」に戻して終了
+		localStorage.setItem("localStorage_IsDispScreen"  ,"false");
+	});
+	
+</script>
+
 <!-- ローカルストレージをクリアしてTopページにリダイレクトするJavaScript -->
 <script type="text/javascript">
 	function clearLocalStorageAndRedirect() {

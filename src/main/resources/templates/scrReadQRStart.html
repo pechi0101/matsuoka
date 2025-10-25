@@ -119,7 +119,31 @@
 <!--オリジナルJavaScript(常に最新を読込むよう工夫)-->
 <script type="text/JavaScript">
 <!--
-   document.write('<script src="/matsuoka/js/scrReadQRStart.js?ver='+ new Date().getTime() +'"></script>');
+	 document.write('<script src="/matsuoka/js/scrReadQRStart.js?ver='+ new Date().getTime() +'"></script>');
+	
+	// ローカルストレージに画面表示「不許可」の状態を書き込む 
+	//
+	// ■ブラウザバック防止施策
+	// ------------------------------------------------
+	// 【やりたいコト】
+	// 以下画面②へブラウザバックで戻ってこれないようにする
+	// ①データを書き込む画面の遷移元画面
+	// ②データを書き込む画面
+	// 
+	// 【施策】
+	// indexQR画面表示時：ローカルストレージを「不許可」にする
+	// 画面①→②遷移時：ローカルストレージを「許可」にする
+	// 画面②表示前：ローカルストレージが「許可」  である場合、画面表示処理を行い、  表示処理終了後にローカルストレージを「不許可」に戻す
+	// 画面②表示前：ローカルストレージが「不許可」である場合、画面表示処理を行わず、indexQR画面に強制的に遷移させられる
+	//          ▼
+	// 画面②のボタン押下などでデータを書き込んだあと別画面に遷移
+	// ブラウザバックで画面②に戻った際、ローカルストレージが「不許可」になっているためindexQR画面に強制的に遷移する 
+	// ------------------------------------------------
+	// 
+	// ■ローカルストレージの設定例(true：許可、false：不許可)
+	// localStorage.setItem("localStorage_IsDispScreen"  ,"false");
+	localStorage.setItem("localStorage_IsDispScreen"  ,"false");
+
 //-->
 </script>
 

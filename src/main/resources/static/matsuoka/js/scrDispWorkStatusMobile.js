@@ -12,7 +12,7 @@ $(function() {
 	
 	
 	//------------------------------------------------
-	// 強制リセット押下イベント
+	// 強制リセット(完了)押下イベント
 	//
 	$('.ymd-red-button a[name$="reset"]').click(function() {
 		
@@ -72,7 +72,7 @@ $(function() {
 		*/
 	});
 	
-		// 強制リセット確認ダイアログ「はい」押下時
+	// 強制リセット(完了)確認ダイアログ「はい」押下時
 	$('#btnYes').click(function() {
 		
 		$('#ymd-confirmOverlay').fadeOut(150); // ダイアログを閉じる
@@ -161,13 +161,41 @@ $(function() {
 		
 		//alert("QRコード＝" + document.getElementById("qrcode").value);
 		
+		
+		
+		// ローカルストレージに画面表示「許可」の状態を書き込む 
+		//
+		// ■ブラウザバック防止施策
+		// ------------------------------------------------
+		// 【やりたいコト】
+		// 以下画面②へブラウザバックで戻ってこれないようにする
+		// ①データを書き込む画面の遷移元画面
+		// ②データを書き込む画面
+		// 
+		// 【施策】
+		// indexQR画面表示時：ローカルストレージを「不許可」にする
+		// 画面①→②遷移時：ローカルストレージを「許可」にする
+		// 画面②表示前：ローカルストレージが「許可」  である場合、画面表示処理を行い、  表示処理終了後にローカルストレージを「不許可」に戻す
+		// 画面②表示前：ローカルストレージが「不許可」である場合、画面表示処理を行わず、indexQR画面に強制的に遷移させられる
+		//          ▼
+		// 画面②のボタン押下などでデータを書き込んだあと別画面に遷移
+		// ブラウザバックで画面②に戻った際、ローカルストレージが「不許可」になっているためindexQR画面に強制的に遷移する 
+		// ------------------------------------------------
+		// 
+		// ■ローカルストレージの設定例(true：許可、false：不許可)
+		// localStorage.setItem("localStorage_IsDispScreen"  ,"false");
+		localStorage.setItem("localStorage_IsDispScreen"  ,"true");
+		
+		
+		
+		
 		//画面内にformタグは１つしかないため０番目を固定で取得
 		let form = document.getElementsByTagName('form')[0];
 		
 		// QRコードを読み取った後の画面に遷移する
 		form.action="/matsuoka/TransitionDispQRInfo";
-    	form.method="post";
-    	form.submit();
+		form.method="post";
+		form.submit();
 	});
 	
 	
